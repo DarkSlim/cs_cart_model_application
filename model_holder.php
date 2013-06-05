@@ -7,13 +7,19 @@
     <div class="cloth-object"></div>
     <div id="model_holder">
         <!--Templates for the model-->
-        <img class="displayNone" id="dragable_image_temp_temp">
+        <style>
+            #dragable_image_temp_temp
+            {
+                position: fixed;
+                z-index: 9999;
+            }
+        </style>
+        <img class="displayNone" id="dragable_image_temp_temp" draggable="false">
         <!--Templates for the model-->
     </div>
     <!--<div class="model_holder"></div>-->
     <!-- turn button -->
-    <div class="cs-turn-but-overlay"></div>
-    <div id="cs-turn-model-button">TURN</div>
+    <div id="cs-turn-model-button" click="alert(12);">TURN</div>
     <!-- share icons -->
     <div class="cs-share-icons">
         <h3>SHARE</h3>

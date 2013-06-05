@@ -20,12 +20,16 @@
         <script type="text/javascript" src="js/jquery.mousewheel.min.js"></script>
         <script type="text/javascript" src="js/jquery.mCustomScrollbar.concat.min.js"></script>
         <script type="text/javascript" src="js/model_class_editor.js"></script>
+        <!--<script type="text/javascript" src="js/blur.js"></script>-->
+        <script src="js/jquery.foggy.js"></script>
+        
+        <!--
         <script type="text/javascript">
             
         </script>
         <script type="text/javascript">
             // JavaScript Document
-            function preloadImages() {
+            /*function preloadImages() {
                 var cache = [];
                 var args_len = arguments.length;
                 for (var i = args_len; i--; ) {
@@ -34,8 +38,9 @@
                     cache.push(cacheImage);
                 }
             }
-            preloadImages("img/models/turned/model_blured.png", "img/models/model_blured.png", "img/ajax-load2.gif", "img/expand-icon.png", "img/add_cart_btn.png");
+            preloadImages("img/models/turned/model_blured.png", "img/models/model_blured.png", "img/ajax-load2.gif", "img/expand-icon.png", "img/add_cart_btn.png");*/
         </script>
+        -->
         <!--[if lt IE 9]>
             <script src="js/html5.js"></script>
         <![endif]-->
@@ -76,9 +81,10 @@
                                 <!-- product row -->
                                 <div class="cs-product-row">
                                     <!-- product -->
-                                    <div class="cs-product" 
+                                    <div class="cs-product"
                                          product_id="ajdito_od_cscart_products__1">
-                                        <img src="img/product-images/img1.png" width="97" height="126" alt="dress" class="cs-main-product-image" data-prdid="281" data-prdname="Calvin" data-prdprice="9.95" />
+                                        <img src="img/product-images/img1.png" width="97" height="126" alt="dress" class="cs-main-product-image" data-prdid="281"
+                                             data-prdname="Calvin" data-prdprice="9.95" draggable="false" />
                                         <h3 class="cs-product-title">Calvin</h3>
                                         <h4 class="cs-price">From $5.95 <span class="cs-old-price">$12.95</span></h4>
                                         <div class="cs-variations">
