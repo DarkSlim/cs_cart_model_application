@@ -78,7 +78,8 @@ GlobalEventor.ON_REMOVE_ITEM_FROM_CART_ITEM_MODEL = "ON_REMOVE_ITEM_FROM_CART_IT
 GlobalEventor.ON_REMOVE_ITEM_FROM_MODEL = "ON_REMOVE_ITEM_FROM_MODEL";
 
 function ImageModerator(image_details)
-{
+{ 
+    this.eventor = new Eventor();
     this.src = image_details.src;
     this.image = new Image();
     this.image.onload = function()
@@ -89,11 +90,10 @@ function ImageModerator(image_details)
     this.image.src = this.src;
     this.after_load = function()
     {
-        this.dispatch_event(ImageModerator.AFTER_LOAD_THE_IMAGE, this)
+        this.eventor.dispatch_event(ImageModerator.AFTER_LOAD_THE_IMAGE, this)
     }
     ImageModerator.loaded_images[this.src] = this;
 }
-ImageModerator.prototype = new Eventor();
 ImageModerator.loaded_images = [];
 ImageModerator.AFTER_LOAD_THE_IMAGE = "AFTER_LOAD_THE_IMAGE";
 
@@ -137,7 +137,7 @@ function ModelClothingPart(details_part)
         if(ImageModerator.loaded_images[this.path_clout()] == null)
         {
             var image = new ImageModerator({src:this.path_clout()});
-            image.add_event(ImageModerator.AFTER_LOAD_THE_IMAGE, function(image_moderator)
+            image.eventor.add_event(ImageModerator.AFTER_LOAD_THE_IMAGE, function(image_moderator)
             {
                 console.log("ModelClothingPart::create_sprite_for_this_clot, image is loaded.")
                 ModelClothingPart.LAST_CREATE_SPRITE_OBJECT.create_sprite_for_this_clot();
@@ -187,6 +187,7 @@ function ModelClothingPart(details_part)
             this.reference_clot_item.kinetic_clot_object_front_of.show();
             this.reference_clot_item.kinetic_clot_object_front_of.setX( 0 );
             this.reference_clot_item.kinetic_clot_object_front_of.setY( 0 );
+            this.reference_clot_item.kinetic_clot_object_front_of.moveToTop();
             ModelStage.MS.layer_model.draw();
             //ModelStage.MS.model.blur_on();
             //document.body.style.cursor = 'pointer';
@@ -209,12 +210,20 @@ function ModelClothingPart(details_part)
         {
             console.log("object front out");
             document.body.style.cursor = 'default';
+            this.reference_clot_item.kinetic_clot_object_front_of.hide();
+            ModelStage.MS.layer_model.draw();
         });
         this.kinetic_clot_object_front_of.on("mouseup", function()
         {
             document.body.style.cursor = 'default';
             this.reference_clot_item.kinetic_clot_object_front_of.hide();
             ModelStage.MS.layer_model.draw();
+            if(Math.abs(this.getX())>50 
+            || Math.abs(this.getY())>50)
+            {
+                console.log('this.kinetic_clot_object_front_of.on("mouseup"), it is ready for remove clode');
+                ModelStage.MS.model.remove_item( this.reference_clot_item );   
+            }
         });
         this.kinetic_clot_object.createImageHitRegion(function() {
           ModelStage.MS.layer_model.draw();
@@ -223,6 +232,17 @@ function ModelClothingPart(details_part)
           ModelStage.MS.layer_model.draw();
         });
         //ModelStage.MS.layer_model.draw();
+    }
+    
+    /*
+     * 
+     * @returns {undefined}
+     * This is function for removing the elements kinetics
+     */
+    this.destroy = function()
+    {
+        this.kinetic_clot_object.remove();
+        this.kinetic_clot_object_front_of.remove();
     }
 }
 ModelClothingPart.LAST_CREATE_SPRITE_OBJECT = null;
@@ -293,7 +313,7 @@ function Model()
         if(ImageModerator.loaded_images[this.path_to_body()] == null)
         {
             var image_model = new ImageModerator({src:this.path_to_body()});
-            image_model.add_event(ImageModerator.AFTER_LOAD_THE_IMAGE, function(data)
+            image_model.eventor.add_event(ImageModerator.AFTER_LOAD_THE_IMAGE, function(data)
             {
                 console.log("Model::draw_body, AFTER_LOAD_THE_IMAGE")
                 ModelStage.MS.model.draw_body();
@@ -325,26 +345,33 @@ function Model()
         this.kinetic_body_object.setImage(ImageModerator.loaded_images[this.path_to_body()].image);
         //for(var i in this.kinetic_body_object){console.log(i);}
         ModelStage.MS.layer_model.add( this.kinetic_body_object );
+        this.kinetic_body_object.moveToBottom();
         ModelStage.MS.layer_model.draw(  );
+        
     }
     
     this.change_side = function()
     {
         this.is_front_body = !this.is_front_body;
-        //this.draw_body();
+        this.draw_body();
     }
     
     this.remove_item = function(object_part_clot)
     {
-        this.remove_item___without_dispatch_event();
+        this.remove_item___without_dispatch_event(object_part_clot);
         /*
          * Znaci, brisis od kartickata, i treba da se izbrisi 
          * i kaj modelot, pa go pravis ova.
          * A kaj modelot, prajs addEvent
          */
-        GlobalEventor.GE.dispatch_event(GlobalEventor.ON_REMOVE_ITEM_FROM_CART_ITEM_MODEL, {});
+        GlobalEventor.GE.dispatch_event(GlobalEventor.ON_REMOVE_ITEM_FROM_MODEL, {});
     }
-    this.remove_item___without_dispatch_event = function(object_part_clot){}
+    this.remove_item___without_dispatch_event = function(object_part_clot)
+    {
+        this.parts.splice(this.parts.indexOf(object_part_clot), 1);
+        object_part_clot.destroy();
+        //this.parts
+    }
     this.add_item = function(model_cloting_part_item)
     {
         //ti treba dispatch event, za da mu kaze na kartickata da stavi nov object
@@ -628,8 +655,7 @@ $(document).ready(function(e)
     });
     $("#cs-turn-model-button").click(function(e)
     {
-        ModelStage.MS.layer_model.draw();
-        //ModelStage.MS.model.change_side();
+        ModelStage.MS.model.change_side();
     });
     
     $("#model_holder").mouseover(function(e)
