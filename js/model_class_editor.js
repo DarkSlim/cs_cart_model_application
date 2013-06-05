@@ -146,76 +146,77 @@ function ModelClothingPart(details_part)
             })
             return;
         }
-        if(this.kinetic_clot_object == null){
-        this.kinetic_clot_object = new Kinetic.Image({
-              image: null,
-              x: 0,
-              y: 0,
-              visible: true,
-              draggable: false
-            });
-        this.kinetic_clot_object_front_of = new Kinetic.Image({
-              image: null,
-              x: 0,
-              y: 0,
-              visible: true,
-              draggable: true
-            });
-        
-        this.kinetic_clot_object.on("mousedown", function()
+        if(this.kinetic_clot_object == null)
         {
-            console.log("object mousedown");
-        });
-        //for(var i in this.kinetic_clot_object_front_of){console.log(i);}
-        this.kinetic_clot_object.on("mouseover", function()
-        {
-            console.log("object over");
-            //console.log(this.reference_clot_item.product_id);
-            //this.reference_clot_item.kinetic_clot_object_tween.play();
-            //this.reference_clot_item.kinetic_clot_object_front_of.setDraggable("true");
-            this.reference_clot_item.kinetic_clot_object_front_of.show();
-            this.reference_clot_item.kinetic_clot_object_front_of.setX( 0 );
-            this.reference_clot_item.kinetic_clot_object_front_of.setY( 0 );
-            this.reference_clot_item.kinetic_clot_object_front_of.moveToTop();
-            ModelStage.MS.layer_model.draw();
-            //ModelStage.MS.model.blur_on();
-            //document.body.style.cursor = 'pointer';
-        });
-        this.kinetic_clot_object.on("mouseout", function()
-        {
-            //document.body.style.cursor = 'default';
-            //console.log("object out");
-            //this.reference_clot_item.kinetic_clot_object_front_of.hide();
-            //ModelStage.MS.layer_model.draw();
-            //ModelStage.MS.model.blur_of();
-            //this.reference_clot_item.kinetic_clot_object_tween.reverse();
-        });
-        this.kinetic_clot_object_front_of.on("mouseover", function()
-        {
-            console.log("object front over");
-            document.body.style.cursor = 'pointer';
-        });
-        this.kinetic_clot_object_front_of.on("mouseout", function()
-        {
-            console.log("object front out");
-            document.body.style.cursor = 'default';
-            this.reference_clot_item.kinetic_clot_object_front_of.hide();
-            ModelStage.MS.layer_model.draw();
-        });
-        this.kinetic_clot_object_front_of.on("mouseup", function()
-        {
-            document.body.style.cursor = 'default';
-            this.reference_clot_item.kinetic_clot_object_front_of.hide();
-            ModelStage.MS.layer_model.draw();
-            if(Math.abs(this.getX())>50 
-            || Math.abs(this.getY())>50)
+            this.kinetic_clot_object = new Kinetic.Image({
+                  image: null,
+                  x: 0,
+                  y: 0,
+                  visible: true,
+                  draggable: false
+                });
+            this.kinetic_clot_object_front_of = new Kinetic.Image({
+                  image: null,
+                  x: 0,
+                  y: 0,
+                  visible: true,
+                  draggable: true
+                });
+
+            this.kinetic_clot_object.on("mousedown", function()
             {
-                console.log('this.kinetic_clot_object_front_of.on("mouseup"), it is ready for remove clode');
-                ModelStage.MS.model.remove_item( this.reference_clot_item );   
-            }
-        });
-        ModelStage.MS.layer_model.add( this.kinetic_clot_object );
-        ModelStage.MS.layer_model.add( this.kinetic_clot_object_front_of );
+                console.log("object mousedown");
+            });
+            //for(var i in this.kinetic_clot_object_front_of){console.log(i);}
+            this.kinetic_clot_object.on("mouseover", function()
+            {
+                console.log("object over");
+                //console.log(this.reference_clot_item.product_id);
+                //this.reference_clot_item.kinetic_clot_object_tween.play();
+                //this.reference_clot_item.kinetic_clot_object_front_of.setDraggable("true");
+                this.reference_clot_item.kinetic_clot_object_front_of.show();
+                this.reference_clot_item.kinetic_clot_object_front_of.setX( 0 );
+                this.reference_clot_item.kinetic_clot_object_front_of.setY( 0 );
+                this.reference_clot_item.kinetic_clot_object_front_of.moveToTop();
+                ModelStage.MS.layer_model.draw();
+                //ModelStage.MS.model.blur_on();
+                //document.body.style.cursor = 'pointer';
+            });
+            this.kinetic_clot_object.on("mouseout", function()
+            {
+                //document.body.style.cursor = 'default';
+                //console.log("object out");
+                //this.reference_clot_item.kinetic_clot_object_front_of.hide();
+                //ModelStage.MS.layer_model.draw();
+                //ModelStage.MS.model.blur_of();
+                //this.reference_clot_item.kinetic_clot_object_tween.reverse();
+            });
+            this.kinetic_clot_object_front_of.on("mouseover", function()
+            {
+                console.log("object front over");
+                document.body.style.cursor = 'pointer';
+            });
+            this.kinetic_clot_object_front_of.on("mouseout", function()
+            {
+                console.log("object front out");
+                document.body.style.cursor = 'default';
+                this.reference_clot_item.kinetic_clot_object_front_of.hide();
+                ModelStage.MS.layer_model.draw();
+            });
+            this.kinetic_clot_object_front_of.on("mouseup", function()
+            {
+                document.body.style.cursor = 'default';
+                this.reference_clot_item.kinetic_clot_object_front_of.hide();
+                ModelStage.MS.layer_model.draw();
+                if(Math.abs(this.getX())>50 
+                || Math.abs(this.getY())>50)
+                {
+                    console.log('this.kinetic_clot_object_front_of.on("mouseup"), it is ready for remove clode');
+                    ModelStage.MS.model.remove_item( this.reference_clot_item );   
+                }
+            });
+            ModelStage.MS.layer_model.add( this.kinetic_clot_object );
+            ModelStage.MS.layer_model.add( this.kinetic_clot_object_front_of );
         }
          //ImageModerator.loaded_images[this.path_clout()].image
         this.kinetic_clot_object.setImage(ImageModerator.loaded_images[this.path_clout()].image);
@@ -363,6 +364,10 @@ function Model()
     this.change_side = function()
     {
         this.is_front_body = !this.is_front_body;
+        for(var i=0;i<this.parts.length;i++)
+        {
+            this.parts[i].create_sprite_for_this_clot();
+        }
         this.draw_body();
     }
     
@@ -463,10 +468,42 @@ Model.ON_REMOVE_ITEM_FROM_MODEL = "ON_REMOVE_ITEM_FROM_MODEL";
 function StageBackground()
 {
     this.kinetic_object = null;
+    this.index_background = 1;
+    this.url_bg = function(){return "img/bgs/bg"+this.index_background+".jpg";}
     
-    this.change = function() 
+    this.change = function( __index_background__ ) 
     {
-        
+        if(__index_background__ != null)
+        {
+            this.index_background = __index_background__;
+        }
+        if(this.kinetic_object == null)
+        {
+            this.kinetic_object = new Kinetic.Image({
+                  image: null,
+                  x: 0,
+                  y: 0,
+                  visible: true,
+                  draggable: false
+                });
+            ModelStage.MS.layer_background.add( this.kinetic_object );
+        }
+        if(ImageModerator.loaded_images[this.url_bg()] == null)
+        {
+            var image = new ImageModerator({src:this.url_bg()});
+            image.reference_to_bg = this;
+            image.eventor.add_event(ImageModerator.AFTER_LOAD_THE_IMAGE, function(image_moderator)
+            {
+                image_moderator.reference_to_bg.change( image_moderator.reference_to_bg.index_background );
+            });
+        }
+        this.kinetic_object.setImage(ImageModerator.loaded_images[this.url_bg()].image);
+        ModelStage.MS.layer_background.draw();
+    }
+    this.change_one_more_index_up = function()
+    {
+        this.index_background++;
+        this.change();
     }
 }
 function CartItemModel()
@@ -630,6 +667,8 @@ function ModelStage()
         this.layer_model.on('mouseout', function() {
           tween.reverse();
         });*/
+        
+        this.background.change();
     }
     this.stage = null;
     this.layer_background = null;
@@ -670,5 +709,9 @@ $(document).ready(function(e)
         //$(this).foggy(false);
     });
     
+    $(".cs-backgrounds").click(function(e)
+    {
+        ModelStage.MS.background.change_one_more_index_up();
+    });
     
 });
