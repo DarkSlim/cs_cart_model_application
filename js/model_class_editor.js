@@ -74,18 +74,20 @@ GlobalEventor.GE = new GlobalEventor();
  * znaci kaj modelot koga imame remove so funkcijata remove_item
  * i kaj kartickata so funkcijata  remove_part
  */
-GlobalEventor.ON_REMOVE_ITEM_FROM_CART_ITEM_MODEL = "ON_REMOVE_ITEM_FROM_CART_ITEM_MODEL";
-GlobalEventor.ON_REMOVE_ITEM_FROM_MODEL = "ON_REMOVE_ITEM_FROM_MODEL";
+GlobalEventor.ON_START_LOADING = "ON_START_LOADING";
+GlobalEventor.ON_END_LOADING = "ON_END_LOADING";
 
 function ImageModerator(image_details)
 { 
     this.eventor = new Eventor();
     this.src = image_details.src;
     this.image = new Image();
+    GlobalEventor.GE.dispatch_event(GlobalEventor.ON_START_LOADING, {});
     this.image.onload = function()
     {
         console.log("Loaded image with url["+this.src+"]");
         ImageModerator.loaded_images[$(this).attr("src")].after_load();
+        GlobalEventor.GE.dispatch_event(GlobalEventor.ON_END_LOADING, {});
     }
     this.image.src = this.src;
     this.after_load = function()
@@ -133,46 +135,33 @@ function ModelClothingPart(details_part)
     
     this.create_sprite_for_this_clot = function()
     {
-        ModelClothingPart.LAST_CREATE_SPRITE_OBJECT = this;
         if(ImageModerator.loaded_images[this.path_clout()] == null)
         {
             var image = new ImageModerator({src:this.path_clout()});
+            image.reference_to_model_part = this;
             image.eventor.add_event(ImageModerator.AFTER_LOAD_THE_IMAGE, function(image_moderator)
             {
                 console.log("ModelClothingPart::create_sprite_for_this_clot, image is loaded.")
-                ModelClothingPart.LAST_CREATE_SPRITE_OBJECT.create_sprite_for_this_clot();
+                image_moderator.reference_to_model_part.create_sprite_for_this_clot();
             })
             return;
         }
+        if(this.kinetic_clot_object == null){
         this.kinetic_clot_object = new Kinetic.Image({
-              image: ImageModerator.loaded_images[this.path_clout()].image,
+              image: null,
               x: 0,
               y: 0,
               visible: true,
               draggable: false
             });
         this.kinetic_clot_object_front_of = new Kinetic.Image({
-              image: ImageModerator.loaded_images[this.path_clout()].image,
+              image: null,
               x: 0,
               y: 0,
               visible: true,
               draggable: true
             });
-        this.kinetic_clot_object.reference_clot_item = this;
-        this.kinetic_clot_object_front_of.reference_clot_item = this;
-        ModelStage.MS.layer_model.add( this.kinetic_clot_object );
-        ModelStage.MS.layer_model.add( this.kinetic_clot_object_front_of );
         
-        /*this.kinetic_clot_object_tween = new Kinetic.Tween({
-          node: this.kinetic_clot_object, 
-          duration: 0.6,
-          filterRadius: 5,
-          easing: Kinetic.Easings.EaseInOut
-        });*/
-        /*this.kinetic_clot_object.on("dragstart", function()
-        {
-            ModelStage.MS.layer_model.draw();
-        });*/
         this.kinetic_clot_object.on("mousedown", function()
         {
             console.log("object mousedown");
@@ -225,6 +214,25 @@ function ModelClothingPart(details_part)
                 ModelStage.MS.model.remove_item( this.reference_clot_item );   
             }
         });
+        ModelStage.MS.layer_model.add( this.kinetic_clot_object );
+        ModelStage.MS.layer_model.add( this.kinetic_clot_object_front_of );
+        }
+         //ImageModerator.loaded_images[this.path_clout()].image
+        this.kinetic_clot_object.setImage(ImageModerator.loaded_images[this.path_clout()].image);
+        this.kinetic_clot_object_front_of.setImage(ImageModerator.loaded_images[this.path_clout()].image);
+        this.kinetic_clot_object.reference_clot_item = this;
+        this.kinetic_clot_object_front_of.reference_clot_item = this;
+        
+        /*this.kinetic_clot_object_tween = new Kinetic.Tween({
+          node: this.kinetic_clot_object, 
+          duration: 0.6,
+          filterRadius: 5,
+          easing: Kinetic.Easings.EaseInOut
+        });*/
+        /*this.kinetic_clot_object.on("dragstart", function()
+        {
+            ModelStage.MS.layer_model.draw();
+        });*/
         this.kinetic_clot_object.createImageHitRegion(function() {
           ModelStage.MS.layer_model.draw();
         });
@@ -244,11 +252,13 @@ function ModelClothingPart(details_part)
         this.kinetic_clot_object.remove();
         this.kinetic_clot_object_front_of.remove();
     }
+    ModelClothingPart.ALL_PARTS["__"+this.product_id+"__"] = this;
 }
 ModelClothingPart.LAST_CREATE_SPRITE_OBJECT = null;
 ModelClothingPart.prototype = new Eventor();
 ModelClothingPart.ON_DRAG_THUMB = "ON_DRAG_THUMB";
 ModelClothingPart.ON_DROP_THUMB = "ON_DRAG_THUMB";
+ModelClothingPart.ALL_PARTS = [];
 
 function Model()
 {
@@ -364,7 +374,7 @@ function Model()
          * i kaj modelot, pa go pravis ova.
          * A kaj modelot, prajs addEvent
          */
-        GlobalEventor.GE.dispatch_event(GlobalEventor.ON_REMOVE_ITEM_FROM_MODEL, {});
+        this.dispatch_event(Model.ON_REMOVE_ITEM_FROM_MODEL, {});
     }
     this.remove_item___without_dispatch_event = function(object_part_clot)
     {
@@ -448,33 +458,23 @@ Model.prototype = new Eventor();
 Model.ON_SET_BACK = "ON_SET_MODEL_BACK";
 Model.ON_SET_BACK = "ON_SET_MODEL_FRONT";
 Model.ON_ADD_ITEM_TO_MODEL = "ON_ADD_ITEM_TO_MODEL";
+Model.ON_REMOVE_ITEM_FROM_MODEL = "ON_REMOVE_ITEM_FROM_MODEL";
 
 function StageBackground()
 {
-    this.change = function() {
+    this.kinetic_object = null;
+    
+    this.change = function() 
+    {
+        
     }
-    this.draw = function(){}
-    this.empty = function(){}
 }
-
 function CartItemModel()
 {
-    this.remove_part = function(object_part_clot)
-    {
-        /*
-         * Znaci, brisis od kartickata, i treba da se izbrisi 
-         * i kaj modelot, pa go pravis ova.
-         * A kaj modelot, prajs addEvent
-         */
-        GlobalEventor.GE.dispatch_event(GlobalEventor.ON_REMOVE_ITEM_FROM_CART_ITEM_MODEL, {});
-    }
-    this.remove_part____without_dispatch_event = function()
-    {
-        /*
-         * Pokazuvas totalna cena i menuvas gore levo itemot 
-         * toa e.
-         */
-    }
+    //za da izbrises item, kaj linkovite od kartickata,
+    //koristis 
+    //ModelStage.MS.model.remove_item(ModelClothingPart.ALL_PARTS["__ovde doaga ajdito na produktot__"]);
+    //ovde doaga ajdito na produktot, ova treba da bide ajdito na produktot
     this.add_to_bagg = function()
     {   
     }
@@ -482,11 +482,6 @@ function CartItemModel()
     {
         
     });*/
-    GlobalEventor.GE.add_event(GlobalEventor.ON_REMOVE_ITEM_FROM_MODEL,
-    function(item_removed)
-    {
-        ModelStage.MS.cart_item_model.remove_part____without_dispatch_event();
-    });
     
     /*
      * 
@@ -519,6 +514,10 @@ function ModelStage()
      */
     this.model = new Model();
     this.model.add_event(Model.ON_ADD_ITEM_TO_MODEL, function(new_item_clot)
+    {
+        ModelStage.MS.cart_item_model.cart_refresh(  );
+    });
+    this.model.add_event(Model.ON_REMOVE_ITEM_FROM_MODEL, function(new_item_clot)
     {
         ModelStage.MS.cart_item_model.cart_refresh(  );
     });
