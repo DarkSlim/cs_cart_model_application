@@ -1,0 +1,304 @@
+<?php
+
+class Tools {
+    public function __construct() {
+        
+    }
+    /////////////////////////////////////////////////////////////////////
+    // Get data from url
+    public static function get_data($url) {
+        $ch = curl_init();
+        $timeout = 5;
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, $timeout);
+        $data = curl_exec($ch);
+        curl_close($ch);
+        return $data;
+    }
+    /////////////////////////////////////////////////////////////////////
+    //Get total product count
+    public static function getTotalProductCount(){
+        Db_Actions::DbSelect("SELECT COUNT(id) FROM  cscart_products");
+    }
+    /////////////////////////////////////////////////////////////////////
+    //Get all top level categories
+    public static function getCategories() {
+        $top_level_cats = array();
+        //Select all top level categories
+        Db_Actions::DbSelect("SELECT * FROM cscart_categories LEFT OUTER JOIN cscart_category_descriptions ON cscart_categories.category_id = cscart_category_descriptions.category_id WHERE cscart_categories.parent_id=0");
+        $result = Db_Actions::DbGetResults();
+        if (!isset($result->empty_result)) {
+            foreach ($result as $cat) {
+                $top_level_cats[] = array('id' => $cat->category_id,
+                    'cat_name' => $cat->category,
+                    'company_id' => $cat->company_id,
+                    'status' => $cat->status,
+                    'product_count' => $cat->product_count,
+                    'is_op' => $cat->is_op,
+                    'usergroup_ids' => $cat->usergroup_ids);
+            }
+        }
+        if (!isset($result->empty_result)) {
+            return $result;
+        }
+        else {
+            return new stdClass();
+        }
+    }
+    /////////////////////////////////////////////////////////////////////
+    //Get subcategories from some category
+    public static function getSubCategories($parent_cat_id) {
+        Db_Actions::DbSelect("SELECT * FROM cscart_categories LEFT OUTER JOIN cscart_category_descriptions ON cscart_categories.category_id = cscart_category_descriptions.category_id WHERE cscart_categories.parent_id=$parent_cat_id");
+        $result = Db_Actions::DbGetResults();
+        if (!isset($result->empty_result)) {
+            return $result;
+        }
+        else {
+            return new stdClass();
+        }
+    }
+    ////////////////////////////////////////////////////////////////////////
+    // Get category data
+    public static function getCategoryData($category_id) {
+        $data = fn_get_category_data($category_id);
+        return $data;
+    }
+    /////////////////////////////////////////////////////////////////////////
+    // Get product data
+    public static function getProductData($product_id) {
+        $auth = fn_fill_auth();
+        $data = fn_get_product_data($product_id, $auth);
+        return $data;
+    }
+    ////////////////////////////////////////////////////////////////////////
+    //Add product to cart
+    public static function addProductToCart($product_id) {
+        $auth = fn_fill_auth();
+        $cart = & $_SESSION['cart'];
+        $products_array = array(
+            $product_id => array(
+                'product_id' => $product_id,
+                'amount' => 1
+            )
+        );
+        $data = fn_add_product_to_cart($products_array, $cart, $auth);
+        return $data;
+    }
+    ////////////////////////////////////////////////////////////////////////
+    //Delete product from cart
+    public static function deleteProductFromCart($product_id) {
+        $auth = fn_fill_auth();
+        $cart = $_SESSION['cart'];
+        fn_delete_cart_product($cart, $cart_id);
+    }
+    ////////////////////////////////////////////////////////////////////////
+    // Get product name
+    public static function getProductName($product_id) {
+        $name = fn_get_product_name($product_id, $lang_code = CART_LANGUAGE, $as_array = false);
+        return $name;
+    }
+    ////////////////////////////////////////////////////////////////////////
+    // Get product price
+    public static function getProductPrice($product_id, $amount = 1) {
+        $auth = fn_fill_auth();
+        $price = fn_get_product_price($product_id, $amount, $auth);
+        return $price;
+    }
+    /////////////////////////////////////////////////////////////////////////
+    // Get product image
+    public static function getProductImage($product_id) {
+        $products = array($product_id);
+        $data = fn_get_image_pairs($products, 'product', 'M', true, true);
+        foreach ($data as $img) {
+            if (is_array($img)) {
+                foreach ($img as $img_paths) {
+                    if (array_key_exists('detailed', $img_paths)) {
+                        return $img_paths['detailed']['http_image_path'];
+                    }
+                }
+            }
+        }
+        return false;
+    }
+    /////////////////////////////////////////////////////////////////////////
+    // Get products filters
+    public static function getProductsFilters($category_ids = 0, $items_per_page = 0) {
+        $params = array('category_ids' => $category_ids);
+        $data = fn_get_product_filters($params, $items_per_page);
+        return $data;
+    }
+    /////////////////////////////////////////////////////////////////////////
+    // Get products from category
+    public static function getCategoryProducts($category_id, $products_per_page = 9, $curr_page = 1) {
+        $params = array();
+        $params['cid'] = $category_id;
+        $params['extend'] = array('categories');
+        $params['page'] = $curr_page;
+        list($products, $search) = fn_get_products($params, $products_per_page);
+        return $products;
+    }
+    /////////////////////////////////////////////////////////////////////////
+    // Get products data from any category in desired format
+    public static function getMyProductsData($category_id, $products_per_page = 9, $curr_page = 1) {
+        //First get the products ids from the selected category
+        $products_ids = self::getCategoryProducts($category_id, $products_per_page, $curr_page);
+        $product_data = array();
+        $category_data = self::getCategoryData($category_id);
+        foreach ($products_ids as $product) {
+            $product_data[] = array('product_id' => $product['product_id'],
+                'product_name' => self::getProductName($product['product_id']),
+                'product_image_url' => $root_url . self::getProductImage($product['product_id']),
+                'product_price' => self::getProductPrice($product['product_id']),
+                'product_count' => $category_data['product_count']);
+        }
+        return $product_data;
+    }
+    /////////////////////////////////////////////////////////////////////////
+    // Load background images
+    public static function loadBackgroundImages() {
+        $dir = scandir('../img/bgs');
+        $bg_images = array();
+        foreach ($dir as $file) {
+            if ($file != "." && $file != "..") {
+                if (file_exists("../img/bgs/" . $file)) {
+                    $currFileExt = pathinfo("../img/bgs/" . $file, 4);
+                    if ($currFileExt == "jpg" || $currFileExt == "png" || $currFileExt == "gif" || $currFileExt == "jpeg" || $currFileExt == "bmp") {
+                        $bg_images[] = $file;
+                    }
+                }
+            }
+        }
+        $curr_page = isset($_POST['curr_page']) ? intval($_POST['curr_page']) : 1;
+        $max_bgs_per_page = 9;
+        $offset = $curr_page * $max_bgs_per_page - $max_bgs_per_page;
+        $slice = array_slice($bg_images, $offset, $max_bgs_per_page);
+        echo json_encode($slice);
+    }
+    /////////////////////////////////////////////////////////////////////////
+    // get number of pages with background images
+    public static function getBgsNumpages() {
+        $dir = scandir('../img/bgs');
+        $bg_images = array();
+        foreach ($dir as $file) {
+            if ($file != "." && $file != "..") {
+                if (file_exists("../img/bgs/" . $file)) {
+                    $currFileExt = pathinfo("../img/bgs/" . $file, 4);
+                    if ($currFileExt == "jpg" || $currFileExt == "png" || $currFileExt == "gif" || $currFileExt == "jpeg" || $currFileExt == "bmp") {
+                        $bg_images[] = $file;
+                    }
+                }
+            }
+        }
+        $max_bgs_per_page = 9;
+        echo ceil(count($bg_images) / $max_bgs_per_page) < 1 ? 1 : ceil(count($bg_images) / $max_bgs_per_page);
+    }
+    /////////////////////////////////////////////////////////////////////////
+    // Load filter images
+    public static function loadFilterImages() {
+        $dir = scandir('../img/effects');
+        $bg_images = array();
+        foreach ($dir as $file) {
+            if ($file != "." && $file != "..") {
+                if (file_exists("../img/effects/" . $file)) {
+                    $currFileExt = pathinfo("../img/effects/" . $file, 4);
+                    if ($currFileExt == "jpg" || $currFileExt == "png" || $currFileExt == "gif" || $currFileExt == "jpeg" || $currFileExt == "bmp") {
+                        $bg_images[] = $file;
+                    }
+                }
+            }
+        }
+        $curr_page = isset($_POST['curr_page']) ? intval($_POST['curr_page']) : 1;
+        $max_bgs_per_page = 9;
+        $offset = $curr_page * $max_bgs_per_page - $max_bgs_per_page;
+        $slice = array_slice($bg_images, $offset, $max_bgs_per_page);
+        echo json_encode($slice);
+    }
+    /////////////////////////////////////////////////////////////////////////
+    // get number of pages with  effect images
+    public static function getEffectsNumPages() {
+        $dir = scandir('../img/effects');
+        $bg_images = array();
+        foreach ($dir as $file) {
+            if ($file != "." && $file != "..") {
+                if (file_exists("../img/bgs/" . $file)) {
+                    $currFileExt = pathinfo("../img/bgs/" . $file, 4);
+                    if ($currFileExt == "jpg" || $currFileExt == "png" || $currFileExt == "gif" || $currFileExt == "jpeg" || $currFileExt == "bmp") {
+                        $bg_images[] = $file;
+                    }
+                }
+            }
+        }
+        $max_bgs_per_page = 9;
+        echo ceil(count($bg_images) / $max_bgs_per_page) < 1 ? 1 : ceil(count($bg_images) / $max_bgs_per_page);
+    }
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Select all products from selected category
+if (isset($_POST['get_category_data'])) {
+    define('AREA', 'C');
+    require '../../prepare.php';
+    require '../../init.php';
+    require(DIR_ROOT . '/config.php');
+    require_once('db_actions.php');
+    $root_url = $config['current_location'];
+
+    $curr_page = isset($_POST['curr_page']) ? $_POST['curr_page'] : 1;
+    $cat_id = isset($_POST['cat_id']) ? $_POST['cat_id'] : "";
+    $data = Tools::getMyProductsData($cat_id, 9, $curr_page);
+    echo json_encode($data);
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////
+// Load background images
+if (isset($_POST['load_bgs'])) {
+    Tools::loadBackgroundImages();
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////
+// Get number of bg pages
+if (isset($_POST['getBgNumPages'])) {
+    Tools::getBgsNumpages();
+}
+///////////////////////////////////////////////////////////////////////////////////////////////////
+//Load effects
+if (isset($_POST['load_efx'])) {
+    Tools::loadFilterImages();
+}
+///////////////////////////////////////////////////////////////////////////////////////////////////
+//Get number of effects pages
+if (isset($_POST['geEfxNumPages'])) {
+    Tools::getEffectsNumPages();
+}
+///////////////////////////////////////////////////////////////////////////////////////////////////
+//Add product to cart
+if (isset($_POST['add_prd'])) {
+    define('AREA', 'C');
+    require '../../prepare.php';
+    require '../../init.php';
+    require(DIR_ROOT . '/config.php');
+    require_once('db_actions.php');
+    $root_url = $config['current_location'];
+
+    $success = false;
+    //print_r($_SESSION['cart']);
+    if (isset($_POST['product_ids'])) {
+        if (is_array($_POST['product_ids'])) {
+            $products = $_POST['product_ids'];
+            foreach ($products as $prd_id) {
+                $addProduct = Tools::addProductToCart($prd_id);
+                //print_r($addProduct);
+                if ($addProduct != false) {
+                    $success = true;
+                }
+            }
+        }
+    }
+    if ($success) {
+        echo 1;
+    }
+    else {
+        echo 2;
+    }
+}
