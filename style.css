@@ -418,7 +418,7 @@ div.cloth-object img{
     left: 0;
     top: 0;
 }
-div.girl-model{
+div.model_holder{
     width: 233px;
     height: 550px;
     position: absolute;
@@ -426,13 +426,15 @@ div.girl-model{
     top:20px;
     z-index: 8000;
 }
-#girl-model{
+#model_holder
+{
     width: 233px;
     height: 550px;
     position: absolute;
     right: 65px;
     top:20px;
     z-index: 8000;
+    border:solid 1px #0000ff;
 }
 div.girl-shadow{
     width: 326px;
@@ -542,3 +544,5 @@ a.go-to-cart{
     left: 0;
     top: 0;
 }
+
+.displayNone{display: none;}

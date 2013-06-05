@@ -19,7 +19,7 @@
         <script type="text/javascript" src="js/jquery.ui.droppable.js"></script>
         <script type="text/javascript" src="js/jquery.mousewheel.min.js"></script>
         <script type="text/javascript" src="js/jquery.mCustomScrollbar.concat.min.js"></script>
-        <script type="text/javascript" src="js/cloth-class.js"></script>
+        <script type="text/javascript" src="js/model_class_editor.js"></script>
         <script type="text/javascript">
             
         </script>
@@ -51,35 +51,7 @@
                         <a href="#" class="cs-women cs-active">WOMEN</a>
                         <a href="#" class="cs-back-link">BACK</a>
                     </div>
-                    <div class="cs-model">
-                        <div id="main-bg"></div>
-                        <!-- cloth section -->
-                        <div class="ajax-load2">Loading please wait...</div>
-                        <!-- products added to cart success -->
-                        <div class="cart-success">Products added to cart.</div>
-                        <div class="cloth-object"></div>
-                        <div id="girl-model"></div>
-                        <!--<div class="girl-model"></div>-->
-                        <!-- turn button -->
-                        <div class="cs-turn-but-overlay"></div>
-                        <div id="cs-turn-model-button">TURN</div>
-                        <!-- share icons -->
-                        <div class="cs-share-icons">
-                            <h3>SHARE</h3>
-                            <a href="#" class="cs-fb-icon"><img src="img/facebook-icon.png" width="31" height="32" alt="Facebook" /></a>
-                            <a href="#" class="cs-fb-icon"><img src="img/twitter-icon.png" width="31" height="32" alt="Twitter" /></a>
-                            <a href="#" class="cs-fb-icon"><img src="img/pinterest-icon.png" width="31" height="32" alt="Pinterest" /></a>
-                            <a href="#" class="cs-fb-icon"><img src="img/gplus-icon.png" width="31" height="32" alt="Google plus" /></a>
-                        </div>
-                        <!-- shopping cart -->
-                        <div class="cs-shopping-cart">
-                            <div class="cs-cart-items"><span class="colapse-control"></span><span class="items-count">0 ITEMS</span></div>
-
-                            <div class="cs-cart-total">TOTAL: $00.00</div>
-                        </div>
-                        <!-- add to cart button -->
-                        <div class="add-to-cart-btn"></div>
-                    </div>
+                    <?php require_once 'model_holder.php'; ?>
                     <div class="cs-controls">
                         <a href="#" class="cs-new">NEW</a>
                         <a href="#" class="cs-save">SAVE</a>
@@ -104,7 +76,8 @@
                                 <!-- product row -->
                                 <div class="cs-product-row">
                                     <!-- product -->
-                                    <div class="cs-product">
+                                    <div class="cs-product" 
+                                         product_id="ajdito_od_cscart_products__1">
                                         <img src="img/product-images/img1.png" width="97" height="126" alt="dress" class="cs-main-product-image" data-prdid="281" data-prdname="Calvin" data-prdprice="9.95" />
                                         <h3 class="cs-product-title">Calvin</h3>
                                         <h4 class="cs-price">From $5.95 <span class="cs-old-price">$12.95</span></h4>
@@ -115,7 +88,8 @@
                                         </div>
                                     </div>
                                     <!-- product -->
-                                    <div class="cs-product cs-prd-middle">
+                                    <div class="cs-product cs-prd-middle" 
+                                         product_id="ajdito_od_cscart_products__2">
                                         <img src="img/product-images/img2.png" width="97" height="126" alt="dress" class="cs-main-product-image" data-prdid="104" data-prdname="ZARA" data-prdprice="5.95" />
                                         <h3 class="cs-product-title">ZARA</h3>
                                         <h4 class="cs-price">$5.95</h4>
@@ -126,7 +100,8 @@
                                         </div>
                                     </div>
                                     <!-- product -->
-                                    <div class="cs-product">
+                                    <div class="cs-product" 
+                                         product_id="ajdito_od_cscart_products__3">
                                         <img src="img/product-images/img3.png" width="97" height="126" alt="dress" class="cs-main-product-image" data-prdid="103" data-prdname="Tommy Hilfieger" data-prdprice="4.95" />
                                         <h3 class="cs-product-title">Tommy Hilfieger</h3>
                                         <h4 class="cs-price">$4.95</h4>
@@ -137,6 +112,17 @@
                                         </div>
                                     </div>
                                 </div>
+                                
+                                <script>
+                                    $(".cs-product").mousedown(function(e)
+                                    {
+                                        ModelStage.MS.drag_clot_from_products_thumbs(
+                                                {
+                                            product_id:$(this).attr("product_id"),
+                                            product_thumb_image_url:$(this).find(".cs-main-product-image").attr("src")
+                                                });
+                                    });
+                                </script>
 
                                 <!-- product row -->
                                 <div class="cs-product-row">
