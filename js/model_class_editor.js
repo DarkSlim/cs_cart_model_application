@@ -147,6 +147,7 @@ function ModelClothingPart(details_part)
 {
     this.is_destroited = false;
     this.product_id = details_part.product_id;//it is coming from cs cart my sql table "cscart_products"
+    this.price = parseFloat(details_part.price);
     //this.product_thumb_image_url, it is coming from url right parts thumbs,html src attribute
     this.product_thumb_image_url = details_part.product_thumb_image_url;
     /*product_id:$(this).attr("product_id"),

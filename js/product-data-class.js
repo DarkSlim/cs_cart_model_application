@@ -42,6 +42,7 @@ function ProductsManager() {
                     ModelStage.MS.drag_clot_from_products_thumbs_set_temp_clout_object(
                             {
                                 product_id: $(this).attr("product_id"),
+                                price: $(this).attr("product_price"),
                                 product_thumb_image_url: $(this).find(".cs-main-product-image").attr("src")
                             });
                     /*ModelStage.MS.drag_clot_from_products_thumbs(
@@ -55,6 +56,7 @@ function ProductsManager() {
                     var model_part = new ModelClothingPart(
                             {
                                 product_id: $(this).attr("product_id"),
+                                price: $(this).attr("product_price"),
                                 product_thumb_image_url: $(this).find(".cs-main-product-image").attr("src")
                             });
                     ModelStage.MS.model.add_item(model_part);
