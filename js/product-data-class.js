@@ -46,10 +46,10 @@ function ProductsManager() {
                                 product_thumb_image_url: $(this).find(".cs-main-product-image").attr("src")
                             });
                     /*ModelStage.MS.drag_clot_from_products_thumbs(
-                            {
-                                product_id: $(this).attr("product_id"),
-                                product_thumb_image_url: $(this).find(".cs-main-product-image").attr("src")
-                            });*/
+                     {
+                     product_id: $(this).attr("product_id"),
+                     product_thumb_image_url: $(this).find(".cs-main-product-image").attr("src")
+                     });*/
                 });
                 $(".cs-product").click(function(e)
                 {
@@ -62,9 +62,9 @@ function ProductsManager() {
                     ModelStage.MS.model.add_item(model_part);
                     RedoUndoModerator.RUM.add_undo_action(
                             {
-                        object:ModelStage.MS.model,
-                        f_string_for_object:"remove_item",
-                        object_for_function:model_part
+                                object: ModelStage.MS.model,
+                                f_string_for_object: "remove_item",
+                                object_for_function: model_part
                             });
                     clearTimeout(ModelStage.MS.index_interval_after_how_much_start_drag);
 
@@ -159,7 +159,7 @@ function BackgroundLoader() {
                 //ebati kodot glup, probaj sega
                 $(".thumb_za_pozadini").click(function(e)
                 {
-                    ModelStage.MS.background.change( $(this).attr("index_za_pozadina_e") );
+                    ModelStage.MS.background.change($(this).attr("index_za_pozadina_e"));
                 });
             }
         });
@@ -177,10 +177,49 @@ function BackgroundLoader() {
     }
 }
 
+function CartHelper() {
+    this.colapseItems = function() {
+        $('.cs-shopping-cart').css('height', 'auto');
+        var currCartHeight = $('.cs-shopping-cart').outerHeight();
+        var originalheight = 0;
+        $('.colapse-control').on('click', function(event) {
+            originalheight = 0;
+            $('.cs-shopping-cart div').each(function() {
+                originalheight += $(this).outerHeight(true);
+            });
+            if (currCartHeight > 35) {
+                $('.colapse-control').css('background', 'url(img/expand-icon.png) left center no-repeat');
+                $('.cs-shopping-cart').stop().animate({
+                    height: 35
+                }, 200, function() {
+                    currCartHeight = $('.cs-shopping-cart').outerHeight();
+                    CartHelper.CH.positionAddTocartButton();
+                });
+            }
+            else if (currCartHeight <= 35) {
+                $('.colapse-control').css('background', 'url(img/colapse-icon.png) left center no-repeat');
+                $('.cs-shopping-cart').stop().animate({
+                    height: originalheight
+                }, 200, function() {
+                    currCartHeight = $('.cs-shopping-cart').outerHeight();
+                    CartHelper.CH.positionAddTocartButton();
+                });
+            }
+        })
+    }
+  
+    this.positionAddTocartButton =  function() {
+        var leftPos = $('.cs-shopping-cart').position().left;
+        var topPos = $('.cs-shopping-cart').position().top + $('.cs-shopping-cart').outerHeight(true);
+        $('div.add-to-cart-btn').css({'left': leftPos + 11 + 'px', 'top': topPos + 'px'});
+    }
+}
+
 
 ProductsManager.PM = new ProductsManager();
 categoryManager.CM = new categoryManager();
 BackgroundLoader.BL = new BackgroundLoader();
+CartHelper.CH = new CartHelper();
 
 $(window).load(function() {
     //Get total products count
@@ -248,7 +287,9 @@ $(window).load(function() {
         BackgroundLoader.BL.loadBgs = true;
         BackgroundLoader.BL.loadBackgrounds();
     });
-
+    
+    CartHelper.CH.colapseItems();
+    CartHelper.CH.positionAddTocartButton();
 
 })
 

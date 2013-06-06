@@ -14,17 +14,17 @@ function RedoUndoModerator()
     this.undo_actions = [];
     this.undo = function()
     {
-        if(this.undo_actions.length == 0)
+        if (this.undo_actions.length == 0)
         {
             console.log("You are trying to make undo, but, there are not objects for undo.");
             return;
         }
-        this.undo_actions[this.undo_actions.length-1].do_action();
-        this.undo_actions.splice(this.undo_actions.length-1, 1);
+        this.undo_actions[this.undo_actions.length - 1].do_action();
+        this.undo_actions.splice(this.undo_actions.length - 1, 1);
     }
-    this.add_undo_action = function( details_object_redo_undo )
+    this.add_undo_action = function(details_object_redo_undo)
     {
-        this.undo_actions.push( new RedoUndoAction(details_object_redo_undo) );
+        this.undo_actions.push(new RedoUndoAction(details_object_redo_undo));
     }
 }
 RedoUndoModerator.RUM = new RedoUndoModerator();
@@ -38,19 +38,23 @@ RedoUndoModerator.RUM = new RedoUndoModerator();
  * i drugite raboti da ti imaa po eden objekt od point ili rect.
  * Za da imas informacii kade ti se.
  */
-function Point(x,y)
+function Point(x, y)
 {
     this.x = parseFloat(x);
     this.y = parseFloat(y);
-    this.string_of = function(){return "{x:"+this.x+", y:"+this.y+"}";}
+    this.string_of = function() {
+        return "{x:" + this.x + ", y:" + this.y + "}";
+    }
 }
-function Rectangle(x,y,w,h)
+function Rectangle(x, y, w, h)
 {
     this.x = x;
     this.y = y;
     this.w = w;
     this.h = h;
-    this.string_of = function(){return "{x:"+this.x+", y:"+this.y+", w:"+this.w+", h:"+this.h+"}";}
+    this.string_of = function() {
+        return "{x:" + this.x + ", y:" + this.y + ", w:" + this.w + ", h:" + this.h + "}";
+    }
 }
 
 /*
@@ -75,13 +79,13 @@ function Eventor()
     {
         this.set_events_array(type);
         /*if(type!= ModelStage.ON_ENTER_FRAME)
-        {
-            console.log(this.id);
-        }*/
+         {
+         console.log(this.id);
+         }*/
         for (var i = 0; i < this.events[type].length; i++)
         {
-            if(type!= ModelStage.ON_ENTER_FRAME)
-            console.log("events of type["+type+"]["+i+"]id:"+this.id);
+            if (type != ModelStage.ON_ENTER_FRAME)
+                console.log("events of type[" + type + "][" + i + "]id:" + this.id);
             this.events[type][i](data);
         }
     }
@@ -90,11 +94,12 @@ function Eventor()
         if (this.events[type] == null)
             this.events[type] = [];
     }
-    Eventor.ID ++;
+    Eventor.ID++;
 }
 Eventor.ID = 0;
 
-function GlobalEventor(){}
+function GlobalEventor() {
+}
 GlobalEventor.prototype = new Eventor();
 GlobalEventor.GE = new GlobalEventor();
 /*
@@ -122,20 +127,20 @@ function TemplateModerator()
         GlobalEventor.GE.dispatch_event(GlobalEventor.ON_START_SAVING_TEMPLATE, {});
         var object = {};
         object.action = "create_and_save_template";
-        if(this.template_is_opened)
+        if (this.template_is_opened)
         {
             object.action = "save_template";
             object.card_designer_templates_id = this.opened_template_id;
         }
         object.total_parts = ModelStage.MS.model.parts.length;
-        for(var i=0;i<ModelStage.MS.model.parts.length;i++)
+        for (var i = 0; i < ModelStage.MS.model.parts.length; i++)
         {
-            object["price_"+i] = ModelStage.MS.model.parts[i].price;
-            object["product_id_"+i] = ModelStage.MS.model.parts[i].product_id;
+            object["price_" + i] = ModelStage.MS.model.parts[i].price;
+            object["product_id_" + i] = ModelStage.MS.model.parts[i].product_id;
         }
         $.post("lib/templates_moderator.php", object, function(data)
         {
-            console.log("Saved template id:"+data);
+            console.log("Saved template id:" + data);
             ModelStage.MS.template_moderator.template_is_opened = true;
             ModelStage.MS.template_moderator.opened_template_id = data;
             GlobalEventor.GE.dispatch_event(GlobalEventor.ON_SAVING_TEMPLATE_COMPLETE, {});
@@ -149,18 +154,18 @@ function TemplateModerator()
         object.card_designer_templates_id = card_designer_templates_id;
         $.post("lib/templates_moderator.php", object, function(data)
         {
-            console.log("Saved template id:"+data);
+            console.log("Saved template id:" + data);
             var xml_data = $.parseXML(data);
             ModelStage.MS.template_moderator.template_is_opened = true;
             ModelStage.MS.template_moderator.opened_template_id = $(xml_data).find("template_id").text();
-            for(var i=0;i<$(xml_data).find("part").length;i++)
+            for (var i = 0; i < $(xml_data).find("part").length; i++)
             {
                 var partXML = $(xml_data).find("part").get(i);
-                    ModelStage.MS.model.add_item(new ModelClothingPart(
-                            {
-                                product_id: $(partXML).find("product_id").text(),
-                                price: $(partXML).find("price").text()
-                            }));
+                ModelStage.MS.model.add_item(new ModelClothingPart(
+                        {
+                            product_id: $(partXML).find("product_id").text(),
+                            price: $(partXML).find("price").text()
+                        }));
             }
             GlobalEventor.GE.dispatch_event(GlobalEventor.ON_TEMPLATE_OPEN_COMPLETE, {});
         });
@@ -171,14 +176,14 @@ TemplateModerator.AFTER_OPEN_TEMPLATE = "AFTER_OPEN_TEMPLATE";
 TemplateModerator.AFTER_SAVE_TEMPLATE = "AFTER_SAVE_TEMPLATE";
 
 function ImageModerator(image_details)
-{ 
+{
     this.eventor = new Eventor();
     this.src = image_details.src;
     this.image = new Image();
     GlobalEventor.GE.dispatch_event(GlobalEventor.ON_START_LOADING, {});
     this.image.onload = function()
     {
-        console.log("Loaded image with url["+this.src+"]");
+        console.log("Loaded image with url[" + this.src + "]");
         ImageModerator.loaded_images[$(this).attr("src")].after_load();
         GlobalEventor.GE.dispatch_event(GlobalEventor.ON_END_LOADING, {});
     }
@@ -200,20 +205,24 @@ function ModelClothingPart(details_part)
     //this.product_thumb_image_url, it is coming from url right parts thumbs,html src attribute
     this.product_thumb_image_url = details_part.product_thumb_image_url;
     /*product_id:$(this).attr("product_id"),
-                                            product_thumb_image_url:$(this).find(".cs-main-product-image").attr("src")
-                                    ModelClothingPart*/
+     product_thumb_image_url:$(this).find(".cs-main-product-image").attr("src")
+     ModelClothingPart*/
     this.kinetic_clot_object_front_of = null;
     this.kinetic_clot_object = null;
     this.kinetic_clot_object_tween = null
     this.path_clout = function()
     {
-        if(ModelStage.MS.model.is_front_body){return "img/cloth/"+this.product_id+"_front.png";}
-        return "img/cloth/"+this.product_id+"_back.png";
+        if (ModelStage.MS.model.is_front_body) {
+            return "img/cloth/" + this.product_id + "_front.png";
+        }
+        return "img/cloth/" + this.product_id + "_back.png";
     }
-                                    
-    this.draw_back = function(){}
-    this.draw_front = function(){}
-    
+
+    this.draw_back = function() {
+    }
+    this.draw_front = function() {
+    }
+
     /*
      * 
      * @returns {undefined}
@@ -227,12 +236,12 @@ function ModelClothingPart(details_part)
     {
         //slicno i ovde treba da napravis dispatc event
     }
-    
+
     this.create_sprite_for_this_clot = function()
     {
-        if(ImageModerator.loaded_images[this.path_clout()] == null)
+        if (ImageModerator.loaded_images[this.path_clout()] == null)
         {
-            var image = new ImageModerator({src:this.path_clout()});
+            var image = new ImageModerator({src: this.path_clout()});
             image.reference_to_model_part = this;
             image.eventor.add_event(ImageModerator.AFTER_LOAD_THE_IMAGE, function(image_moderator)
             {
@@ -241,22 +250,22 @@ function ModelClothingPart(details_part)
             })
             return;
         }
-        if(this.kinetic_clot_object == null || this.is_destroited)
+        if (this.kinetic_clot_object == null || this.is_destroited)
         {
             this.kinetic_clot_object = new Kinetic.Image({
-                  image: null,
-                  x: 0,
-                  y: 0,
-                  visible: true,
-                  draggable: false
-                });
+                image: null,
+                x: 0,
+                y: 0,
+                visible: true,
+                draggable: false
+            });
             this.kinetic_clot_object_front_of = new Kinetic.Image({
-                  image: null,
-                  x: 0,
-                  y: 0,
-                  visible: true,
-                  draggable: true
-                });
+                image: null,
+                x: 0,
+                y: 0,
+                visible: true,
+                draggable: true
+            });
 
             this.kinetic_clot_object.on("mousedown", function()
             {
@@ -270,8 +279,8 @@ function ModelClothingPart(details_part)
                 //this.reference_clot_item.kinetic_clot_object_tween.play();
                 //this.reference_clot_item.kinetic_clot_object_front_of.setDraggable("true");
                 this.reference_clot_item.kinetic_clot_object_front_of.show();
-                this.reference_clot_item.kinetic_clot_object_front_of.setX( 0 );
-                this.reference_clot_item.kinetic_clot_object_front_of.setY( 0 );
+                this.reference_clot_item.kinetic_clot_object_front_of.setX(0);
+                this.reference_clot_item.kinetic_clot_object_front_of.setY(0);
                 this.reference_clot_item.kinetic_clot_object_front_of.moveToTop();
                 ModelStage.MS.layer_model.draw();
                 //ModelStage.MS.model.blur_on();
@@ -303,47 +312,47 @@ function ModelClothingPart(details_part)
                 document.body.style.cursor = 'default';
                 this.reference_clot_item.kinetic_clot_object_front_of.hide();
                 ModelStage.MS.layer_model.draw();
-                if(Math.abs(this.getX())>50 
-                || Math.abs(this.getY())>50)
+                if (Math.abs(this.getX()) > 50
+                        || Math.abs(this.getY()) > 50)
                 {
                     console.log('this.kinetic_clot_object_front_of.on("mouseup"), it is ready for remove clode');
-                    ModelStage.MS.model.remove_item( this.reference_clot_item ); 
+                    ModelStage.MS.model.remove_item(this.reference_clot_item);
                     RedoUndoModerator.RUM.add_undo_action(
                             {
-                        object:ModelStage.MS.model,
-                        f_string_for_object:"add_item",
-                        object_for_function:this.reference_clot_item
+                                object: ModelStage.MS.model,
+                                f_string_for_object: "add_item",
+                                object_for_function: this.reference_clot_item
                             });
                 }
             });
-            ModelStage.MS.layer_model.add( this.kinetic_clot_object );
-            ModelStage.MS.layer_model.add( this.kinetic_clot_object_front_of );
+            ModelStage.MS.layer_model.add(this.kinetic_clot_object);
+            ModelStage.MS.layer_model.add(this.kinetic_clot_object_front_of);
         }
-         //ImageModerator.loaded_images[this.path_clout()].image
+        //ImageModerator.loaded_images[this.path_clout()].image
         this.kinetic_clot_object.setImage(ImageModerator.loaded_images[this.path_clout()].image);
         this.kinetic_clot_object_front_of.setImage(ImageModerator.loaded_images[this.path_clout()].image);
         this.kinetic_clot_object.reference_clot_item = this;
         this.kinetic_clot_object_front_of.reference_clot_item = this;
-        
+
         /*this.kinetic_clot_object_tween = new Kinetic.Tween({
-          node: this.kinetic_clot_object, 
-          duration: 0.6,
-          filterRadius: 5,
-          easing: Kinetic.Easings.EaseInOut
-        });*/
+         node: this.kinetic_clot_object, 
+         duration: 0.6,
+         filterRadius: 5,
+         easing: Kinetic.Easings.EaseInOut
+         });*/
         /*this.kinetic_clot_object.on("dragstart", function()
-        {
-            ModelStage.MS.layer_model.draw();
-        });*/
+         {
+         ModelStage.MS.layer_model.draw();
+         });*/
         this.kinetic_clot_object.createImageHitRegion(function() {
-          ModelStage.MS.layer_model.draw();
+            ModelStage.MS.layer_model.draw();
         });
         this.kinetic_clot_object_front_of.createImageHitRegion(function() {
-          ModelStage.MS.layer_model.draw();
+            ModelStage.MS.layer_model.draw();
         });
         //ModelStage.MS.layer_model.draw();
     }
-    
+
     /*
      * 
      * @returns {undefined}
@@ -355,7 +364,7 @@ function ModelClothingPart(details_part)
         this.kinetic_clot_object_front_of.remove();
         this.is_destroited = true;
     }
-    ModelClothingPart.ALL_PARTS["__"+this.product_id+"__"] = this;
+    ModelClothingPart.ALL_PARTS["__" + this.product_id + "__"] = this;
 }
 ModelClothingPart.LAST_CREATE_SPRITE_OBJECT = null;
 ModelClothingPart.prototype = new Eventor();
@@ -369,7 +378,7 @@ function Model()
      * Ke drzi site itemi za Modelot, i tie ke bidat od klasa ModelClothingPart.
      */
     this.parts = [];
-    
+
     /*
      * 
      * @returns {undefined}
@@ -383,9 +392,12 @@ function Model()
      * a ako !model_is_front za back
      */
     this.model_is_front = true;
-    this.draw = function(){}
-    this.draw_back = function(){}
-    this.draw_front = function(){}
+    this.draw = function() {
+    }
+    this.draw_back = function() {
+    }
+    this.draw_front = function() {
+    }
 
     this.set_empty = function() {
     }
@@ -393,20 +405,23 @@ function Model()
     }
     this.set_back = function() {
     }
-    
+
     this.path_to_body_front = function()
     {
-        if(!this.is_girl)return "";
+        if (!this.is_girl)
+            return "";
         return "img/models/body_girl_front.png";
     }
     this.path_to_body_back = function()
     {
-        if(!this.is_girl)return "";
+        if (!this.is_girl)
+            return "";
         return "img/models/body_girl_back.png";
     }
     this.path_to_body = function()
     {
-        if(this.is_front_body)return this.path_to_body_front();
+        if (this.is_front_body)
+            return this.path_to_body_front();
         return this.path_to_body_back();
     }
     this.is_front_body = true;
@@ -416,16 +431,16 @@ function Model()
     this.image_back = null;
     this.set_boy = function() {
     }
-    this.set_girl = function() 
+    this.set_girl = function()
     {
         this.is_girl = true;
         this.draw_body();
     }
     this.draw_body = function()
     {
-        if(ImageModerator.loaded_images[this.path_to_body()] == null)
+        if (ImageModerator.loaded_images[this.path_to_body()] == null)
         {
-            var image_model = new ImageModerator({src:this.path_to_body()});
+            var image_model = new ImageModerator({src: this.path_to_body()});
             image_model.eventor.add_event(ImageModerator.AFTER_LOAD_THE_IMAGE, function(data)
             {
                 console.log("Model::draw_body, AFTER_LOAD_THE_IMAGE")
@@ -433,46 +448,46 @@ function Model()
             });
             return;
         }
-        if(this.kinetic_body_object != null)
+        if (this.kinetic_body_object != null)
         {
             this.kinetic_body_object.remove();
         }
         else
         {
             this.kinetic_body_object = new Kinetic.Image({
-              image: null,
-              x: 0,
-              y: 0
+                image: null,
+                x: 0,
+                y: 0
             });
         }
         /*var image_image = new Image();
-        image_image.onload = function()
-        {
-            console.log("==>>"+$(this).width()+", "+this.width);
-        }
-        image_image.src = "http://www.google.com/intl/en_ALL/images/logo.gif";*/
-        console.log("draw body image url:"+ImageModerator.loaded_images[this.path_to_body()].src+
-            "[w:"+ImageModerator.loaded_images[this.path_to_body()].image.width+", h:"
-            +ImageModerator.loaded_images[this.path_to_body()].image.height+"]");
+         image_image.onload = function()
+         {
+         console.log("==>>"+$(this).width()+", "+this.width);
+         }
+         image_image.src = "http://www.google.com/intl/en_ALL/images/logo.gif";*/
+        console.log("draw body image url:" + ImageModerator.loaded_images[this.path_to_body()].src +
+                "[w:" + ImageModerator.loaded_images[this.path_to_body()].image.width + ", h:"
+                + ImageModerator.loaded_images[this.path_to_body()].image.height + "]");
         //console.log($(ImageModerator.loaded_images[this.path_to_body()].image).width());
         this.kinetic_body_object.setImage(ImageModerator.loaded_images[this.path_to_body()].image);
         //for(var i in this.kinetic_body_object){console.log(i);}
-        ModelStage.MS.layer_model.add( this.kinetic_body_object );
+        ModelStage.MS.layer_model.add(this.kinetic_body_object);
         this.kinetic_body_object.moveToBottom();
         ModelStage.MS.layer_model.draw(  );
-        
+
     }
-    
+
     this.change_side = function()
     {
         this.is_front_body = !this.is_front_body;
-        for(var i=0;i<this.parts.length;i++)
+        for (var i = 0; i < this.parts.length; i++)
         {
             this.parts[i].create_sprite_for_this_clot();
         }
         this.draw_body();
     }
-    
+
     this.remove_item = function(object_part_clot)
     {
         this.remove_item___without_dispatch_event(object_part_clot);
@@ -492,26 +507,27 @@ function Model()
     this.add_item = function(model_cloting_part_item)
     {
         //ti treba dispatch event, za da mu kaze na kartickata da stavi nov object
-        this.parts.push( model_cloting_part_item );
-        this.dispatch_event(Model.ON_ADD_ITEM_TO_MODEL, 
-        {
-            model_cloting_part_item:model_cloting_part_item
-        });
+        this.parts.push(model_cloting_part_item);
+        this.dispatch_event(Model.ON_ADD_ITEM_TO_MODEL,
+                {
+                    model_cloting_part_item: model_cloting_part_item
+                });
         model_cloting_part_item.create_sprite_for_this_clot();
         /*
          * this.object = details;
-    this.f_string_for_object = details.f_string_for_object;
-    this.object_for_function = details.object_for_function;
+         this.f_string_for_object = details.f_string_for_object;
+         this.object_for_function = details.object_for_function;
          */
     }
-    this.add_item___without_dispatch_event = function(){}
-    
+    this.add_item___without_dispatch_event = function() {
+    }
+
     GlobalEventor.GE.add_event(GlobalEventor.ON_REMOVE_ITEM_FROM_CART_ITEM_MODEL,
-    function(data_object)
-    {
-        ModelStage.MS.model.remove_item___without_dispatch_event();
-    });
-    
+            function(data_object)
+            {
+                ModelStage.MS.model.remove_item___without_dispatch_event();
+            });
+
     /*
      * 
      * @type Eventor
@@ -524,7 +540,7 @@ function Model()
     this.save = function()
     {
     }
-    
+
     /*
      * 
      * @param {type} model_id
@@ -536,7 +552,7 @@ function Model()
     this.load_model = function(model_id)
     {
     }
-    
+
     /*
      * 
      * @returns {undefined}
@@ -545,22 +561,22 @@ function Model()
     this.blur_on = function()
     {
         /**/$("#model_holder").foggy({
-            blurRadius: 2,          // In pixels.
-            opacity: 1,           // Falls back to a filter for IE.
+            blurRadius: 2, // In pixels.
+            opacity: 1, // Falls back to a filter for IE.
             cssFilterSupport: true  // Use "-webkit-filter" where available.
-          });
-        for(var i=0;i<this.parts.length;i++)
+        });
+        for (var i = 0; i < this.parts.length; i++)
         {
             //this.parts[i].kinetic_clot_object_tween.play();
             //console.log(this.parts[i].kinetic_clot_object_tween);
         }
-        
-        
+
+
     }
     this.blur_of = function()
     {
         $("#model_holder").foggy(false);
-        for(var i=0;i<this.parts.length;i++)
+        for (var i = 0; i < this.parts.length; i++)
         {
             //this.parts[i].kinetic_clot_object_tween.reverse();
         }
@@ -576,32 +592,34 @@ function StageBackground()
 {
     this.kinetic_object = null;
     this.index_background = 1;
-    this.url_bg = function(){return "img/bgs/bg"+this.index_background+".jpg";}
-    
-    this.change = function( __index_background__ ) 
+    this.url_bg = function() {
+        return "img/bgs/bg" + this.index_background + ".jpg";
+    }
+
+    this.change = function(__index_background__)
     {
-        if(__index_background__ != null)
+        if (__index_background__ != null)
         {
             this.index_background = __index_background__;
         }
-        if(this.kinetic_object == null)
+        if (this.kinetic_object == null)
         {
             this.kinetic_object = new Kinetic.Image({
-                  image: null,
-                  x: 0,
-                  y: 0,
-                  visible: true,
-                  draggable: false
-                });
-            ModelStage.MS.layer_background.add( this.kinetic_object );
+                image: null,
+                x: 0,
+                y: 0,
+                visible: true,
+                draggable: false
+            });
+            ModelStage.MS.layer_background.add(this.kinetic_object);
         }
-        if(ImageModerator.loaded_images[this.url_bg()] == null)
+        if (ImageModerator.loaded_images[this.url_bg()] == null)
         {
-            var image = new ImageModerator({src:this.url_bg()});
+            var image = new ImageModerator({src: this.url_bg()});
             image.reference_to_bg = this;
             image.eventor.add_event(ImageModerator.AFTER_LOAD_THE_IMAGE, function(image_moderator)
             {
-                image_moderator.reference_to_bg.change( image_moderator.reference_to_bg.index_background );
+                image_moderator.reference_to_bg.change(image_moderator.reference_to_bg.index_background);
             });
         }
         this.kinetic_object.setImage(ImageModerator.loaded_images[this.url_bg()].image);
@@ -640,9 +658,11 @@ function CartItemModel()
         //ModelStage.MS.model.parts.length
         if (ModelStage.MS.model.parts.length > 0) {
             $('.cs-shopping-cart').show();
+            $('.add-to-cart-btn').show();
         }
         else {
             $('.cs-shopping-cart').hide();
+            $('.add-to-cart-btn').hide();
         }
         $('.cs-shopping-cart').find('.cs-selected-product').remove();
         for (var i = 0; i < ModelStage.MS.model.parts.length; i++) {
@@ -661,9 +681,13 @@ function CartItemModel()
         $('.cs-remove-product').each(function() {
             $(this).on('click', function(event) {
                 var productID = $(this).parent().attr('producId');
-                ModelStage.MS.model.remove_item(ModelClothingPart.ALL_PARTS["__"+productID+"__"]);
+                ModelStage.MS.model.remove_item(ModelClothingPart.ALL_PARTS["__" + productID + "__"]);
+
             })
         })
+        var leftPos = $('.cs-shopping-cart').position().left;
+        var topPos = $('.cs-shopping-cart').position().top + $('.cs-shopping-cart').outerHeight(true);
+        $('div.add-to-cart-btn').css({'left': leftPos + 11 + 'px', 'top': topPos + 'px'});
 
     }
     //total price
@@ -680,19 +704,19 @@ function ModelStage()
 {
     this.rect_cs_model_holder = function()
     {
-        return new Rectangle($("#model_holder").offset().left,$("#model_holder").offset().top,
-                        $("#model_holder").width(), $("#model_holder").height());
+        return new Rectangle($("#model_holder").offset().left, $("#model_holder").offset().top,
+                $("#model_holder").width(), $("#model_holder").height());
     }
-    this.position_mouse_on_window = new Point(0,0);
+    this.position_mouse_on_window = new Point(0, 0);
     this.FRAMES_PER_SECOND = 24;
-    
+
     /*
      * 
      * @type TemplateModerator
      * Object that will be using for saving or opening, tempalte.
      */
     this.template_moderator = new TemplateModerator();
-    
+
     /*
      * 
      * @type Model
@@ -707,10 +731,10 @@ function ModelStage()
     {
         ModelStage.MS.cart_item_model.cart_refresh(  );
     });
-    
+
     this.background = new StageBackground();
     this.cart_item_model = new CartItemModel();
-    
+
     /*
      *  On mouse down over thumbs, it is creating new 
      *  object of  ModelClothingPart and it is referencing to 
@@ -741,12 +765,12 @@ function ModelStage()
     {
         this.____temp___details_product_for_eding____ = details_product;
         clearTimeout(this.index_interval_after_how_much_start_drag);
-        this.index_interval_after_how_much_start_drag = 
+        this.index_interval_after_how_much_start_drag =
                 setTimeout("ModelStage.MS.drag_clot_from_products_thumbs____temp___details_product_for_eding____();", 200);
     }
     this.drag_clot_from_products_thumbs____temp___details_product_for_eding____ = function()
     {
-        this.drag_clot_from_products_thumbs( this.____temp___details_product_for_eding____ );
+        this.drag_clot_from_products_thumbs(this.____temp___details_product_for_eding____);
     }
     this.drag_clot_from_products_thumbs = function(details_product)
     {
@@ -758,46 +782,46 @@ function ModelStage()
     }
     this.set_position_drag_clot_from_products_thumbs = function()
     {
-        var left_position = ModelStage.MS.position_mouse_on_window.x-$("#dragable_image_temp_temp").width()/2-
+        var left_position = ModelStage.MS.position_mouse_on_window.x - $("#dragable_image_temp_temp").width() / 2 -
                 $(window).scrollLeft();
-        var top_position = ModelStage.MS.position_mouse_on_window.y-$("#dragable_image_temp_temp").height()/2-
+        var top_position = ModelStage.MS.position_mouse_on_window.y - $("#dragable_image_temp_temp").height() / 2 -
                 $(window).scrollTop();
-        $("#dragable_image_temp_temp").css("left", left_position+"px");
-        $("#dragable_image_temp_temp").css("top", top_position+"px"); 
+        $("#dragable_image_temp_temp").css("left", left_position + "px");
+        $("#dragable_image_temp_temp").css("top", top_position + "px");
     }
     this.drop_thumb_draged_from_right_products = function()
     {
         clearTimeout(this.index_interval_after_how_much_start_drag);
         $("#dragable_image_temp_temp").addClass("displayNone");
         this.remove_event(ModelStage.ON_ENTER_FRAME, this.ON_ENTER_FRAME_FOR_DRAGED_THUMB_FROM_PRODUCTS_PANEL);
-        if(this.position_mouse_on_window.x < this.rect_cs_model_holder().x ||
-                this.position_mouse_on_window.x > this.rect_cs_model_holder().x+this.rect_cs_model_holder().w)
+        if (this.position_mouse_on_window.x < this.rect_cs_model_holder().x ||
+                this.position_mouse_on_window.x > this.rect_cs_model_holder().x + this.rect_cs_model_holder().w)
         {
             console.log("ModelStage:: drop_thumb_draged_from_right_products, not succsess, position mouse x out of range.");
             return;
         }
-        if(this.position_mouse_on_window.y < this.rect_cs_model_holder().y ||
-                this.position_mouse_on_window.y > this.rect_cs_model_holder().y+this.rect_cs_model_holder().h)
+        if (this.position_mouse_on_window.y < this.rect_cs_model_holder().y ||
+                this.position_mouse_on_window.y > this.rect_cs_model_holder().y + this.rect_cs_model_holder().h)
         {
             console.log("ModelStage:: drop_thumb_draged_from_right_products, not succsess, position mouse y out of range.");
             return;
         }
-        console.log("ModelStage:: drop_thumb_draged_from_right_products, mouse_position:"+this.position_mouse_on_window.string_of());
-        console.log("ModelStage:: drop_thumb_draged_from_right_products, model_holder_positions:"+this.rect_cs_model_holder().string_of());
+        console.log("ModelStage:: drop_thumb_draged_from_right_products, mouse_position:" + this.position_mouse_on_window.string_of());
+        console.log("ModelStage:: drop_thumb_draged_from_right_products, model_holder_positions:" + this.rect_cs_model_holder().string_of());
         console.log("ModelStage:: drop_thumb_draged_from_right_products, sucsess");
         this.model.add_item(this.dragged_part_from_products_thumbs);
         RedoUndoModerator.RUM.add_undo_action(
                 {
-            object:this.model,
-            f_string_for_object:"remove_item",
-            object_for_function:this.dragged_part_from_products_thumbs
+                    object: this.model,
+                    f_string_for_object: "remove_item",
+                    object_for_function: this.dragged_part_from_products_thumbs
                 });
     }
     this.ON_ENTER_FRAME_FOR_DRAGED_THUMB_FROM_PRODUCTS_PANEL = function()
     {
-            ModelStage.MS.set_position_drag_clot_from_products_thumbs(); 
+        ModelStage.MS.set_position_drag_clot_from_products_thumbs();
     }
-    
+
     /*
      * Functions for on enter frame
      */
@@ -806,8 +830,8 @@ function ModelStage()
         this.dispatch_event(ModelStage.ON_ENTER_FRAME, {});
         //console.log(this.rect_cs_model_holder().string_of());
     }
-    setInterval("ModelStage.MS.enter_frame();", 1000/this.FRAMES_PER_SECOND);
-    
+    setInterval("ModelStage.MS.enter_frame();", 1000 / this.FRAMES_PER_SECOND);
+
     /*
      * Stage variables.
      * this.create_the_stage will create kinetic, canvas holder
@@ -816,34 +840,34 @@ function ModelStage()
     this.create_the_stage = function()
     {
         this.stage = new Kinetic.Stage({
-          container: "model_holder",
-          width: 457,
-          height: 576
+            container: "model_holder",
+            width: 457,
+            height: 576
         });
         this.layer_background = new Kinetic.Layer();
         this.layer_model = new Kinetic.Layer();
         //this.layer_model_objects = new Kinetic.Layer();
-        
-        this.stage.add( this.layer_background );
-        this.stage.add( this.layer_model );
+
+        this.stage.add(this.layer_background);
+        this.stage.add(this.layer_model);
         //this.stage.add( this.layer_model_objects );
-        
-        
+
+
         /*var tween = new Kinetic.Tween({
-          node: this.stage, 
-          duration: 0.6,
-          filterRadius: 0,
-          easing: Kinetic.Easings.EaseInOut
-        });
-        
-        this.layer_model.on('mouseover', function() {
-          tween.play();
-        });
-      
-        this.layer_model.on('mouseout', function() {
-          tween.reverse();
-        });*/
-        
+         node: this.stage, 
+         duration: 0.6,
+         filterRadius: 0,
+         easing: Kinetic.Easings.EaseInOut
+         });
+         
+         this.layer_model.on('mouseover', function() {
+         tween.play();
+         });
+         
+         this.layer_model.on('mouseout', function() {
+         tween.reverse();
+         });*/
+
         this.background.change();
     }
     this.stage = null;
@@ -860,7 +884,7 @@ $(document).ready(function(e)
     ModelStage.MS.model.set_girl();
     $(window).mousemove(function(e)
     {
-        ModelStage.MS.position_mouse_on_window = new Point(e.pageX,e.pageY);
+        ModelStage.MS.position_mouse_on_window = new Point(e.pageX, e.pageY);
         //console.log(ModelStage.MS.position_mouse_on_window.x)
     });
     $("#dragable_image_temp_temp").mouseup(function(e)
@@ -871,39 +895,39 @@ $(document).ready(function(e)
     {
         ModelStage.MS.model.change_side();
     });
-    
+
     $("#model_holder").mouseover(function(e)
     {
         /*$(this).foggy({
-            blurRadius: 2,          // In pixels.
-            opacity: 1,           // Falls back to a filter for IE.
-            cssFilterSupport: true  // Use "-webkit-filter" where available.
-          });*/
+         blurRadius: 2,          // In pixels.
+         opacity: 1,           // Falls back to a filter for IE.
+         cssFilterSupport: true  // Use "-webkit-filter" where available.
+         });*/
     });
     $("#model_holder").mouseout(function(e)
     {
         //$(this).foggy(false);
     });
-    
+
     $(".cs-backgrounds").click(function(e)
     {
         //ModelStage.MS.background.change_one_more_index_up();
     });
-    
+
     $(".cs-undo").click(function(e)
     {
         RedoUndoModerator.RUM.undo();
         return false;
     });
-    
+
     $(".cs-save").click(function(e)
     {
         ModelStage.MS.template_moderator.save();
         return false;
     });
-    
+
     console.log("search into model_class_editor.js, this[ModelStage.MS.template_moderator.open(4);].");
     console.log("it is function for opening project");
     //ModelStage.MS.template_moderator.open(4);
-    
+
 });
