@@ -141,6 +141,13 @@ function BackgroundLoader() {
                 $('.cs-product-row:last').addClass('last-cs-row');
                 ProductsManager.PM.getTotalPageCount = BackgroundLoader.BL.totalBgPageCount;
                 $("span.total-pagination").html(ProductsManager.PM.currPageNumber + "/" + ProductsManager.PM.getTotalPageCount);
+
+                //Change bg
+                $(".cs-main-bg").each(function() {
+                    $(this).on('click', function() {
+                        ModelStage.MS.background.change($(this).data('indexnum'));
+                    })
+                });
             }
         });
     }
@@ -228,14 +235,5 @@ $(window).load(function() {
         BackgroundLoader.BL.loadBgs = true;
         BackgroundLoader.BL.loadBackgrounds();
     });
-    //Change bg
-    $(".cs-main-bg").each(function(){
-        alert('fdsf');
-       $(this).on('click', function(){
-          
-           ModelStage.MS.background.change( $(this).data('indexnum') );
-       }) 
-    });
-    
 })
 
