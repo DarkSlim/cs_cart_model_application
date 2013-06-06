@@ -141,12 +141,10 @@ function BackgroundLoader() {
                 $('.cs-product-row:last').addClass('last-cs-row');
                 ProductsManager.PM.getTotalPageCount = BackgroundLoader.BL.totalBgPageCount;
                 $("span.total-pagination").html(ProductsManager.PM.currPageNumber + "/" + ProductsManager.PM.getTotalPageCount);
-
-                //Change bg
-                $(".cs-main-bg").each(function() {
-                    $(this).on('click', function() {
-                        ModelStage.MS.background.change($(this).data('indexnum'));
-                    })
+                //ebati kodot glup, probaj sega
+                $(".thumb_za_pozadini").click(function(e)
+                {
+                    ModelStage.MS.background.change( $(this).attr("index_za_pozadina_e") );
                 });
             }
         });
@@ -235,5 +233,7 @@ $(window).load(function() {
         BackgroundLoader.BL.loadBgs = true;
         BackgroundLoader.BL.loadBackgrounds();
     });
+
+
 })
 

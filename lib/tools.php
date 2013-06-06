@@ -214,6 +214,17 @@ class Tools {
         $category_data = self::getCategoryData($cat_id);
         echo ceil((int) $category_data['product_count'] / 9);
     }
+    /////////////////////////////////////////////////
+    //parse int
+    public static function parseInt($string) {
+
+        if (preg_match('/(\d+)/', $string, $array)) {
+            return $array[1];
+        }
+        else {
+            return 0;
+        }
+    }
     /////////////////////////////////////////////////////////////////////////
     // Load background images
     public static function loadBackgroundImages() {
@@ -248,7 +259,10 @@ class Tools {
                     $middleClass = "";
                 }
                 ?>
-                <div class="cs-product pad-bot <?php echo $middleClass; ?>">
+                 <?php $bg_index = self::parseInt($bg); ?>
+                <div class="cs-product pad-bot thumb_za_pozadini  <?php echo $middleClass; ?>"
+                     index_za_pozadina_e="<?php echo $bg_index; ?>"> 
+               
                     <img src="img/bgs/<?php echo $bg ?>" width="97" height="126" data-bgname="<?php echo $bg ?>" class="cs-main-bg" />
                 </div>
                 <?php
@@ -339,7 +353,7 @@ if (isset($_POST['get_category_data'])) {
 if (isset($_POST['load_bgs'])) {
     Tools::loadBackgroundImages();
 }
-////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////абе ти ме слуса го////////////////////////////////////////////////////////////
 // Get number of bg pages
 if (isset($_POST['getBgNumPages'])) {
     Tools::getBgsNumpages();
@@ -385,7 +399,7 @@ if (isset($_POST['add_prd'])) {
         echo 2;
     }
 }
-/////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////kaj ti e ebaniot kod za toa ////////////////////////////////////////////////////
 //Get products count
 if (isset($_POST['products_count'])) {
     define('AREA', 'C');
