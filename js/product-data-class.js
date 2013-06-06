@@ -45,6 +45,15 @@ function ProductsManager() {
                                                 product_thumb_image_url: $(this).find(".cs-main-product-image").attr("src")
                                             });
                                 });
+                                $(".cs-product").click(function(e)
+                                {
+                                    ModelStage.MS.model.add_item( new ModelClothingPart(
+                                            {
+                                                product_id: $(this).attr("product_id"),
+                                                product_thumb_image_url: $(this).find(".cs-main-product-image").attr("src")
+                                            }) );
+                                    
+                                });
             }
         });
     }
