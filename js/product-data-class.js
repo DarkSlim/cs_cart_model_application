@@ -35,6 +35,16 @@ function ProductsManager() {
                 $('.cs-product-wrap').html(data);
                 $('.cs-product-row:last').addClass('last-cs-row');
                 $("span.total-pagination").html(ProductsManager.PM.currPageNumber + "/" + ProductsManager.PM.getTotalPageCount);
+                
+                
+                                $(".cs-product").mousedown(function(e)
+                                {
+                                    ModelStage.MS.drag_clot_from_products_thumbs(
+                                            {
+                                                product_id: $(this).attr("product_id"),
+                                                product_thumb_image_url: $(this).find(".cs-main-product-image").attr("src")
+                                            });
+                                });
             }
         });
     }

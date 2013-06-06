@@ -94,19 +94,10 @@ $categories = Tools::getCategories();
                     <div class="cs-product-container">
                         <div class="cs-product-chooser">
                             <div class="ajax-load"></div>
+                            
                             <div class="cs-product-wrap">
 
                             </div>
-                            <script>
-                                $(".cs-product").mousedown(function(e)
-                                {
-                                    ModelStage.MS.drag_clot_from_products_thumbs(
-                                            {
-                                                product_id: $(this).attr("product_id"),
-                                                product_thumb_image_url: $(this).find(".cs-main-product-image").attr("src")
-                                            });
-                                });
-                            </script>
 
                             <div class="cs-pagination">
                                 <a href="#" class="cs-prev prev-cloth"></a>&nbsp;&nbsp;
