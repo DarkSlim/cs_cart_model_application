@@ -1,6 +1,7 @@
 ///////////////////////////////////////////////////////
 //Products
 function ProductsManager() {
+    this.loadPrds = true;
     //current page number
     this.currPageNumber = 1;
     //total products
@@ -35,25 +36,24 @@ function ProductsManager() {
                 $('.cs-product-wrap').html(data);
                 $('.cs-product-row:last').addClass('last-cs-row');
                 $("span.total-pagination").html(ProductsManager.PM.currPageNumber + "/" + ProductsManager.PM.getTotalPageCount);
-                
-                
-                                $(".cs-product").mousedown(function(e)
-                                {
-                                    ModelStage.MS.drag_clot_from_products_thumbs(
-                                            {
-                                                product_id: $(this).attr("product_id"),
-                                                product_thumb_image_url: $(this).find(".cs-main-product-image").attr("src")
-                                            });
-                                });
-                                $(".cs-product").click(function(e)
-                                {
-                                    ModelStage.MS.model.add_item( new ModelClothingPart(
-                                            {
-                                                product_id: $(this).attr("product_id"),
-                                                product_thumb_image_url: $(this).find(".cs-main-product-image").attr("src")
-                                            }) );
-                                    
-                                });
+
+                $(".cs-product").mousedown(function(e)
+                {
+                    ModelStage.MS.drag_clot_from_products_thumbs(
+                            {
+                                product_id: $(this).attr("product_id"),
+                                product_thumb_image_url: $(this).find(".cs-main-product-image").attr("src")
+                            });
+                });
+                $(".cs-product").click(function(e)
+                {
+                    ModelStage.MS.model.add_item(new ModelClothingPart(
+                            {
+                                product_id: $(this).attr("product_id"),
+                                product_thumb_image_url: $(this).find(".cs-main-product-image").attr("src")
+                            }));
+
+                });
             }
         });
     }
@@ -61,7 +61,14 @@ function ProductsManager() {
     this.loadNextPage = function() {
         if (ProductsManager.PM.currPageNumber < ProductsManager.PM.getTotalPageCount) {
             ProductsManager.PM.currPageNumber += 1;
-            ProductsManager.PM.loadProducts();
+            //load products
+            if (ProductsManager.PM.loadPrds == true) {
+                ProductsManager.PM.loadProducts();
+            }
+            //load backgrounds
+            else if (BackgroundLoader.BL.loadBgs == true) {
+                BackgroundLoader.BL.loadBackgrounds()
+            }
         }
 
     }
@@ -69,7 +76,15 @@ function ProductsManager() {
     this.loadPrevPage = function() {
         if (ProductsManager.PM.currPageNumber > 1) {
             ProductsManager.PM.currPageNumber -= 1;
-            ProductsManager.PM.loadProducts();
+            //load products
+            if (ProductsManager.PM.loadPrds == true) {
+                ProductsManager.PM.loadProducts();
+            }
+            //load backgrounds
+            else if (BackgroundLoader.BL.loadBgs == true) {
+                BackgroundLoader.BL.loadBackgrounds()
+            }
+
         }
     }
     //reset data
@@ -105,6 +120,7 @@ function categoryManager() {
 ////////////////////////////////////////////////////
 //Backgrounds
 function BackgroundLoader() {
+    this.loadBgs = false;
     this.totalBgPageCount = 1;
     //Load the backgrounds
     this.loadBackgrounds = function() {
@@ -117,20 +133,19 @@ function BackgroundLoader() {
         $.ajax({
             url: "lib/tools.php",
             type: "post",
-            data: {load_bgs: 1 },
+            data: {load_bgs: 1, curr_page: ProductsManager.PM.currPageNumber},
             success: function(data) {
                 $('.ajax-load').hide();
                 //Populate data
                 $('.cs-product-wrap').html(data);
                 $('.cs-product-row:last').addClass('last-cs-row');
                 ProductsManager.PM.getTotalPageCount = BackgroundLoader.BL.totalBgPageCount;
-                ProductsManager.PM.currPageNumber = 1;
-                 $("span.total-pagination").html(ProductsManager.PM.currPageNumber + "/" + ProductsManager.PM.getTotalPageCount);
+                $("span.total-pagination").html(ProductsManager.PM.currPageNumber + "/" + ProductsManager.PM.getTotalPageCount);
             }
         });
     }
     //Get total number of background pges
-    this.getBgPageCount = function(){
+    this.getBgPageCount = function() {
         $.ajax({
             url: "lib/tools.php",
             type: "post",
@@ -155,15 +170,17 @@ $(window).load(function() {
     //Load products
     ProductsManager.PM.loadProducts();
     $(".cs-clothes").click(function(event) {
+        ProductsManager.PM.loadPrds = true;
+        BackgroundLoader.BL.loadBgs = false;
         ProductsManager.PM.resetData();
         ProductsManager.PM.loadProducts();
     });
     //Next page
-    $(".cs-next").on('click',function() {
+    $(".cs-next").on('click', function() {
         ProductsManager.PM.loadNextPage();
     })
     //Prev page
-    $(".cs-prev").on('click',function() {
+    $(".cs-prev").on('click', function() {
         ProductsManager.PM.loadPrevPage();
     })
 
@@ -179,7 +196,7 @@ $(window).load(function() {
     });
     //Categories menu
     $('.trigger-link').each(function() {
-        $(this).on('click',function(event) {
+        $(this).on('click', function(event) {
             event.preventDefault();
             event.stopPropagation();
             var currUl = $(this).parent().find('ul');
@@ -197,7 +214,7 @@ $(window).load(function() {
     //Load category products
     $(".cs-cat-dropd a").each(function() {
         if ($(this).data('catid') != "") {
-            $(this).on('click',function(event) {
+            $(this).on('click', function(event) {
                 var currCatID = $(this).data('catid');
                 categoryManager.CM.loadProductsFromCategory(currCatID);
                 categoryManager.CM.getCategoryProductCount(currCatID);
@@ -205,7 +222,10 @@ $(window).load(function() {
         }
     });
     //Load the backgrounds
-    $(".cs-backgrounds").click(function(e){
+    $(".cs-backgrounds").click(function(e) {
+        ProductsManager.PM.currPageNumber = 1;
+        ProductsManager.PM.loadPrds = false;
+        BackgroundLoader.BL.loadBgs = true;
         BackgroundLoader.BL.loadBackgrounds();
     });
 })
