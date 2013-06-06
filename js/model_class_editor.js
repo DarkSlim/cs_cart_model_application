@@ -1,26 +1,33 @@
 function RedoUndoAction(details_object_redo_undo)
 {
-    this.object = details;
-    this.f_string_for_object = details.f_string_for_object;
-    this.object_for_function = details.object_for_function;
+    this.object = details_object_redo_undo.object;
+    this.f_string_for_object = details_object_redo_undo.f_string_for_object;
+    this.object_for_function = details_object_redo_undo.object_for_function;
     this.do_action = function()
     {
         this.object[this.f_string_for_object](this.object_for_function);
+        ModelStage.MS.layer_model.draw();
     }
 }
 function RedoUndoModerator()
 {
-    this.redo_actions = [];
-    this.redo = function()
+    this.undo_actions = [];
+    this.undo = function()
     {
-        this.redo_actions[this.redo_actions.length-1].do_action();
-        this.redo_actions.splice(this.redo_actions.length-1, 1);
+        if(this.undo_actions.length == 0)
+        {
+            console.log("You are trying to make undo, but, there are not objects for undo.");
+            return;
+        }
+        this.undo_actions[this.undo_actions.length-1].do_action();
+        this.undo_actions.splice(this.undo_actions.length-1, 1);
     }
-    this.add_redo_action = function( details_object_redo_undo )
+    this.add_undo_action = function( details_object_redo_undo )
     {
-        this.redo_actions.push( details_object_redo_undo );
+        this.undo_actions.push( new RedoUndoAction(details_object_redo_undo) );
     }
 }
+RedoUndoModerator.RUM = new RedoUndoModerator();
 
 /*
  * 
@@ -101,6 +108,19 @@ GlobalEventor.GE = new GlobalEventor();
 GlobalEventor.ON_START_LOADING = "ON_START_LOADING";
 GlobalEventor.ON_END_LOADING = "ON_END_LOADING";
 
+
+function TemplateModerator()
+{
+    this.save = function()
+    {
+        $.post("");
+    }
+    this.open = function()
+    {
+        
+    }
+}
+
 function ImageModerator(image_details)
 { 
     this.eventor = new Eventor();
@@ -125,6 +145,7 @@ ImageModerator.AFTER_LOAD_THE_IMAGE = "AFTER_LOAD_THE_IMAGE";
 
 function ModelClothingPart(details_part)
 {
+    this.is_destroited = false;
     this.product_id = details_part.product_id;//it is coming from cs cart my sql table "cscart_products"
     //this.product_thumb_image_url, it is coming from url right parts thumbs,html src attribute
     this.product_thumb_image_url = details_part.product_thumb_image_url;
@@ -170,7 +191,7 @@ function ModelClothingPart(details_part)
             })
             return;
         }
-        if(this.kinetic_clot_object == null)
+        if(this.kinetic_clot_object == null || this.is_destroited)
         {
             this.kinetic_clot_object = new Kinetic.Image({
                   image: null,
@@ -236,7 +257,13 @@ function ModelClothingPart(details_part)
                 || Math.abs(this.getY())>50)
                 {
                     console.log('this.kinetic_clot_object_front_of.on("mouseup"), it is ready for remove clode');
-                    ModelStage.MS.model.remove_item( this.reference_clot_item );   
+                    ModelStage.MS.model.remove_item( this.reference_clot_item ); 
+                    RedoUndoModerator.RUM.add_undo_action(
+                            {
+                        object:ModelStage.MS.model,
+                        f_string_for_object:"add_item",
+                        object_for_function:this.reference_clot_item
+                            });
                 }
             });
             ModelStage.MS.layer_model.add( this.kinetic_clot_object );
@@ -276,6 +303,7 @@ function ModelClothingPart(details_part)
     {
         this.kinetic_clot_object.remove();
         this.kinetic_clot_object_front_of.remove();
+        this.is_destroited = true;
     }
     ModelClothingPart.ALL_PARTS["__"+this.product_id+"__"] = this;
 }
@@ -420,6 +448,11 @@ function Model()
             model_cloting_part_item:model_cloting_part_item
         });
         model_cloting_part_item.create_sprite_for_this_clot();
+        /*
+         * this.object = details;
+    this.f_string_for_object = details.f_string_for_object;
+    this.object_for_function = details.object_for_function;
+         */
     }
     this.add_item___without_dispatch_event = function(){}
     
@@ -570,6 +603,13 @@ function ModelStage()
     
     /*
      * 
+     * @type TemplateModerator
+     * Object that will be using for saving or opening, tempalte.
+     */
+    this.template_moderator = new TemplateModerator();
+    
+    /*
+     * 
      * @type Model
      * Variables for the model
      */
@@ -603,6 +643,26 @@ function ModelStage()
     }
     this.new_model_item = function() {
     }
+    /*
+     * 
+     * @type type
+     * On click the thumbs for clout it should add item, but they can be draged, so, after
+     * mouse down, if interval spend 200 miliseconds then drag it, in antoerh case clear
+     * interval and stop, and do click event
+     */
+    this.index_interval_after_how_much_start_drag = null;
+    this.____temp___details_product_for_eding____;
+    this.drag_clot_from_products_thumbs_set_temp_clout_object = function(details_product)
+    {
+        this.____temp___details_product_for_eding____ = details_product;
+        clearTimeout(this.index_interval_after_how_much_start_drag);
+        this.index_interval_after_how_much_start_drag = 
+                setTimeout("ModelStage.MS.drag_clot_from_products_thumbs____temp___details_product_for_eding____();", 200);
+    }
+    this.drag_clot_from_products_thumbs____temp___details_product_for_eding____ = function()
+    {
+        this.drag_clot_from_products_thumbs( this.____temp___details_product_for_eding____ );
+    }
     this.drag_clot_from_products_thumbs = function(details_product)
     {
         this.dragged_part_from_products_thumbs = new ModelClothingPart(details_product);
@@ -622,6 +682,7 @@ function ModelStage()
     }
     this.drop_thumb_draged_from_right_products = function()
     {
+        clearTimeout(this.index_interval_after_how_much_start_drag);
         $("#dragable_image_temp_temp").addClass("displayNone");
         this.remove_event(ModelStage.ON_ENTER_FRAME, this.ON_ENTER_FRAME_FOR_DRAGED_THUMB_FROM_PRODUCTS_PANEL);
         if(this.position_mouse_on_window.x < this.rect_cs_model_holder().x ||
@@ -640,6 +701,12 @@ function ModelStage()
         console.log("ModelStage:: drop_thumb_draged_from_right_products, model_holder_positions:"+this.rect_cs_model_holder().string_of());
         console.log("ModelStage:: drop_thumb_draged_from_right_products, sucsess");
         this.model.add_item(this.dragged_part_from_products_thumbs);
+        RedoUndoModerator.RUM.add_undo_action(
+                {
+            object:this.model,
+            f_string_for_object:"remove_item",
+            object_for_function:this.dragged_part_from_products_thumbs
+                });
     }
     this.ON_ENTER_FRAME_FOR_DRAGED_THUMB_FROM_PRODUCTS_PANEL = function()
     {
@@ -736,6 +803,17 @@ $(document).ready(function(e)
     $(".cs-backgrounds").click(function(e)
     {
         //ModelStage.MS.background.change_one_more_index_up();
+    });
+    
+    $(".cs-undo").click(function(e)
+    {
+        RedoUndoModerator.RUM.undo();
+        return false;
+    });
+    
+    $(".cs-save").click(function(e)
+    {
+        ModelStage.MS.template_moderator.save();
     });
     
 });
