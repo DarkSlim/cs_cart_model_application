@@ -1,3 +1,27 @@
+function RedoUndoAction(details_object_redo_undo)
+{
+    this.object = details;
+    this.f_string_for_object = details.f_string_for_object;
+    this.object_for_function = details.object_for_function;
+    this.do_action = function()
+    {
+        this.object[this.f_string_for_object](this.object_for_function);
+    }
+}
+function RedoUndoModerator()
+{
+    this.redo_actions = [];
+    this.redo = function()
+    {
+        this.redo_actions[this.redo_actions.length-1].do_action();
+        this.redo_actions.splice(this.redo_actions.length-1, 1);
+    }
+    this.add_redo_action = function( details_object_redo_undo )
+    {
+        this.redo_actions.push( details_object_redo_undo );
+    }
+}
+
 /*
  * 
  * @param {type} x
