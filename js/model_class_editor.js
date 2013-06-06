@@ -735,7 +735,7 @@ $(document).ready(function(e)
     
     $(".cs-backgrounds").click(function(e)
     {
-        ModelStage.MS.background.change_one_more_index_up();
+        //ModelStage.MS.background.change_one_more_index_up();
     });
     
 });
