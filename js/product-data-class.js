@@ -228,5 +228,14 @@ $(window).load(function() {
         BackgroundLoader.BL.loadBgs = true;
         BackgroundLoader.BL.loadBackgrounds();
     });
+    //Change bg
+    $(".cs-main-bg").each(function(){
+        alert('fdsf');
+       $(this).on('click', function(){
+          
+           ModelStage.MS.background.change( $(this).data('indexnum') );
+       }) 
+    });
+    
 })
 
