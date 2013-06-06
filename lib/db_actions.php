@@ -16,9 +16,9 @@ class Db_Actions {
     //@var string $user database user
     public static $user = "root";
     //@var string $password database password
-    public static $password = "toreador";
+    public static $password = "";
     //@var string $database  mysql database name
-    public static $database = "cs_cart";
+    public static $database = "abhi_cs_cart";
     //public static $database = "cs_cart";
     ////////////////////////////////////////////////////////////////////
     //@var string $passwordHashEncryption password hash type
