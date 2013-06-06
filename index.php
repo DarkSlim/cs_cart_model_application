@@ -1,3 +1,19 @@
+<?php
+define('AREA', 'C');
+require '../prepare.php';
+require '../init.php';
+require(DIR_ROOT . '/config.php');
+require_once('./lib/db_actions.php');
+require_once("./lib/tools.php");
+$root_url = $config['current_location'];
+if (empty($auth['user_id']) && Registry::get('settings.General.allow_anonymous_shopping') != 'Y') {
+    fn_redirect("auth.login_form?return_url=" . urlencode($_SERVER['HTTP_REFERER']));
+}
+
+
+$root_url = $config['current_location'];
+$categories = Tools::getCategories();
+?>
 <!DOCTYPE html>
 <html>
     <head>
@@ -19,10 +35,11 @@
         <script type="text/javascript" src="js/jquery.ui.droppable.js"></script>
         <script type="text/javascript" src="js/jquery.mousewheel.min.js"></script>
         <script type="text/javascript" src="js/jquery.mCustomScrollbar.concat.min.js"></script>
+        <script type="text/javascript" src="js/product-data-class.js"></script>
         <script type="text/javascript" src="js/model_class_editor.js"></script>
         <!--<script type="text/javascript" src="js/blur.js"></script>-->
         <script src="js/jquery.foggy.js"></script>
-        
+
         <!--
         <script type="text/javascript">
             
@@ -78,132 +95,19 @@
                         <div class="cs-product-chooser">
                             <div class="ajax-load"></div>
                             <div class="cs-product-wrap">
-                                <!-- product row -->
-                                <div class="cs-product-row">
-                                    <!-- product -->
-                                    <div class="cs-product"
-                                         product_id="ajdito_od_cscart_products__1">
-                                        <img src="img/product-images/img1.png" width="97" height="126" alt="dress" class="cs-main-product-image" data-prdid="281"
-                                             data-prdname="Calvin" data-prdprice="9.95" draggable="false" />
-                                        <h3 class="cs-product-title">Calvin</h3>
-                                        <h4 class="cs-price">From $5.95 <span class="cs-old-price">$12.95</span></h4>
-                                        <div class="cs-variations">
-                                            <a href="#" class="cs-varr"><img src="img/product-images/variation-1.jpg" width="14" height="13" /></a>
-                                            <a href="#" class="cs-varr"><img src="img/product-images/variation-2.jpg" width="14" height="13" /></a>
-                                            <a href="#" class="cs-varr"><img src="img/product-images/variation-3.jpg" width="14" height="13" /></a>
-                                        </div>
-                                    </div>
-                                    <!-- product -->
-                                    <div class="cs-product cs-prd-middle" 
-                                         product_id="ajdito_od_cscart_products__2">
-                                        <img src="img/product-images/img2.png" width="97" height="126" alt="dress" class="cs-main-product-image" data-prdid="104" data-prdname="ZARA" data-prdprice="5.95" />
-                                        <h3 class="cs-product-title">ZARA</h3>
-                                        <h4 class="cs-price">$5.95</h4>
-                                        <div class="cs-variations">
-                                            <a href="#" class="cs-varr"><img src="img/product-images/variation-1.jpg" width="14" height="13" /></a>
-                                            <a href="#" class="cs-varr"><img src="img/product-images/variation-2.jpg" width="14" height="13" /></a>
-                                            <a href="#" class="cs-varr"><img src="img/product-images/variation-3.jpg" width="14" height="13" /></a>
-                                        </div>
-                                    </div>
-                                    <!-- product -->
-                                    <div class="cs-product" 
-                                         product_id="ajdito_od_cscart_products__3">
-                                        <img src="img/product-images/img3.png" width="97" height="126" alt="dress" class="cs-main-product-image" data-prdid="103" data-prdname="Tommy Hilfieger" data-prdprice="4.95" />
-                                        <h3 class="cs-product-title">Tommy Hilfieger</h3>
-                                        <h4 class="cs-price">$4.95</h4>
-                                        <div class="cs-variations">
-                                            <a href="#" class="cs-varr"><img src="img/product-images/variation-1.jpg" width="14" height="13" /></a>
-                                            <a href="#" class="cs-varr"><img src="img/product-images/variation-2.jpg" width="14" height="13" /></a>
-                                            <a href="#" class="cs-varr"><img src="img/product-images/variation-3.jpg" width="14" height="13" /></a>
-                                        </div>
-                                    </div>
-                                </div>
-                                
-                                <script>
-                                    $(".cs-product").mousedown(function(e)
-                                    {
-                                        ModelStage.MS.drag_clot_from_products_thumbs(
-                                                {
-                                            product_id:$(this).attr("product_id"),
-                                            product_thumb_image_url:$(this).find(".cs-main-product-image").attr("src")
-                                                });
-                                    });
-                                </script>
 
-                                <!-- product row -->
-                                <div class="cs-product-row">
-                                    <!-- product -->
-                                    <div class="cs-product">
-                                        <img src="img/product-images/img4.png" width="97" height="126" alt="dress" class="cs-main-product-image" data-prdid="97" data-prdname="Calvin Klien" data-prdprice="5.95" />
-                                        <h3 class="cs-product-title">Calvin Klien</h3>
-                                        <h4 class="cs-price">From $5.95 <span class="cs-old-price">$12.95</span></h4>
-                                        <div class="cs-variations">
-                                            <a href="#" class="cs-varr"><img src="img/product-images/variation-1.jpg" width="14" height="13" /></a>
-                                            <a href="#" class="cs-varr"><img src="img/product-images/variation-2.jpg" width="14" height="13" /></a>
-                                            <a href="#" class="cs-varr"><img src="img/product-images/variation-3.jpg" width="14" height="13" /></a>
-                                        </div>
-                                    </div>
-                                    <!-- product -->
-                                    <div class="cs-product cs-prd-middle">
-                                        <img src="img/product-images/img5.png" width="97" height="126" alt="dress" class="cs-main-product-image" />
-                                        <h3 class="cs-product-title">ZARA</h3>
-                                        <h4 class="cs-price">$5.95</h4>
-                                        <div class="cs-variations">
-                                            <a href="#" class="cs-varr"><img src="img/product-images/variation-1.jpg" width="14" height="13" /></a>
-                                            <a href="#" class="cs-varr"><img src="img/product-images/variation-2.jpg" width="14" height="13" /></a>
-                                            <a href="#" class="cs-varr"><img src="img/product-images/variation-3.jpg" width="14" height="13" /></a>
-                                        </div>
-                                    </div>
-                                    <!-- product -->
-                                    <div class="cs-product">
-                                        <img src="img/product-images/img6.png" width="97" height="126" alt="dress" class="cs-main-product-image" />
-                                        <h3 class="cs-product-title">Tommy Hilfieger</h3>
-                                        <h4 class="cs-price">$4.95</h4>
-                                        <div class="cs-variations">
-                                            <a href="#" class="cs-varr"><img src="img/product-images/variation-1.jpg" width="14" height="13" /></a>
-                                            <a href="#" class="cs-varr"><img src="img/product-images/variation-2.jpg" width="14" height="13" /></a>
-                                            <a href="#" class="cs-varr"><img src="img/product-images/variation-3.jpg" width="14" height="13" /></a>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <!-- product row -->
-                                <div class="cs-product-row last-cs-row">
-                                    <!-- product -->
-                                    <div class="cs-product">
-                                        <img src="img/product-images/img7.png" width="97" height="126" alt="dress" class="cs-main-product-image" />
-                                        <h3 class="cs-product-title">Calvin Klien</h3>
-                                        <h4 class="cs-price">From $5.95 <span class="cs-old-price">$12.95</span></h4>
-                                        <div class="cs-variations">
-                                            <a href="#" class="cs-varr"><img src="img/product-images/variation-1.jpg" width="14" height="13" /></a>
-                                            <a href="#" class="cs-varr"><img src="img/product-images/variation-2.jpg" width="14" height="13" /></a>
-                                            <a href="#" class="cs-varr"><img src="img/product-images/variation-3.jpg" width="14" height="13" /></a>
-                                        </div>
-                                    </div>
-                                    <!-- product -->
-                                    <div class="cs-product cs-prd-middle">
-                                        <img src="img/product-images/img8.png" width="97" height="126" alt="dress" class="cs-main-product-image" />
-                                        <h3 class="cs-product-title">ZARA</h3>
-                                        <h4 class="cs-price">$5.95</h4>
-                                        <div class="cs-variations">
-                                            <a href="#" class="cs-varr"><img src="img/product-images/variation-1.jpg" width="14" height="13" /></a>
-                                            <a href="#" class="cs-varr"><img src="img/product-images/variation-2.jpg" width="14" height="13" /></a>
-                                            <a href="#" class="cs-varr"><img src="img/product-images/variation-3.jpg" width="14" height="13" /></a>
-                                        </div>
-                                    </div>
-                                    <!-- product -->
-                                    <div class="cs-product">
-                                        <img src="img/product-images/img9.png" width="97" height="126" alt="dress" class="cs-main-product-image" />
-                                        <h3 class="cs-product-title">Tommy Hilfieger</h3>
-                                        <h4 class="cs-price">$4.95</h4>
-                                        <div class="cs-variations">
-                                            <a href="#" class="cs-varr"><img src="img/product-images/variation-1.jpg" width="14" height="13" /></a>
-                                            <a href="#" class="cs-varr"><img src="img/product-images/variation-2.jpg" width="14" height="13" /></a>
-                                            <a href="#" class="cs-varr"><img src="img/product-images/variation-3.jpg" width="14" height="13" /></a>
-                                        </div>
-                                    </div>
-                                </div>
                             </div>
+                            <script>
+                                $(".cs-product").mousedown(function(e)
+                                {
+                                    ModelStage.MS.drag_clot_from_products_thumbs(
+                                            {
+                                                product_id: $(this).attr("product_id"),
+                                                product_thumb_image_url: $(this).find(".cs-main-product-image").attr("src")
+                                            });
+                                });
+                            </script>
+
                             <div class="cs-pagination">
                                 <a href="#" class="cs-prev prev-cloth"></a>&nbsp;&nbsp;
                                 <span class="total-pagination">1/20</span>&nbsp;&nbsp;
@@ -216,46 +120,23 @@
                                 <input type="text" name="product_search" id="product_search" placeholder="Search Products" />
                             </form>
                             <div class="cs-categories">
-                                <div class="cs-catt">
-                                    <a href="#" class="trigger-link">Recently Used</a>
-                                    <ul>
-                                        <li><a href="#"></a></li>
-                                    </ul>
-                                </div>
-                                <div class="cs-catt">
-                                    <a href="#" class="trigger-link">Type</a>
-                                    <ul>
-                                        <li><a href="#">Show All</a></li>
-                                        <li><a href="#">jackets</a></li>
-                                        <li><a href="#">Tops</a></li>
-                                        <li><a href="#">Bottoms</a></li>
-                                        <li><a href="#">Dresses</a></li>
-                                        <li><a href="#">Suits</a></li>
-                                        <li><a href="#">Underwear</a></li>
-                                        <li><a href="#">Hosiery</a></li>
-                                        <li><a href="#">Jewellery</a></li>
-                                        <li><a href="#">Hats</a></li>
-                                        <li><a href="#">Scarves</a></li>
-                                        <li><a href="#">Gloves</a></li>
-                                        <li><a href="#">Bags</a></li>
-                                        <li><a href="#">Belts</a></li>
-                                        <li><a href="#">Eyewear</a></li>
-                                        <li><a href="#">Shoes</a></li>
-                                        <li><a href="#">Extras</a></li>
-                                    </ul>
-                                </div>
-                                <div class="cs-catt">
-                                    <a href="#" class="trigger-link">Designer</a>
-                                    <ul>
-                                        <li><a href="#"></a></li>
-                                    </ul>
-                                </div>
-                                <div class="cs-catt">
-                                    <a href="#" class="trigger-link">Other</a>
-                                    <ul>
-                                        <li><a href="#"></a></li>
-                                    </ul>
-                                </div>
+                                <?php
+                                foreach ($categories as $top_cat) {
+                                    ?>
+                                    <div class="cs-catt">
+                                        <a href="#" class="trigger-link" data-catid="<?php echo $top_cat->category_id ?>"><?php echo $top_cat->category ?></a>
+                                        <ul>
+                                            <?php
+                                            $sub_cats = Tools::getSubCategories($top_cat->category_id);
+                                            foreach ($sub_cats as $scat) {
+                                                ?> <li><a href="#" data-catid="<?php echo $scat->category_id ?>"><?php echo $scat->category ?></a></li><?php
+                                            }
+                                            ?>
+                                        </ul>
+                                    </div>
+                                    <?php
+                                }
+                                ?>
                             </div>
                         </div>
                     </div>
