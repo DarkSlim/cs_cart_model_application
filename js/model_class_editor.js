@@ -300,7 +300,7 @@ function ModelClothingPart(details_part)
                 {
                     return;
                 }
-                GlobalEventor.GE.dispatch_event(GlobalEventor.ON_MOUSE_OVER_FRONT_PART_CLOUTH, this)
+                GlobalEventor.GE.dispatch_event(GlobalEventor.ON_MOUSE_OVER_FRONT_PART_CLOUTH, this.reference_clot_item)
             });
             this.kinetic_clot_object_front_of.on("mouseout", function()
             {
@@ -315,7 +315,7 @@ function ModelClothingPart(details_part)
                 ModelStage.MS.layer_model.draw();
                 $("#model_holder_selected_part").addClass("displayNone");
                 $("#model_holder").removeClass("blurFilter");
-                GlobalEventor.GE.dispatch_event(GlobalEventor.ON_MOUSE_OUT_FRONT_PART_CLOUTH, this);
+                GlobalEventor.GE.dispatch_event(GlobalEventor.ON_MOUSE_OUT_FRONT_PART_CLOUTH, this.reference_clot_item);
             });
             this.kinetic_clot_object_front_of.on("mouseup", function()
             {
