@@ -22,10 +22,13 @@ function ProductsManager() {
     };
     this.totalPages = -1;
     //Load products
-    this.loadProducts = function() {
+    this.loadProducts = function(recentProducts) {
         $('.cs-product-wrap').html("");
+        $('.cs-cloth-opts a').each(function() {
+            $(this).removeClass('cs-active');
+        })
         $('.ajax-load').show();
-        $(this).addClass('cs-active');
+        $(".cs-clothes").addClass('cs-active');
         $.ajax({
             url: "lib/tools.php",
             type: "post",
@@ -53,6 +56,7 @@ function ProductsManager() {
                 });
                 $(".cs-product").click(function(e)
                 {
+                    $(".ajax-load2").show();
                     var model_part = new ModelClothingPart(
                             {
                                 product_id: $(this).attr("product_id"),
@@ -109,6 +113,64 @@ function ProductsManager() {
         ProductsManager.PM.writePagination();
     }
 }
+///////////////////////////////////////////////////
+//Recently used products
+function recentlyUsedProducts() {
+    this.loadRecentProducts = function() {
+        $('.cs-product-wrap').html("");
+        $('.cs-cloth-opts a').each(function() {
+            $(this).removeClass('cs-active');
+        })
+        $('.ajax-load').show();
+        $(".cs-clothes").addClass('cs-active');
+        $.ajax({
+            url: "lib/tools.php",
+            type: "post",
+            data: {load_recent_products: 1, page: 1},
+            success: function(data) {
+                $('.ajax-load').hide();
+                //Populate data
+                $('.cs-product-wrap').html(data);
+                $('.cs-product-row:last').addClass('last-cs-row');
+                $("span.total-pagination").html( "1/1");
+
+                $(".cs-product").mousedown(function(e)
+                {
+                    ModelStage.MS.drag_clot_from_products_thumbs_set_temp_clout_object(
+                            {
+                                product_id: $(this).attr("product_id"),
+                                price: $(this).attr("product_price"),
+                                product_thumb_image_url: $(this).find(".cs-main-product-image").attr("src")
+                            });
+                    /*ModelStage.MS.drag_clot_from_products_thumbs(
+                     {
+                     product_id: $(this).attr("product_id"),
+                     product_thumb_image_url: $(this).find(".cs-main-product-image").attr("src")
+                     });*/
+                });
+                $(".cs-product").click(function(e)
+                {
+                    $(".ajax-load2").show();
+                    var model_part = new ModelClothingPart(
+                            {
+                                product_id: $(this).attr("product_id"),
+                                price: $(this).attr("product_price"),
+                                product_thumb_image_url: $(this).find(".cs-main-product-image").attr("src")
+                            });
+                    ModelStage.MS.model.add_item(model_part);
+                    RedoUndoModerator.RUM.add_undo_action(
+                            {
+                                object: ModelStage.MS.model,
+                                f_string_for_object: "remove_item",
+                                object_for_function: model_part
+                            });
+                    clearTimeout(ModelStage.MS.index_interval_after_how_much_start_drag);
+
+                });
+            }
+        });
+    }
+}
 
 ///////////////////////////////////////////////////
 //Categories 
@@ -139,10 +201,7 @@ function BackgroundLoader() {
     this.totalBgPageCount = 1;
     //Load the backgrounds
     this.loadBackgrounds = function() {
-        $('.cs-cloth-opts a').each(function() {
-            $(this).removeClass('cs-active');
-        })
-        $(this).addClass('cs-active');
+
         $('.cs-product-wrap').html("");
         $('.ajax-load').show();
         $.ajax({
@@ -176,6 +235,23 @@ function BackgroundLoader() {
         });
     }
 }
+////////////////////////////////////////////////////////////////
+//Men Model
+function MenModel() {
+    this.switchMenModel = function() {
+        $('.cs-gender-menu a').each(function() {
+            $(this).removeClass('cs-active');
+        })
+        $(".cs-men").addClass('cs-active');
+    }
+    this.switchWomenModel = function() {
+        $('.cs-gender-menu a').each(function() {
+            $(this).removeClass('cs-active');
+        })
+        $(".cs-women").addClass('cs-active');
+    }
+}
+
 
 function CartHelper() {
     this.colapseItems = function() {
@@ -207,11 +283,26 @@ function CartHelper() {
             }
         })
     }
-  
-    this.positionAddTocartButton =  function() {
+
+    this.positionAddTocartButton = function() {
         var leftPos = $('.cs-shopping-cart').position().left;
         var topPos = $('.cs-shopping-cart').position().top + $('.cs-shopping-cart').outerHeight(true);
         $('div.add-to-cart-btn').css({'left': leftPos + 11 + 'px', 'top': topPos + 'px'});
+    }
+
+    this.NewCart = function() {
+
+        for (var i = 0; i < ModelStage.MS.model.parts.length; i++) {
+
+            ModelStage.MS.model.remove_item(ModelClothingPart.ALL_PARTS["__" + ModelStage.MS.model.parts[i].product_id + "__"]);
+        }
+        $(".cs-shopping-cart .cs-selected-product").each(function() {
+            $(this).remove();
+        })
+        ModelStage.MS.model.parts.length = 0;
+        ModelStage.MS.cart_item_model.updateTotalAmount();
+        ModelStage.MS.cart_item_model.cart_refresh();
+
     }
 }
 
@@ -220,6 +311,8 @@ ProductsManager.PM = new ProductsManager();
 categoryManager.CM = new categoryManager();
 BackgroundLoader.BL = new BackgroundLoader();
 CartHelper.CH = new CartHelper();
+MenModel.MM = new MenModel();
+recentlyUsedProducts.RUP = new recentlyUsedProducts();
 
 $(window).load(function() {
     //Get total products count
@@ -271,7 +364,7 @@ $(window).load(function() {
         })
     })
     //Load category products
-    $(".cs-cat-dropd a").each(function() {
+    $(".cs-cat-dropd a:not(.recently-viewed)").each(function() {
         if ($(this).data('catid') != "") {
             $(this).on('click', function(event) {
                 var currCatID = $(this).data('catid');
@@ -282,14 +375,61 @@ $(window).load(function() {
     });
     //Load the backgrounds
     $(".cs-backgrounds").click(function(e) {
+        e.preventDefault();
+        $('.cs-cloth-opts a').each(function() {
+            $(this).removeClass('cs-active');
+        })
+        $(".cs-backgrounds").addClass('cs-active');
         ProductsManager.PM.currPageNumber = 1;
         ProductsManager.PM.loadPrds = false;
         BackgroundLoader.BL.loadBgs = true;
         BackgroundLoader.BL.loadBackgrounds();
     });
-    
+    //Load the effects
+    $(".cs-effects").click(function(e) {
+        e.preventDefault();
+        $('.cs-cloth-opts a').each(function() {
+            $(this).removeClass('cs-active');
+        })
+        $(".cs-effects").addClass('cs-active');
+        ProductsManager.PM.currPageNumber = 1;
+        ProductsManager.PM.loadPrds = false;
+        BackgroundLoader.BL.loadBgs = true;
+        BackgroundLoader.BL.loadBackgrounds();
+    });
+
     CartHelper.CH.colapseItems();
     CartHelper.CH.positionAddTocartButton();
 
+    ModelStage.MS.model.add_event(Model.ON_REMOVE_ITEM_FROM_MODEL, function(new_item_clot)
+    {
+        CartHelper.CH.colapseItems();
+        CartHelper.CH.positionAddTocartButton();
+    });
+
+    //Men model
+    $('.cs-men').click(function(e) {
+        e.preventDefault();
+        MenModel.MM.switchMenModel();
+    })
+    //Women model
+    $('.cs-women').click(function(e) {
+        e.preventDefault();
+        MenModel.MM.switchWomenModel();
+    })
+    //Clear cart
+    $('.cs-new').click(function(e) {
+        e.preventDefault();
+        CartHelper.CH.NewCart();
+    })
+    //Recent products
+    $('.recently-viewed').click(function(e) {
+        recentlyUsedProducts.RUP.loadRecentProducts();
+    })
+
+    ModelStage.MS.model.add_event(Model.ON_ADD_ITEM_TO_MODEL, function(item_added)
+    {
+        $(".ajax-load2").hide();
+    });
 })
 

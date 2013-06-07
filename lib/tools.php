@@ -193,7 +193,7 @@ class Tools {
                 <div class="cs-product" product_id="<?php echo $product_item['product_id'] ?>" product_price="<?php echo $product_item['product_price'] ?>" category_ids="<?php echo $product_item['category_id'] ?>">
                     <img src="<?php echo $product_item['product_image_url'] ?>" width="97" height="126" alt="dress" class="cs-main-product-image" draggable="false" />
                     <h3 class="cs-product-title"><?php echo substr($product_item['product_name'], 0, 14) ?></h3>
-                    <h4 class="cs-price"><?php echo $product_item['product_price'] ?></h4>
+                    <h4 class="cs-price">$<?php echo number_format($product_item['product_price'], 2) ?></h4>
                     <div class="cs-variations">
                         <a href="#" class="cs-varr"><img src="img/product-images/variation-1.jpg" width="14" height="13" /></a>
                         <a href="#" class="cs-varr"><img src="img/product-images/variation-2.jpg" width="14" height="13" /></a>
@@ -259,10 +259,10 @@ class Tools {
                     $middleClass = "";
                 }
                 ?>
-                 <?php $bg_index = self::parseInt($bg); ?>
+                <?php $bg_index = self::parseInt($bg); ?>
                 <div class="cs-product pad-bot thumb_za_pozadini  <?php echo $middleClass; ?>"
                      index_za_pozadina_e="<?php echo $bg_index; ?>"> 
-               
+
                     <img src="img/bgs/<?php echo $bg ?>" width="97" height="126" data-bgname="<?php echo $bg ?>" class="cs-main-bg" />
                 </div>
                 <?php
@@ -328,6 +328,52 @@ class Tools {
         }
         $max_bgs_per_page = 9;
         echo ceil(count($bg_images) / $max_bgs_per_page) < 1 ? 1 : ceil(count($bg_images) / $max_bgs_per_page);
+    }
+    /////////////////////////////////////////////////////////////////////////
+    // Load recent products
+    public static function loadRecentProducts($curr_page = 1) {
+        $recent_products = $_SESSION['recently_viewed_products'];
+        //First get the products ids from the selected category
+        $product_data = array();
+        if (!empty($recent_products)) {
+            foreach ($recent_products as $product) {
+                $product_data[] = array('product_id' => $product,
+                    'product_name' => self::getProductName($product),
+                    'product_image_url' => $root_url . self::getProductImage($product),
+                    'product_price' => self::getProductPrice($product)
+                );
+            }
+            //display the products
+            $max_products_per_page = 9;
+            $offset = $curr_page * $max_products_per_page - $max_products_per_page;
+            $slice = array_slice($product_data, $offset, $max_products_per_page);
+            $counter = 0;
+            foreach ($slice as $product_item) {
+                $counter++;
+                if ($counter == 1) {
+                    ?><div class="cs-product-row"><?php
+                    }
+                    ?>
+                    <div class="cs-product" product_id="<?php echo $product_item['product_id'] ?>" product_price="<?php echo $product_item['product_price'] ?>" category_ids="<?php echo $product_item['category_id'] ?>">
+                        <img src="<?php echo $product_item['product_image_url'] ?>" width="97" height="126" alt="dress" class="cs-main-product-image" draggable="false" />
+                        <h3 class="cs-product-title"><?php echo substr($product_item['product_name'], 0, 14) ?></h3>
+                        <h4 class="cs-price">$<?php echo number_format($product_item['product_price'], 2) ?></h4>
+                        <div class="cs-variations">
+                            <a href="#" class="cs-varr"><img src="img/product-images/variation-1.jpg" width="14" height="13" /></a>
+                            <a href="#" class="cs-varr"><img src="img/product-images/variation-2.jpg" width="14" height="13" /></a>
+                            <a href="#" class="cs-varr"><img src="img/product-images/variation-3.jpg" width="14" height="13" /></a>
+                        </div>
+                    </div>
+                    <?php
+                    if ($counter == 3) {
+                        ?></div><?php
+                    $counter = 0;
+                }
+            }
+        }
+        else {
+            echo "<h4 class='empty-result'>Nothing found.</h4>";
+        }
     }
 }
 
@@ -425,6 +471,19 @@ if (isset($_POST['load_products'])) {
     $cat_id = (isset($_POST['cat_id']) && !empty($_POST['cat_id']) && is_numeric($_POST['cat_id'])) ? $_POST['cat_id'] : "";
 
     Tools::displayProductsData($cat_id, $_POST['page']);
+}
+////////////////////////////////////////////////////////////////////////////////////////////////
+//Load recent products
+if (isset($_POST['load_recent_products'])) {
+    define('AREA', 'C');
+    require '../../prepare.php';
+    require '../../init.php';
+    require(DIR_ROOT . '/config.php');
+    require_once('../lib/db_actions.php');
+    require_once("../lib/tools.php");
+    $root_url = $config['current_location'];
+
+    Tools::loadRecentProducts();
 }
 //Get category products count
 if (isset($_POST['cat_products_count'])) {
