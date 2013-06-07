@@ -381,6 +381,12 @@ div.cs-categories a.trigger-link{
     padding: 0 0 0 15px;
     background: url(img/cat-arrow.png) left 30% no-repeat;
 }
+.recently-viewed{
+    font-size: 13px !important;
+    padding-bottom: 5px !important;
+    padding: 0 0 0 15px;
+    background: url(img/cat-arrow.png) left 30% no-repeat;
+}
 div.cs-catt ul{
     display: none;
 }
@@ -452,20 +458,26 @@ div.girl-shadow{
     background: url(img/model_shadow.png) no-repeat;
 }
 div.ajax-load2{
-    width: 130px;
-    height: 20px;
-    padding: 20px 0 20px 35px;
+    width: 457px;
+    height: 576px;
+    padding: 0;
+    margin: 0;
     position: absolute;
-    left: 200px;
-    top: 260px;
-    background:#fff url(img/ajax-load2.gif) 5px center no-repeat;
+    left: 0px;
+    top: 0px;
+    background:#fff url(img/ajax-load.gif) center center no-repeat;
+    -ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+    filter: alpha(opacity=0.8);
+    -moz-opacity:0.8;
+    -khtml-opacity: 0.8;
+    opacity: 0.8;
     font-family: Helvetica, Verdana, Arial;
     color: #333;
     font-size: 11px;
     z-index: 30000;
-    -moz-box-shadow: 0px 0px 6px #545454;
+    /*-moz-box-shadow: 0px 0px 6px #545454;
     -webkit-box-shadow: 0px 0px 6px #545454;
-    box-shadow:  0px 0px 6px #545454;
+    box-shadow:  0px 0px 6px #545454;*/
     display: none;
 }
 div.cart-success{
@@ -557,4 +569,13 @@ a.go-to-cart{
 {
     box-shadow: 0px 0px 20px 10px rgba(255,255,255,1);
 	opacity: 0.7;
+}
+.displayNone{
+    display: none;
+}
+h4.empty-result{
+    padding: 0 10px 0 10px;
+    font-family: Arial;
+    color: #CCC;
+    font-size: 16px;
 }

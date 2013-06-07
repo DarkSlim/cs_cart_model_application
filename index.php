@@ -10,7 +10,6 @@ if (empty($auth['user_id']) && Registry::get('settings.General.allow_anonymous_s
     fn_redirect("auth.login_form?return_url=" . urlencode($_SERVER['HTTP_REFERER']));
 }
 
-
 $root_url = $config['current_location'];
 $categories = Tools::getCategories();
 ?>
@@ -111,6 +110,9 @@ $categories = Tools::getCategories();
                                 <input type="text" name="product_search" id="product_search" placeholder="Search Products" />
                             </form>
                             <div class="cs-categories">
+                                <div class="">
+                                    <a href="#" class="recently-viewed">Recently Used</a>
+                                </div>
                                 <?php
                                 foreach ($categories as $top_cat) {
                                     ?>
