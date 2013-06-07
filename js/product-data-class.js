@@ -251,6 +251,15 @@ function MenModel() {
         $(".cs-women").addClass('cs-active');
     }
 }
+///////////////////////////////////////////////////////////////
+//popup windows
+function ProductPopups(){
+    //Show popup with product name and price
+    this.showPopup = function(event){
+        $("#prd-popup").fadeIn(100);
+        $("#prd-popup").css('left')
+    }
+}
 
 
 function CartHelper() {
@@ -269,7 +278,7 @@ function CartHelper() {
                     height: 35
                 }, 200, function() {
                     currCartHeight = $('.cs-shopping-cart').outerHeight();
-                    CartHelper.CH.positionAddTocartButton();
+                    
                 });
             }
             else if (currCartHeight <= 35) {
@@ -278,7 +287,7 @@ function CartHelper() {
                     height: originalheight
                 }, 200, function() {
                     currCartHeight = $('.cs-shopping-cart').outerHeight();
-                    CartHelper.CH.positionAddTocartButton();
+                    
                 });
             }
         })
@@ -399,12 +408,12 @@ $(window).load(function() {
     });
 
     CartHelper.CH.colapseItems();
-    CartHelper.CH.positionAddTocartButton();
+    
 
     ModelStage.MS.model.add_event(Model.ON_REMOVE_ITEM_FROM_MODEL, function(new_item_clot)
     {
         CartHelper.CH.colapseItems();
-        CartHelper.CH.positionAddTocartButton();
+        
     });
 
     //Men model
@@ -430,6 +439,7 @@ $(window).load(function() {
     ModelStage.MS.model.add_event(Model.ON_ADD_ITEM_TO_MODEL, function(item_added)
     {
         $(".ajax-load2").hide();
+        CartHelper.CH.colapseItems();
     });
 })
 

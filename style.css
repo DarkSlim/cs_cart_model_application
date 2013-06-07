@@ -13,7 +13,6 @@
 
 body{
     background: #333 url(img/main_bg.png) left top repeat-x;
-    cursor: default;
 }
 #cs-cloth-system{
     min-height: 650px;
@@ -83,7 +82,6 @@ div.cs-model{
     /*background:#000 url(img/cs-model.jpg) top center no-repeat;*/
     position: relative;
     /*border:solid 1px;*/
-    overflow: hidden;
 }
 div.cs-bg-main{
     width: 457px;
@@ -170,13 +168,19 @@ div.cs-share-icons h3{
     font-weight: normal;
     line-height: 1em;
 }
+div.shop-cart-holder{
+    width: 136px;
+    position: absolute;
+    left: 10px;
+    top: 20px;
+    color: #000;
+    z-index: 12000;
+}
 div.cs-shopping-cart{
     width: 136px;
     overflow: hidden;
     background: url(img/cs-cart-bg.png) left top repeat-y;
-    position: absolute;
-    left: 10px;
-    top: 20px;
+    position: relative;
     color: #000;
     z-index: 12000;
 }
@@ -414,13 +418,13 @@ div.cloth-object{
     position: absolute;
     right: 65px;
     top:20px;
-    /*z-index: 9999;
+    z-index: 9999;
     -ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
     filter: alpha(opacity=0);
     -moz-opacity:0;
     -khtml-opacity: 0;
     opacity:0;
-    visibility: hidden;*/
+    visibility: hidden;
 }
 div.cloth-object img{
     position: absolute;
@@ -435,7 +439,7 @@ div.model_holder{
     top:20px;
     z-index: 8000;
 }
-#model_holder, #model_holder_selected_part
+#model_holder
 {
     width: 457px;
     height: 576px;
@@ -444,11 +448,6 @@ div.model_holder{
     top:0px;
     z-index: 8000;
     /*border:solid 1px #0000ff;*/
-}
-#model_holder_selected_part
-{
-    z-index: 8001; 
-    /*background-color: #ff0000;*/
 }
 div.girl-shadow{
     width: 326px;
@@ -510,9 +509,7 @@ div.add-to-cart-btn{
     width:112px;
     height: 32px;
     background: url(img/add_cart_btn.png) no-repeat;
-    margin: 10px 0 0 0;
-    position: absolute;
-    z-index: 12000;
+    margin: 10px auto;
 }
 .ui-draggable{
     z-index: 20000 !important;
@@ -569,12 +566,8 @@ a.go-to-cart{
 
 .blurFilter
 {
-    filter: blur(3px);
-    -webkit-filter: blur(3px);
-    -moz-filter: blur(3px);
-    -o-filter: blur(3px);
-    -ms-filter: blur(3px);
-    /*margin: -5px -10px -10px -5px;*/
+    box-shadow: 0px 0px 20px 10px rgba(255,255,255,1);
+	opacity: 0.7;
 }
 .displayNone{
     display: none;
@@ -584,4 +577,24 @@ h4.empty-result{
     font-family: Arial;
     color: #CCC;
     font-size: 16px;
+}
+#prd-popup{
+    padding: 5px 50px;
+    -moz-box-shadow: 0px 0px 6px #545454;
+    -webkit-box-shadow: 0px 0px 6px #545454;
+    box-shadow:  0px 0px 6px #545454;
+    background: #fff;
+    color: #333;
+    position: absolute;
+    left: 100px;
+    top:200px;
+    z-index: 25000;
+    line-height: 1.2em;
+    font-family: Helvetica;
+    font-size: 13px;
+}
+#prd-popup p{
+    text-align: center;
+    margin:0 !important;
+    padding: 0 !important;
 }

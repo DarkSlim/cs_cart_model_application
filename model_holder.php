@@ -39,14 +39,15 @@
 
     </div>
     <!-- shopping cart -->
+    <div class="shop-cart-holder">
+        <div class="cs-shopping-cart">
+            <div class="cs-cart-items"><span class="colapse-control"></span><span class="items-count">0 ITEMS</span></div>
 
-    <div class="cs-shopping-cart">
-        <div class="cs-cart-items"><span class="colapse-control"></span><span class="items-count">0 ITEMS</span></div>
-
-        <div class="cs-cart-total">TOTAL: $00.00</div>
+            <div class="cs-cart-total">TOTAL: $00.00</div>
+        </div>
+        <!-- add to cart button -->
+        <div class="add-to-cart-btn"></div>
     </div>
-    <!-- add to cart button -->
-    <div class="add-to-cart-btn"></div>
 </div>
 <div id="cartItemHolder" class="displayNone">
     <div class="cs-selected-product">
@@ -54,4 +55,8 @@
         <p class="cs-prd-name"></p>
         <p class="cs-prd-price"><strong></strong></p>
     </div>
+</div>
+<div id="prd-popup" class="displayNone">
+    <p class="prd-name">Top</p>
+     <p class="prd-price">$12.49</p>
 </div>
