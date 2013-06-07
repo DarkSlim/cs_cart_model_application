@@ -257,13 +257,17 @@ function ModelClothingPart(details_part)
                 x: 0,
                 y: 0,
                 visible: true,
-                draggable: false
+                draggable: false/*,
+                filter: Kinetic.Filters.Blur,
+                filterRadius: 10,
+                opacity:0.8*/
+                
             });
             this.kinetic_clot_object_front_of = new Kinetic.Image({
                 image: null,
                 x: 0,
                 y: 0,
-                visible: true,
+                visible: false,
                 draggable: true
             });
 
@@ -928,6 +932,6 @@ $(document).ready(function(e)
 
     console.log("search into model_class_editor.js, this[ModelStage.MS.template_moderator.open(4);].");
     console.log("it is function for opening project");
-    //ModelStage.MS.template_moderator.open(4);
+    ModelStage.MS.template_moderator.open(4);
 
 });

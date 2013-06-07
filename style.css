@@ -13,6 +13,7 @@
 
 body{
     background: #333 url(img/main_bg.png) left top repeat-x;
+    cursor: default;
 }
 #cs-cloth-system{
     min-height: 650px;
@@ -406,13 +407,13 @@ div.cloth-object{
     position: absolute;
     right: 65px;
     top:20px;
-    z-index: 9999;
+    /*z-index: 9999;
     -ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
     filter: alpha(opacity=0);
     -moz-opacity:0;
     -khtml-opacity: 0;
     opacity:0;
-    visibility: hidden;
+    visibility: hidden;*/
 }
 div.cloth-object img{
     position: absolute;
@@ -427,7 +428,7 @@ div.model_holder{
     top:20px;
     z-index: 8000;
 }
-#model_holder
+#model_holder, #model_holder_selected_part
 {
     width: 457px;
     height: 576px;
@@ -436,6 +437,10 @@ div.model_holder{
     top:0px;
     z-index: 8000;
     /*border:solid 1px #0000ff;*/
+}
+#model_holder_selected_part
+{
+    z-index: 8001; 
 }
 div.girl-shadow{
     width: 326px;
