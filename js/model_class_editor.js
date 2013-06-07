@@ -268,10 +268,9 @@ function ModelClothingPart(details_part)
                 visible: true,
                 draggable: false/*,
                 filter: Kinetic.Filters.Blur,
-                filterRadius: 10,
-                opacity:0.8*/
-                
+                filterRadius: 5*/
             });
+            
             this.kinetic_clot_object_front_of = new Kinetic.Image({
                 image: null,
                 x: 0,
@@ -285,7 +284,6 @@ function ModelClothingPart(details_part)
             {
                 console.log("object over");
                 $("#model_holder_selected_part").removeClass("displayNone");
-                $("#model_holder").addClass("blurFilter");
                 this.reference_clot_item.kinetic_clot_object_front_of.show();
                 this.reference_clot_item.kinetic_clot_object_front_of.setX(0);
                 this.reference_clot_item.kinetic_clot_object_front_of.setY(0);
@@ -300,7 +298,8 @@ function ModelClothingPart(details_part)
                 {
                     return;
                 }
-                GlobalEventor.GE.dispatch_event(GlobalEventor.ON_MOUSE_OVER_FRONT_PART_CLOUTH, this.reference_clot_item)
+                GlobalEventor.GE.dispatch_event(GlobalEventor.ON_MOUSE_OVER_FRONT_PART_CLOUTH, this.reference_clot_item);
+                ModelStage.MS.model.blur_on();
             });
             this.kinetic_clot_object_front_of.on("mouseout", function()
             {
@@ -314,8 +313,8 @@ function ModelClothingPart(details_part)
                 ModelStage.MS.layer_model_selected_part.draw();
                 ModelStage.MS.layer_model.draw();
                 $("#model_holder_selected_part").addClass("displayNone");
-                $("#model_holder").removeClass("blurFilter");
                 GlobalEventor.GE.dispatch_event(GlobalEventor.ON_MOUSE_OUT_FRONT_PART_CLOUTH, this.reference_clot_item);
+                ModelStage.MS.model.blur_of();
             });
             this.kinetic_clot_object_front_of.on("mouseup", function()
             {
@@ -328,7 +327,6 @@ function ModelClothingPart(details_part)
                 this.reference_clot_item.kinetic_clot_object_front_of.hide();
                 ModelStage.MS.layer_model_selected_part.draw();
                 $("#model_holder_selected_part").addClass("displayNone");
-                $("#model_holder").removeClass("blurFilter");
                 ModelStage.MS.layer_model.draw();
                 if (Math.abs(this.getX()) > 50
                         || Math.abs(this.getY()) > 50)
@@ -353,19 +351,21 @@ function ModelClothingPart(details_part)
             });
             ModelStage.MS.layer_model.add(this.kinetic_clot_object);
             ModelStage.MS.layer_model_selected_part.add(this.kinetic_clot_object_front_of);
+            
+            
+
+            this.kinetic_clot_object_tween = new Kinetic.Tween({
+             node: this.kinetic_clot_object, 
+             duration: 0.6,
+             filterRadius: 5,
+             easing: Kinetic.Easings.EaseInOut
+             });
         }
         //ImageModerator.loaded_images[this.path_clout()].image
         this.kinetic_clot_object.setImage(ImageModerator.loaded_images[this.path_clout()].image);
         this.kinetic_clot_object_front_of.setImage(ImageModerator.loaded_images[this.path_clout()].image);
         this.kinetic_clot_object.reference_clot_item = this;
         this.kinetic_clot_object_front_of.reference_clot_item = this;
-
-        /*this.kinetic_clot_object_tween = new Kinetic.Tween({
-         node: this.kinetic_clot_object, 
-         duration: 0.6,
-         filterRadius: 5,
-         easing: Kinetic.Easings.EaseInOut
-         });*/
         /*this.kinetic_clot_object.on("dragstart", function()
          {
          ModelStage.MS.layer_model.draw();
@@ -605,26 +605,26 @@ function Model()
      */
     this.blur_on = function()
     {
-        /**/$("#model_holder").foggy({
-            blurRadius: 2, // In pixels.
-            opacity: 1, // Falls back to a filter for IE.
-            cssFilterSupport: true  // Use "-webkit-filter" where available.
-        });
-        for (var i = 0; i < this.parts.length; i++)
+        /*for(var i=0;i<this.parts.length;i++)
         {
-            //this.parts[i].kinetic_clot_object_tween.play();
-            //console.log(this.parts[i].kinetic_clot_object_tween);
-        }
-
-
+            this.parts[i].kinetic_clot_object_tween.play();
+        }*/
+        var blur_value = 5;
+        $("#model_holder").css("filter", "blur("+blur_value+"px)");
+        $("#model_holder").css("-webkit-filter", "blur("+blur_value+"px)");
+        $("#model_holder").css("-moz-filter", "blur("+blur_value+"px)");
+        $("#model_holder").css("-o-filter", "blur("+blur_value+"px)");
+        $("#model_holder").css("-ms-filter", "blur("+blur_value+"px)");
+        
     }
     this.blur_of = function()
     {
-        $("#model_holder").foggy(false);
-        for (var i = 0; i < this.parts.length; i++)
-        {
-            //this.parts[i].kinetic_clot_object_tween.reverse();
-        }
+        var blur_value = 0;
+        $("#model_holder").css("filter", "blur("+blur_value+"px)");
+        $("#model_holder").css("-webkit-filter", "blur("+blur_value+"px)");
+        $("#model_holder").css("-moz-filter", "blur("+blur_value+"px)");
+        $("#model_holder").css("-o-filter", "blur("+blur_value+"px)");
+        $("#model_holder").css("-ms-filter", "blur("+blur_value+"px)");
     }
 }
 Model.prototype = new Eventor();
@@ -983,5 +983,7 @@ $(document).ready(function(e)
     console.log("search into model_class_editor.js, this[ModelStage.MS.template_moderator.open(4);].");
     console.log("it is function for opening project");
     ModelStage.MS.template_moderator.open(4);
+    //$("#model_holder").css("-webkit-filter", "blur(5px)");
+    //$("#model_holder").css("display", "none");
 
 });

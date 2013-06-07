@@ -439,16 +439,6 @@ div.model_holder{
     top:20px;
     z-index: 8000;
 }
-#model_holder
-{
-    width: 457px;
-    height: 576px;
-    position: absolute;
-    left: 0px;
-    top:0px;
-    z-index: 8000;
-    /*border:solid 1px #0000ff;*/
-}
 div.girl-shadow{
     width: 326px;
     height: 239px;

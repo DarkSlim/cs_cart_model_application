@@ -21,6 +21,7 @@ $categories = Tools::getCategories();
         <meta name="viewport" content="width=device-width">
         <link rel="stylesheet" href="css/jquery.ui.all.css">
         <link rel="stylesheet" type="text/css" href="css/jquery.mCustomScrollbar.css" >
+        <link rel="stylesheet" type="text/css" href="model.css" >
         <link rel="stylesheet" href="css/base.css">
         <link rel="stylesheet" href="css/skeleton.css">
         <link rel="stylesheet" href="css/layout.css">
@@ -36,6 +37,12 @@ $categories = Tools::getCategories();
         <script type="text/javascript" src="js/jquery.mCustomScrollbar.concat.min.js"></script>
         <script type="text/javascript" src="js/product-data-class.js"></script>
         <script type="text/javascript" src="js/model_class_editor.js"></script>
+        <!--<script type="text/javascript" src="js/modernizr.min.js"></script>
+        <script type="text/javascript" src="js/pixastic.core.js"></script>
+        <script type="text/javascript" src="js/pixastic.jquery.js"></script>
+        <script type="text/javascript" src="js/pixastic.custom.js"></script>
+        <script type="text/javascript" src="js/actions/blur.js"></script>-->
+        <!--<script type="text/javascript" src="js/blur.js"></script>-->
         <!--<script type="text/javascript" src="js/blur.js"></script>-->
         <script src="js/jquery.foggy.js"></script>
 

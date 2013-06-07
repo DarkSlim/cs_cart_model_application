@@ -3,8 +3,6 @@
  * Copyright (c) 2008 Jacob Seidelin, jseidelin@nihilogic.dk, http://blog.nihilogic.dk/
  * License: [http://www.pixastic.com/lib/license.txt]
  */
-var Pixastic = {};
-Pixastic.Actions = {};
 
 Pixastic.Actions.blur = {
 	process : function(params) {
