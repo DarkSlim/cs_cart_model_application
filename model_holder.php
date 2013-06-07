@@ -4,7 +4,7 @@
     <div class="ajax-load2"></div>
     <!-- products added to cart success -->
     <div class="cart-success">Products added to cart.</div>
-    <div id="model_holder">
+    <div id="model_holder" class="">
         <!--Templates for the model-->
         <style>
             #dragable_image_temp_temp
@@ -16,7 +16,7 @@
         <img class="displayNone" id="dragable_image_temp_temp" draggable="false">
         <!--Templates for the model-->
     </div>
-    <div id="model_holder_selected_part"></div>
+    <div id="model_holder_selected_part" class="displayNone"></div>
     <!--<div class="model_holder"></div>-->
     <!-- turn button -->
     <div id="cs-turn-model-button" click="alert(12);">TURN</div>

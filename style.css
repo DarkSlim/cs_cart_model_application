@@ -83,6 +83,7 @@ div.cs-model{
     /*background:#000 url(img/cs-model.jpg) top center no-repeat;*/
     position: relative;
     /*border:solid 1px;*/
+    overflow: hidden;
 }
 div.cs-bg-main{
     width: 457px;
@@ -447,6 +448,7 @@ div.model_holder{
 #model_holder_selected_part
 {
     z-index: 8001; 
+    /*background-color: #ff0000;*/
 }
 div.girl-shadow{
     width: 326px;
@@ -567,8 +569,12 @@ a.go-to-cart{
 
 .blurFilter
 {
-    box-shadow: 0px 0px 20px 10px rgba(255,255,255,1);
-	opacity: 0.7;
+    filter: blur(3px);
+    -webkit-filter: blur(3px);
+    -moz-filter: blur(3px);
+    -o-filter: blur(3px);
+    -ms-filter: blur(3px);
+    /*margin: -5px -10px -10px -5px;*/
 }
 .displayNone{
     display: none;

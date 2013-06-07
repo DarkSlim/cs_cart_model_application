@@ -117,6 +117,15 @@ GlobalEventor.ON_SAVING_TEMPLATE_COMPLETE = "ON_SAVING_TEMPLATE_COMPLETE";
 GlobalEventor.ON_START_TEMPLATE_OPEN = "ON_START_TEMPLATE_OPEN";
 GlobalEventor.ON_TEMPLATE_OPEN_COMPLETE = "ON_TEMPLATE_OPEN_COMPLETE";
 
+/*
+ * 
+ * @type String
+ * Events on mouse interaction the clouth
+ */
+GlobalEventor.ON_CLICKED_FRONT_PART_CLOUTH = "ON_CLICKED_FRONT_PART_CLOUTH";
+GlobalEventor.ON_MOUSE_OVER_FRONT_PART_CLOUTH = "ON_MOUSE_OVER_FRONT_PART_CLOUTH";
+GlobalEventor.ON_MOUSE_OUT_FRONT_PART_CLOUTH = "ON_MOUSE_OUT_FRONT_PART_CLOUTH";
+
 
 function TemplateModerator()
 {
@@ -271,50 +280,55 @@ function ModelClothingPart(details_part)
                 draggable: true
             });
 
-            this.kinetic_clot_object.on("mousedown", function()
-            {
-                console.log("object mousedown");
-            });
             //for(var i in this.kinetic_clot_object_front_of){console.log(i);}
             this.kinetic_clot_object.on("mouseover", function()
             {
                 console.log("object over");
-                //console.log(this.reference_clot_item.product_id);
-                //this.reference_clot_item.kinetic_clot_object_tween.play();
-                //this.reference_clot_item.kinetic_clot_object_front_of.setDraggable("true");
+                $("#model_holder_selected_part").removeClass("displayNone");
+                $("#model_holder").addClass("blurFilter");
                 this.reference_clot_item.kinetic_clot_object_front_of.show();
                 this.reference_clot_item.kinetic_clot_object_front_of.setX(0);
                 this.reference_clot_item.kinetic_clot_object_front_of.setY(0);
                 this.reference_clot_item.kinetic_clot_object_front_of.moveToTop();
-                ModelStage.MS.layer_model.draw();
-                //ModelStage.MS.model.blur_on();
-                //document.body.style.cursor = 'pointer';
-            });
-            this.kinetic_clot_object.on("mouseout", function()
-            {
-                //document.body.style.cursor = 'default';
-                //console.log("object out");
-                //this.reference_clot_item.kinetic_clot_object_front_of.hide();
-                //ModelStage.MS.layer_model.draw();
-                //ModelStage.MS.model.blur_of();
-                //this.reference_clot_item.kinetic_clot_object_tween.reverse();
+                ModelStage.MS.layer_model_selected_part.draw();
             });
             this.kinetic_clot_object_front_of.on("mouseover", function()
             {
                 console.log("object front over");
                 document.body.style.cursor = 'pointer';
+                if(this.reference_clot_item.do_on_mouse_up_click)
+                {
+                    return;
+                }
+                GlobalEventor.GE.dispatch_event(GlobalEventor.ON_MOUSE_OVER_FRONT_PART_CLOUTH, this)
             });
             this.kinetic_clot_object_front_of.on("mouseout", function()
             {
-                console.log("object front out");
                 document.body.style.cursor = 'default';
+                if(this.reference_clot_item.do_on_mouse_up_click)
+                {
+                    return;
+                }
+                console.log("object front out");
                 this.reference_clot_item.kinetic_clot_object_front_of.hide();
+                ModelStage.MS.layer_model_selected_part.draw();
                 ModelStage.MS.layer_model.draw();
+                $("#model_holder_selected_part").addClass("displayNone");
+                $("#model_holder").removeClass("blurFilter");
+                GlobalEventor.GE.dispatch_event(GlobalEventor.ON_MOUSE_OUT_FRONT_PART_CLOUTH, this);
             });
             this.kinetic_clot_object_front_of.on("mouseup", function()
             {
                 document.body.style.cursor = 'default';
+                if(this.reference_clot_item.do_on_mouse_up_click)
+                {
+                    this.reference_clot_item.click();
+                    return;
+                }
                 this.reference_clot_item.kinetic_clot_object_front_of.hide();
+                ModelStage.MS.layer_model_selected_part.draw();
+                $("#model_holder_selected_part").addClass("displayNone");
+                $("#model_holder").removeClass("blurFilter");
                 ModelStage.MS.layer_model.draw();
                 if (Math.abs(this.getX()) > 50
                         || Math.abs(this.getY()) > 50)
@@ -329,8 +343,16 @@ function ModelClothingPart(details_part)
                             });
                 }
             });
+            this.kinetic_clot_object_front_of.on("mousedown", function()
+            {
+                this.reference_clot_item.set_mouse_up_to_be_click_after_interval();
+            });
+            this.kinetic_clot_object_front_of.on("click", function()
+            {
+                //console.log("Front object CLICK event !!!");
+            });
             ModelStage.MS.layer_model.add(this.kinetic_clot_object);
-            ModelStage.MS.layer_model.add(this.kinetic_clot_object_front_of);
+            ModelStage.MS.layer_model_selected_part.add(this.kinetic_clot_object_front_of);
         }
         //ImageModerator.loaded_images[this.path_clout()].image
         this.kinetic_clot_object.setImage(ImageModerator.loaded_images[this.path_clout()].image);
@@ -368,6 +390,25 @@ function ModelClothingPart(details_part)
         this.kinetic_clot_object_front_of.remove();
         this.is_destroited = true;
     }
+    this.do_on_mouse_up_click = false;
+    this.do_on_mouse_up_click_interval_timeout = -1;
+    this.set_mouse_up_to_be_click_after_interval = function()
+    {
+        this.do_on_mouse_up_click = true;
+        clearTimeout(this.do_on_mouse_up_click_interval_timeout);
+        this.do_on_mouse_up_click_interval_timeout = setTimeout("ModelClothingPart.ALL_PARTS['__"+this.product_id+"__'].stop_click_event();", 100);
+    }
+    this.stop_click_event = function()
+    {
+        this.do_on_mouse_up_click = false;
+    }
+    this.click = function()
+    {
+        clearTimeout(this.do_on_mouse_up_click_interval_timeout);
+        console.log("Clouth part item on click.");
+        GlobalEventor.GE.dispatch_event(GlobalEventor.ON_CLICKED_FRONT_PART_CLOUTH, this);
+    }
+    
     ModelClothingPart.ALL_PARTS["__" + this.product_id + "__"] = this;
 }
 ModelClothingPart.LAST_CREATE_SPRITE_OBJECT = null;
@@ -848,12 +889,19 @@ function ModelStage()
             width: 457,
             height: 576
         });
+        this.stage_for_roll_over_parts = new Kinetic.Stage({
+            container: "model_holder_selected_part",
+            width: 457,
+            height: 576
+        }); 
         this.layer_background = new Kinetic.Layer();
         this.layer_model = new Kinetic.Layer();
+        this.layer_model_selected_part = new Kinetic.Layer(); 
         //this.layer_model_objects = new Kinetic.Layer();
 
         this.stage.add(this.layer_background);
         this.stage.add(this.layer_model);
+        this.stage_for_roll_over_parts.add(this.layer_model_selected_part);
         //this.stage.add( this.layer_model_objects );
 
 
@@ -875,8 +923,10 @@ function ModelStage()
         this.background.change();
     }
     this.stage = null;
+    this.stage_for_roll_over_parts = null;
     this.layer_background = null;
     this.layer_model = null;
+    this.layer_model_selected_part = null;
     //this.layer_model_objects = null;
 }
 ModelStage.prototype = new Eventor();
