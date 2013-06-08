@@ -863,7 +863,7 @@ function ModelStage()
         console.log("ModelStage:: drop_thumb_draged_from_right_products, mouse_position:" + this.position_mouse_on_window.string_of());
         console.log("ModelStage:: drop_thumb_draged_from_right_products, model_holder_positions:" + this.rect_cs_model_holder().string_of());
         console.log("ModelStage:: drop_thumb_draged_from_right_products, sucsess");
-        $(".ajax-load2").show();
+        
         this.model.add_item(this.dragged_part_from_products_thumbs);
         RedoUndoModerator.RUM.add_undo_action(
                 {
