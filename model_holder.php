@@ -56,7 +56,3 @@
         <p class="cs-prd-price"><strong></strong></p>
     </div>
 </div>
-<div id="prd-popup" class="displayNone">
-    <p class="prd-name">Top</p>
-     <p class="prd-price">$12.49</p>
-</div>

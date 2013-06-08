@@ -100,7 +100,7 @@ $categories = Tools::getCategories();
                     <div class="cs-product-container">
                         <div class="cs-product-chooser">
                             <div class="ajax-load"></div>
-                            
+
                             <div class="cs-product-wrap">
 
                             </div>
@@ -142,6 +142,10 @@ $categories = Tools::getCategories();
                     </div>
                 </div>
             </div>
+        </div>
+        <div id="prd-popup" class="displayNone">
+            <p class="prd-name"></p>
+            <p class="prd-price">$12.49</p>
         </div>
     </body>
 </html>
