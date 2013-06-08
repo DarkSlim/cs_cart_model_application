@@ -13,11 +13,12 @@ class TemplateModerator
         for($i=0;$i<$_POST["total_parts"];$i++)
         {
             Db_Actions::DbInsert("
-                INSERT INTO card_designer_templates_parts(card_designer_templates_id,product_id,product_price)
+                INSERT INTO card_designer_templates_parts(card_designer_templates_id,product_id,product_price, product_title)
                 VALUES(
                 '".$template_row_data->id."',
                 '".$_POST["product_id_".$i]."',
-                '".$_POST["price_".$i]."'
+                '".$_POST["price_".$i]."',
+                '".$_POST["product_title_".$i]."'
                 )
             ");
         }
@@ -62,7 +63,8 @@ class TemplateModerator
         $source_xml_data .= "<parts>";
         for($i=0;$i<count($all_rows_products);$i++)
         {
-            $source_xml_data .= "<part><product_id>".$all_rows_products[$i]["product_id"]."</product_id><price>".$all_rows_products[$i]["product_price"]."</price></part>";
+            $source_xml_data .= "<part><product_id>".$all_rows_products[$i]["product_id"]."</product_id><price>".
+                    $all_rows_products[$i]["product_price"]."</price><product_title><![CDATA[".$all_rows_products[$i]["product_title"]."]]></product_title></part>";
         }
         $source_xml_data .= "</parts>";
         $source_xml_data .= "</source_template>";
