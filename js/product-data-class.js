@@ -56,7 +56,6 @@ function ProductsManager() {
                 });
                 $(".cs-product").click(function(e)
                 {
-                    $(".ajax-load2").show();
                     var model_part = new ModelClothingPart(
                             {
                                 product_id: $(this).attr("product_id"),
@@ -132,7 +131,7 @@ function recentlyUsedProducts() {
                 //Populate data
                 $('.cs-product-wrap').html(data);
                 $('.cs-product-row:last').addClass('last-cs-row');
-                $("span.total-pagination").html( "1/1");
+                $("span.total-pagination").html("1/1");
 
                 $(".cs-product").mousedown(function(e)
                 {
@@ -253,9 +252,9 @@ function MenModel() {
 }
 ///////////////////////////////////////////////////////////////
 //popup windows
-function ProductPopups(){
+function ProductPopups() {
     //Show popup with product name and price
-    this.showPopup = function(event){
+    this.showPopup = function(event) {
         $("#prd-popup").fadeIn(100);
         $("#prd-popup").css('left')
     }
@@ -278,7 +277,7 @@ function CartHelper() {
                     height: 35
                 }, 200, function() {
                     currCartHeight = $('.cs-shopping-cart').outerHeight();
-                    
+
                 });
             }
             else if (currCartHeight <= 35) {
@@ -287,7 +286,7 @@ function CartHelper() {
                     height: originalheight
                 }, 200, function() {
                     currCartHeight = $('.cs-shopping-cart').outerHeight();
-                    
+
                 });
             }
         })
@@ -408,12 +407,12 @@ $(window).load(function() {
     });
 
     CartHelper.CH.colapseItems();
-    
+
 
     ModelStage.MS.model.add_event(Model.ON_REMOVE_ITEM_FROM_MODEL, function(new_item_clot)
     {
         CartHelper.CH.colapseItems();
-        
+
     });
 
     //Men model
@@ -438,8 +437,37 @@ $(window).load(function() {
 
     ModelStage.MS.model.add_event(Model.ON_ADD_ITEM_TO_MODEL, function(item_added)
     {
-        $(".ajax-load2").hide();
         CartHelper.CH.colapseItems();
     });
-})
+    GlobalEventor.GE.add_event(GlobalEventor.ON_MOUSE_OVER_FRONT_PART_CLOUTH,
+            function(data) {
+                $("#prd-popup").find('.prd-name').html('undefined');
+                $("#prd-popup").find('.prd-price').html('$' + data.price);
+                $("#prd-popup").fadeIn('fast');
+                $("#prd-popup").css({'left': ModelStage.MS.position_mouse_on_window.x, 'top': ModelStage.MS.position_mouse_on_window.y})
+            });
+    GlobalEventor.GE.add_event(GlobalEventor.ON_MOUSE_OUT_FRONT_PART_CLOUTH,
+            function(data) {
+                $("#prd-popup").stop().hide();
+            });
+    GlobalEventor.GE.add_event(GlobalEventor.ON_CLICKED_FRONT_PART_CLOUTH,
+            function(data) {
 
+                $("#prd-popup").stop().hide();
+            });
+    $("#prd-popup").mouseover(function() {
+        $("#prd-popup").stop().show();
+    });
+    $("#prd-popup").mouseout(function() {
+        $("#prd-popup").stop().fadeOut('fast');
+    });
+    
+    GlobalEventor.GE.add_event(GlobalEventor.ON_START_LOADING,
+    function() {
+        $(".ajax-load2").show();
+    });
+    GlobalEventor.GE.add_event(GlobalEventor.ON_END_LOADING,
+    function() {
+        $(".ajax-load2").hide();
+    });        
+})
