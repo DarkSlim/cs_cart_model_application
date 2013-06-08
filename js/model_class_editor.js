@@ -189,6 +189,7 @@ function ImageModerator(image_details)
     this.eventor = new Eventor();
     this.src = image_details.src;
     this.image = new Image();
+    
     GlobalEventor.GE.dispatch_event(GlobalEventor.ON_START_LOADING, {});
     this.image.onload = function()
     {
@@ -389,6 +390,9 @@ function ModelClothingPart(details_part)
         this.kinetic_clot_object.remove();
         this.kinetic_clot_object_front_of.remove();
         this.is_destroited = true;
+        ModelClothingPart.ALL_PARTS["__" + this.product_id + "__"] = null;
+        ModelStage.MS.model.parts["__" + this.product_id + "__"] = null;
+        ModelStage.MS.layer_model.draw();
     }
     this.do_on_mouse_up_click = false;
     this.do_on_mouse_up_click_interval_timeout = -1;
@@ -551,8 +555,14 @@ function Model()
     }
     this.add_item = function(model_cloting_part_item)
     {
+        if(this.parts["__"+model_cloting_part_item.product_id+"__"] != null)
+        {
+            this.remove_item( this.parts["__"+model_cloting_part_item.product_id+"__"] );
+            return;
+        }
         //ti treba dispatch event, za da mu kaze na kartickata da stavi nov object
         this.parts.push(model_cloting_part_item);
+        this.parts["__"+model_cloting_part_item.product_id+"__"] = model_cloting_part_item;
         this.dispatch_event(Model.ON_ADD_ITEM_TO_MODEL,
                 {
                     model_cloting_part_item: model_cloting_part_item
