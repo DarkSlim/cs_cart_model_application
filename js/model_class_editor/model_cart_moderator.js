@@ -36,7 +36,7 @@ function CartItemModel()
         for (var i = 0; i < ModelStage.MS.model.parts.length; i++) {
             var itemInCartTemplate = $("#cartItemHolder").find('div');
             $(itemInCartTemplate).attr('productId', ModelStage.MS.model.parts[i].product_id);
-            $(itemInCartTemplate).find('.cs-prd-name').html('undefined');
+            $(itemInCartTemplate).find('.cs-prd-name').html(ModelStage.MS.model.parts[i].product_title.substr(0,26));
             $(itemInCartTemplate).find('.cs-prd-price').find('strong').html("$"+ModelStage.MS.model.parts[i].price);
             
             $(itemInCartTemplate).clone().insertAfter('.cs-cart-items');
