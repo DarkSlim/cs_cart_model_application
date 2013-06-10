@@ -190,8 +190,8 @@ class Tools {
                 ?><div class="cs-product-row"><?php
             }
             ?>
-                <div class="cs-product" product_id="<?php echo $product_item['product_id'] ?>" product_price="<?php echo $product_item['product_price'] ?>" category_ids="<?php echo $product_item['category_id'] ?>">
-                    <img src="<?php echo $product_item['product_image_url'] ?>" width="97" height="126" alt="dress" class="cs-main-product-image" draggable="false" />
+                <div class="cs-product" product_id="<?php echo $product_item['product_id'] ?>" product_title="<?php echo $product_item['product_name'] ?>" product_price="<?php echo $product_item['product_price'] ?>" category_ids="<?php echo $product_item['category_id'] ?>">
+                    <img src="<?php echo $product_item['product_image_url'] ?>" width="97" height="126" alt="dress" product_title="<?php echo $product_item['product_name'] ?>" class="cs-main-product-image" draggable="false" />
                     <h3 class="cs-product-title"><?php echo substr($product_item['product_name'], 0, 14) ?></h3>
                     <h4 class="cs-price">$<?php echo number_format($product_item['product_price'], 2) ?></h4>
                     <div class="cs-variations">
@@ -354,8 +354,8 @@ class Tools {
                     ?><div class="cs-product-row"><?php
                     }
                     ?>
-                    <div class="cs-product" product_id="<?php echo $product_item['product_id'] ?>" product_price="<?php echo $product_item['product_price'] ?>" category_ids="<?php echo $product_item['category_id'] ?>">
-                        <img src="<?php echo $product_item['product_image_url'] ?>" width="97" height="126" alt="dress" class="cs-main-product-image" draggable="false" />
+                    <div class="cs-product" product_id="<?php echo $product_item['product_id'] ?>" product_title="<?php echo $product_item['product_name'] ?>" product_price="<?php echo $product_item['product_price'] ?>" category_ids="<?php echo $product_item['category_id'] ?>">
+                        <img src="<?php echo $product_item['product_image_url'] ?>" width="97" height="126" product_title="<?php echo $product_item['product_name'] ?>" alt="dress" class="cs-main-product-image" draggable="false" />
                         <h3 class="cs-product-title"><?php echo substr($product_item['product_name'], 0, 14) ?></h3>
                         <h4 class="cs-price">$<?php echo number_format($product_item['product_price'], 2) ?></h4>
                         <div class="cs-variations">

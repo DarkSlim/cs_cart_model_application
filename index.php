@@ -76,7 +76,7 @@ $categories = Tools::getCategories();
                 <div class="cs-left-border">
                     <div class="cs-gender-menu">
                         <a href="#" class="cs-men">MEN</a>
-                        <a href="#" class="cs-women cs-active">WOMEN</a>
+                        <a href="#" class="cs-women">WOMEN</a>
                         <a href="#" class="cs-back-link">BACK</a>
                     </div>
                     <?php require_once 'model_holder.php'; ?>
@@ -143,9 +143,46 @@ $categories = Tools::getCategories();
                 </div>
             </div>
         </div>
-        <div id="prd-popup" class="displayNone">
-            <p class="prd-name"></p>
+        <div id="prd-popup" class="displayNone follower">
+            <a href="#" class="quick-look">Quick Look</a>
+            <p class="prd-name">Top</p>
             <p class="prd-price">$12.49</p>
+            <div class="extra-info">
+                <div class="sepp"></div>
+                <div class="prd-color">Color: Dark Purple</div>
+                <div class="sepp"></div>
+                <div class="rem-item"><a href="#">Remove item</a></div>
+            </div>
+        </div>
+        <div class="transparent-overlay"></div>
+        <div class="product-popup">
+            <div class="close-popup"></div>
+            <div class="popup-content">
+                <h3 class="prd-title">Top $12.49</h3>
+                <div class="p-img">
+                    <img src="img/cloth-sample-popup.jpg" >
+                </div>
+                <div class="mini-gallery">
+                    <a href="#"><img src="img/mini-img1.jpg" ></a>
+                    <a href="#"><img src="img/mini-img2.jpg" ></a>
+                    <a href="#"><img src="img/mini-img3.jpg" ></a>
+                </div>
+                <div class="pp-inf">
+                    <div class="pp-details">
+                        9% spandex, 91% polyester.<br />
+                        Machine wash warm.<br />
+                        <a href="#" class="details-link">View Details</a>
+                    </div>
+                    <div class="pp-color">
+                        COLOR:<br />
+                        <select id="color-selector">
+                            <option value="">Dark Purple</option>
+                        </select>
+                        <div class="sizes">Size: 4-12</div>
+                    </div>
+                </div>
+            </div>
+            <div class="black-row"><a href="#">TRY ON</a></div>
         </div>
     </body>
 </html>

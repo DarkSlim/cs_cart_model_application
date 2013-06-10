@@ -557,7 +557,7 @@ a.go-to-cart{
 .blurFilter
 {
     box-shadow: 0px 0px 20px 10px rgba(255,255,255,1);
-	opacity: 0.7;
+    opacity: 0.7;
 }
 .displayNone{
     display: none;
@@ -569,7 +569,7 @@ h4.empty-result{
     font-size: 16px;
 }
 #prd-popup{
-    padding: 5px 50px;
+    padding: 0px;
     -moz-box-shadow: 0px 0px 6px #545454;
     -webkit-box-shadow: 0px 0px 6px #545454;
     box-shadow:  0px 0px 6px #545454;
@@ -586,5 +586,147 @@ h4.empty-result{
 #prd-popup p{
     text-align: center;
     margin:0 !important;
-    padding: 0 !important;
+    padding: 3px 60px 3px 60px !important;
+    display: block;
+}
+
+#prd-popup div.extra-info div{
+    text-align: left !important;
+    margin:0 !important;
+    padding: 8px 70px 8px 10px;
+    display: block;
+}
+#prd-popup a{
+    text-decoration: none;
+}
+div.sepp{
+    display: block;
+    height:1px;
+    background:#ebebec;
+    margin: 2px 0 2px 0 !important;
+    clear: both;
+    overflow: hidden;
+    padding: 0px 30px 0px 30px !important;
+}
+#prd-popup a.quick-look{
+    text-indent: -999em;
+    width: 101px;
+    height: 22px;
+    background: url(img/quick-look-but.png) no-repeat;
+    position: absolute;
+    left: 50%;
+    margin-left: -54px;
+    top: -26px;
+    display: none;
+}
+#prd-popup div.extra-info{
+    display: none;
+}
+div.transparent-overlay{
+    width: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+    background: url(img/transprent-bg.png) repeat;
+    z-index: 30000;
+    display: none;
+}
+div.product-popup{
+    width: 345px;
+    position: absolute;
+    left: 50%;
+    top: 50px;
+    margin-left: -173px;
+    background: #fff;
+    z-index: 31000;
+    display: none;
+}
+div.close-popup{
+    width:25px;
+    height: 25px;
+    background: url(img/close-icon.png) no-repeat;
+    position: absolute;
+    top:-12px;
+    right: -12px;
+    cursor: pointer;
+}
+div.popup-content{
+    padding-bottom: 0px;
+    clear: both;
+}
+div.popup-content h3.prd-title{
+    text-align: center;
+    font-family: Helvetica, Arial;
+    font-size: 16px;
+    margin-bottom: 8px;
+    margin-top: 8px;
+}
+div.p-img{
+    padding: 0 0 10px 10px;
+    text-align: center;
+    width: 243px;
+    float: left;
+}
+div.mini-gallery{
+    float: right;
+    width: 62px;
+    text-align: center;
+    padding-right: 10px;
+}
+div.mini-gallery img{
+    margin-bottom: 2px;
+    max-width: 54px !important;
+    height: auto !important;
+    cursor: pointer;
+}
+div.mini-gallery a:focus img{
+    -moz-box-shadow: 0px 0px 6px #545454;
+    -webkit-box-shadow: 0px 0px 6px #545454;
+    box-shadow:  0px 0px 6px #545454;
+    transition: box-shadow 1s;
+    -webkit-transition: box-shadow 1s; /* Safari */
+}
+div.pp-inf{
+    display: block;
+    border-top:1px #ebebec solid;
+    overflow: hidden;
+    clear: both;
+}
+div.pp-details{
+    float: left;
+    width:150px;
+    border-right: 1px #ebebec solid;
+    padding: 10px 10px 25px 10px;
+    font-size: 11px;
+    line-height: 1.2em;
+}
+div.pp-color{
+    float: right;
+    padding-right: 10px;
+    font-size: 11px;
+    width:150px;
+}
+div.pp-color select{
+    border: 1px #ebebec solid;
+    width: 130px;
+    margin-bottom: 0;
+    display: block;
+    clear: both;
+}
+div.pp-details a.details-link{
+    display: block;
+    text-align: center;
+    margin-top: 4px;
+}
+div.black-row{
+    height:28px;
+    line-height: 24px;
+    background: #000;
+}
+
+div.black-row a{
+    padding: 0 0 0 18px;
+    background: url(img/siluete_girl.png) 4px top no-repeat;
+    color: #fff;
+    font-size: 14px;
 }
