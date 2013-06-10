@@ -454,12 +454,10 @@ $(window).load(function() {
     });
     //Men model
     $('.cs-men').click(function(e) {
-        //e.preventDefault();
         BodyModel.MM.switchMenModel();
     })
     //Women model
     $('.cs-women').click(function(e) {
-        //e.preventDefault();
         BodyModel.MM.switchWomenModel();
     })
     //Clear cart
