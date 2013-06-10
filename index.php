@@ -11,7 +11,6 @@ if (empty($auth['user_id']) && Registry::get('settings.General.allow_anonymous_s
 }
 
 $root_url = $config['current_location'];
-$categories = Tools::getCategories();
 ?>
 <!DOCTYPE html>
 <html>
@@ -35,6 +34,22 @@ $categories = Tools::getCategories();
         <script type="text/javascript" src="js/jquery.ui.droppable.js"></script>
         <script type="text/javascript" src="js/jquery.mousewheel.min.js"></script>
         <script type="text/javascript" src="js/jquery.mCustomScrollbar.concat.min.js"></script>
+        <script type="text/javascript">
+            <?php
+            if (isset($_GET['model_type']) && $_GET['model_type'] == "girl") {
+                $categories = Tools::getSubCategories(260);
+                ?>var defaultCat = 260;<?php
+            }
+            else if (isset($_GET['model_type']) && $_GET['model_type'] == "boy") {
+                $categories = Tools::getSubCategories(261);
+                 ?>var defaultCat = 261;<?php
+            }
+            else {
+                $categories = Tools::getSubCategories(260);
+                 ?>var defaultCat = 260;<?php
+            }
+            ?>
+        </script>
         <script type="text/javascript" src="js/product-data-class.js"></script>
         <script type="text/javascript" src="js/model_class_editor.js"></script>
         <script>

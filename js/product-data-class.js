@@ -7,7 +7,7 @@ function ProductsManager() {
     //total products
     this.getTotalPageCount = 0;
     //current category
-    this.currentCat = "";
+    this.currentCat = defaultCat;
     //pagination links
     this.writePagination = function() {
         $.ajax({
@@ -29,6 +29,7 @@ function ProductsManager() {
         })
         $('.ajax-load').show();
         $(".cs-clothes").addClass('cs-active');
+        ProductsManager.PM.currentCat = defaultCat;
         $.ajax({
             url: "lib/tools.php",
             type: "post",
@@ -276,8 +277,8 @@ function BodyModel() {
                 results = regex.exec(location.search);
         return results == null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
     }
-    this.switchModelmage = function(){
-        
+    this.switchModelmage = function() {
+
     }
 }
 ///////////////////////////////////////////////////////////////
@@ -403,14 +404,17 @@ $(window).load(function() {
             event.stopPropagation();
             var currUl = $(this).parent().find('ul');
             var currTriggerLink = $(this);
-            $(this).parent().find('ul').toggle(function() {
-                if (currUl.css('display') == 'block') {
-                    currTriggerLink.css('background', 'url(img/cat-arrow-open.png) left 30% no-repeat');
-                }
-                else if (currUl.css('display') == 'none') {
-                    currTriggerLink.css('background', 'url(img/cat-arrow.png) left 30% no-repeat');
-                }
-            });
+            if ($(this).parent().find('ul').find('li').length) {
+                $(this).parent().find('ul').toggle(function() {
+                    if (currUl.css('display') == 'block') {
+                        currTriggerLink.css('background', 'url(img/cat-arrow-open.png) left 30% no-repeat');
+                    }
+                    else if (currUl.css('display') == 'none') {
+                        currTriggerLink.css('background', 'url(img/cat-arrow.png) left 30% no-repeat');
+                    }
+                });
+            }
+
         })
     })
     //Load category products
@@ -530,17 +534,17 @@ $(window).load(function() {
          $('a.quick-look').hide();
          $("#prd-popup").addClass('follower');*/
     })
-    
+
     //Model type
-    if(BodyModel.MM.getParameterByName('model_type') == 'boy'){
+    if (BodyModel.MM.getParameterByName('model_type') == 'boy') {
         $('.cs-men').addClass('cs-active');
         $('.cs-women').removeClass('cs-active');
     }
-    else if(BodyModel.MM.getParameterByName('model_type') == 'girl'){
+    else if (BodyModel.MM.getParameterByName('model_type') == 'girl') {
         $('.cs-men').removeClass('cs-active');
         $('.cs-women').addClass('cs-active');
     }
-    else{
+    else {
         $('.cs-women').addClass('cs-active');
     }
 })

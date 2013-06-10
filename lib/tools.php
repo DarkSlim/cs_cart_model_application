@@ -58,6 +58,7 @@ class Tools {
             return new stdClass();
         }
     }
+    
     ////////////////////////////////////////////////////////////////////////
     // Get category data
     public static function getCategoryData($category_id) {
@@ -455,7 +456,7 @@ if (isset($_POST['products_count'])) {
     require_once('../lib/db_actions.php');
     require_once("../lib/tools.php");
     $root_url = $config['current_location'];
-    $cat_id = (isset($_POST['cat_id']) && !empty($_POST['cat_id']) && is_numeric($_POST['cat_id'])) ? $_POST['cat_id'] : "";
+    $cat_id = (isset($_POST['cat_id']) && !empty($_POST['cat_id']) && is_numeric($_POST['cat_id'])) ? $_POST['cat_id'] : 260;
     Tools::getTotalproductsCount($cat_id);
 }
 /////////////////////////////////////////////////////////////////////////////////////////////////
@@ -468,7 +469,9 @@ if (isset($_POST['load_products'])) {
     require_once('../lib/db_actions.php');
     require_once("../lib/tools.php");
     $root_url = $config['current_location'];
-    $cat_id = (isset($_POST['cat_id']) && !empty($_POST['cat_id']) && is_numeric($_POST['cat_id'])) ? $_POST['cat_id'] : "";
+    
+    
+    $cat_id = (isset($_POST['cat_id']) && !empty($_POST['cat_id']) && is_numeric($_POST['cat_id'])) ? $_POST['cat_id'] : 260;
 
     Tools::displayProductsData($cat_id, $_POST['page']);
 }
