@@ -248,7 +248,7 @@ function BodyModel() {
         var currLocation = window.location.href;
         var queryString = currLocation.lastIndexOf('?');
         if (queryString > -1) {
-            currLocation = currLocation.substr(0, queryString - 1);
+            currLocation = currLocation.substr(0, queryString);
             window.location = currLocation + "?model_type=boy";
         }
         else {
@@ -263,7 +263,7 @@ function BodyModel() {
         var currLocation = window.location.href;
         var queryString = currLocation.lastIndexOf('?');
         if (queryString > -1) {
-            currLocation = currLocation.substr(0, queryString - 1);
+            currLocation = currLocation.substr(0, queryString);
             window.location = currLocation + "?model_type=girl";
         }
         else {
