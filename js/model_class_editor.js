@@ -57,7 +57,7 @@ $(document).ready(function(e)
 
     console.log("search into model_class_editor.js, this[ModelStage.MS.template_moderator.open(4);].");
     console.log("it is function for opening project");
-    ModelStage.MS.template_moderator.open(4);
+    //ModelStage.MS.template_moderator.open(4);
     //$("#model_holder").css("-webkit-filter", "blur(5px)");
     //$("#model_holder").css("display", "none");
 

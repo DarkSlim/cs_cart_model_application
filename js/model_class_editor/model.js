@@ -36,13 +36,13 @@ function Model()
     {
         if (!this.is_girl)
             return "";
-        return "img/models/body_girl_front.png";
+        return "img/models/body_"+Model.MODEL_TYPE_SELECTED+"_front.png";
     }
     this.path_to_body_back = function()
     {
         if (!this.is_girl)
             return "";
-        return "img/models/body_girl_back.png";
+        return "img/models/body_"+Model.MODEL_TYPE_SELECTED+"_back.png";
     }
     this.path_to_body = function()
     {
@@ -219,3 +219,9 @@ Model.ON_SET_BACK = "ON_SET_MODEL_BACK";
 Model.ON_SET_BACK = "ON_SET_MODEL_FRONT";
 Model.ON_ADD_ITEM_TO_MODEL = "ON_ADD_ITEM_TO_MODEL";
 Model.ON_REMOVE_ITEM_FROM_MODEL = "ON_REMOVE_ITEM_FROM_MODEL";
+
+
+Model.MODEL_TYPE__BOY = "boy";
+Model.MODEL_TYPE_GIRL = "girl";
+//Model.MODEL_TYPE_SELECTED = Model.MODEL_TYPE_GIRL;
+Model.MODEL_TYPE_SELECTED = Model.MODEL_TYPE__BOY;

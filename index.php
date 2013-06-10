@@ -37,6 +37,9 @@ $categories = Tools::getCategories();
         <script type="text/javascript" src="js/jquery.mCustomScrollbar.concat.min.js"></script>
         <script type="text/javascript" src="js/product-data-class.js"></script>
         <script type="text/javascript" src="js/model_class_editor.js"></script>
+        <script>
+            Model.MODEL_TYPE_SELECTED = "<?php print $_GET["model_type"]; ?>";
+        </script>
         <!--<script type="text/javascript" src="js/modernizr.min.js"></script>
         <script type="text/javascript" src="js/pixastic.core.js"></script>
         <script type="text/javascript" src="js/pixastic.jquery.js"></script>
