@@ -110,3 +110,23 @@ div.cs-controls a{
 div.cs-controls a:hover{
     text-decoration: none;
 }
+div.prd-info{
+    display: block;
+    padding: 10px 0 10px 0;
+}
+div.prd-info h3.prd-name{
+    font-size: 13px;
+    line-height: 1.2em;
+}
+div.prd-info .prd-price{
+    font-size: 13px;
+    line-height: 1.2em;
+}
+.prd-thumb img{
+    cursor: pointer;
+    padding: 5px;
+}
+.prd-thumb img:hover{
+    padding: 5px;
+    background: #CCC;
+}

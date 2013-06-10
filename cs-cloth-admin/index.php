@@ -10,6 +10,8 @@ define('AREA', 'C');
   }
 
   $root_url = $config['current_location']; */
+require("../lib/db_actions.php");
+require('library/cloth.php');
 ?>
 <!DOCTYPE html>
 <html>
@@ -33,6 +35,16 @@ define('AREA', 'C');
             <script src="../js/html5.js"></script>
         <![endif]-->
         <script type="text/javascript">
+            function preloadImages() {
+                var cache = [];
+                var args_len = arguments.length;
+                for (var i = args_len; i--; ) {
+                    var cacheImage = document.createElement('img');
+                    cacheImage.src = arguments[i];
+                    cache.push(cacheImage);
+                }
+            }
+            preloadImages("images/models/body_girl_front.png", "images/models/body_girl_back.png");
             $(document).ready(function(e) {
                 //////////////////////////////////////////////////////////////////
                 //Upload image
@@ -50,21 +62,39 @@ define('AREA', 'C');
 
                     $(".loader").show();
                     $(".msg").html('Uploading image please wait...');
-                    $('#new-name').val($("#product_id").val() + "_" + $("#cloth-type option:selected").val());
+                    var colorVariation = $("#color-variation").val() == "" ? "" : "_" + $("#color-variation").val();
+                    $('#new-name').val($("#product_id").val() + "_" + $("#cloth-type option:selected").val() + colorVariation);
                     document.getElementById("upload-form").submit();
                 });
+                ///////////////////////////////////////////////////////////////
+                //load product info
+                $("#product_id").change(function() {
+                    $(".prd-info").html('<img src="images/ajax-load2.gif" />');
+                    $.ajax({
+                        url: "library/cloth.php",
+                        type: "post",
+                        data: {get_prd_data: 1, product_id: $(this).val()},
+                        success: function(data) {
+                            $(".prd-info").html(data);
+                            //Load image from thumb
+                            $(".loader").show();
+                            clothHelper.setClothOnModelFromThumb();
+                        }
+                    });
+                })
             });
             function uploadFinished(data) {
 
                 //Set image to placeholder
                 if (data != "0") {
-                    $('.model').find('*[data-imgurl="'+data+'"]').remove();
-                
-                    var imageSRC = "http://closse/cloth_system/img/cloth/" + data + "?v"+(Math.random() * 9999);
+                    $('.model').find('*[data-imgurl="' + data + '"]').remove();
+
+                    //var imageSRC = "http://closse/cloth_system/img/cloth/" + data + "?v" + (Math.random() * 9999);
+                    var imageSRC = "http://closse.jeniusinc.com/cloth_system/img/cloth/" + data + "?v" + (Math.random() * 9999);
                     $(".loader").hide();
                     var thumbnail = $("<img>").addClass('draggable');
                     thumbnail.prop({'width': '457', 'height': '576', 'src': imageSRC});
-                    thumbnail.attr('data-imgurl',data);
+                    thumbnail.attr('data-imgurl', data);
                     thumbnail.on("load", function() {
                         $(".model").prepend(thumbnail);
                         clothHelper.removeClothOnDrag();
@@ -86,6 +116,15 @@ define('AREA', 'C');
                     <h2 class="titl">Upload product images</h2>
                     <form class="form-horizontal" action="save-file.php" id="upload-form" method="post" enctype="multipart/form-data" target="upload_handler">
                         <div class="control-group">
+                            <label class="control-label" for="model-type">Choose Model type</label>
+                            <div class="controls">
+                                <select id="model-type" name="model-type" class="input-xlarge">
+                                    <option value="girl">Girl</option>
+                                    <option value="boy">Boy</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="control-group">
                             <label class="control-label" for="cloth-type">Choose Cloth type</label>
                             <div class="controls">
                                 <select id="cloth-type" name="cloth_type" class="input-xlarge">
@@ -93,10 +132,31 @@ define('AREA', 'C');
                                     <option value="back">Back</option>
                                 </select>
                             </div>
-                        </div><div class="control-group hide-me">
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label" for="product_id">Choose version</label>
+                            <div class="controls">
+                                <select id="color-variation" name="color_variation" class="input-xlarge">
+                                    <option value="">Choose version</option>
+                                    <option value="blue">Blue</option>
+                                    <option value="green">Green</option>
+                                    <option value="red">Red</option>
+                                    <option value="white">White</option>
+                                    <option value="yellow">Yellow</option>
+                                    <option value="brown">Brown</option>
+                                    <option value="gray">Gray</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="control-group">
                             <label class="control-label" for="product_id">Product ID</label>
                             <div class="controls">
-                                <input type="text" name="product_id" id="product_id" class="input-medium">
+                                <select id="product_id" name="product_id" class="input-xlarge">
+                                    <?php Cloth::getProductsIds(); ?>
+                                </select><br />
+                                <div class="prd-info">
+
+                                </div>
                             </div>
                         </div>
                         <div class="control-group">
