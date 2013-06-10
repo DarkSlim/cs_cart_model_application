@@ -249,10 +249,10 @@ function BodyModel() {
         var queryString = currLocation.lastIndexOf('?');
         if (queryString > -1) {
             currLocation = currLocation.substr(0, queryString);
-            window.location = currLocation + "?model_type=boy";
+            //window.location = currLocation + "?model_type=boy";
         }
         else {
-            window.location = currLocation + "?model_type=boy";
+            //window.location = currLocation + "?model_type=boy";
         }
     }
     this.switchWomenModel = function() {
@@ -264,10 +264,10 @@ function BodyModel() {
         var queryString = currLocation.lastIndexOf('?');
         if (queryString > -1) {
             currLocation = currLocation.substr(0, queryString);
-            window.location = currLocation + "?model_type=girl";
+            //window.location = currLocation + "?model_type=girl";
         }
         else {
-            window.location = currLocation + "?model_type=girl";
+            //window.location = currLocation + "?model_type=girl";
         }
     }
     this.getParameterByName = function(name) {
@@ -454,12 +454,12 @@ $(window).load(function() {
     });
     //Men model
     $('.cs-men').click(function(e) {
-        e.preventDefault();
+        //e.preventDefault();
         BodyModel.MM.switchMenModel();
     })
     //Women model
     $('.cs-women').click(function(e) {
-        e.preventDefault();
+        //e.preventDefault();
         BodyModel.MM.switchWomenModel();
     })
     //Clear cart

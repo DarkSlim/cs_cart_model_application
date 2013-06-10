@@ -78,8 +78,8 @@ $categories = Tools::getCategories();
             <div class="cs-left-col eight columns omega">
                 <div class="cs-left-border">
                     <div class="cs-gender-menu">
-                        <a href="#" class="cs-men">MEN</a>
-                        <a href="#" class="cs-women">WOMEN</a>
+                        <a href="index.php?model_type=boy" class="cs-men">MEN</a>
+                        <a href="index.php?model_type=girl" class="cs-women">WOMEN</a>
                         <a href="#" class="cs-back-link">BACK</a>
                     </div>
                     <?php require_once 'model_holder.php'; ?>
