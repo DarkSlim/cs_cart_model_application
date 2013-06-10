@@ -31,3 +31,8 @@ body
     z-index: 8001;
 }
 
+.cs-model
+{
+    overflow: hidden;
+}
+

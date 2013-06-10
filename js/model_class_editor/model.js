@@ -196,7 +196,7 @@ function Model()
         {
             this.parts[i].kinetic_clot_object_tween.play();
         }*/
-        var blur_value = 5;
+        var blur_value = 2;
         $("#model_holder").css("filter", "blur("+blur_value+"px)");
         $("#model_holder").css("-webkit-filter", "blur("+blur_value+"px)");
         $("#model_holder").css("-moz-filter", "blur("+blur_value+"px)");
