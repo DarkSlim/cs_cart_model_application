@@ -11,6 +11,9 @@ if (empty($auth['user_id']) && Registry::get('settings.General.allow_anonymous_s
 }
 
 $root_url = $config['current_location'];
+if(!isset($_GET['model_type'])){
+    $_GET['model_type'] = "girl";
+}
 ?>
 <!DOCTYPE html>
 <html>

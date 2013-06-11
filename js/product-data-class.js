@@ -342,16 +342,20 @@ function CartHelper() {
 
     this.NewCart = function() {
 
-        for (var i = 0; i < ModelStage.MS.model.parts.length; i++) {
+        /*for (var i = 0; i < ModelStage.MS.model.parts.length; i++) {
 
             ModelStage.MS.model.remove_item(ModelClothingPart.ALL_PARTS["__" + ModelStage.MS.model.parts[i].product_id + "__"]);
+            ModelStage.MS.cart_item_model.cart_refresh();
         }
         $(".cs-shopping-cart .cs-selected-product").each(function() {
             $(this).remove();
         })
+        
         ModelStage.MS.model.parts.length = 0;
-        ModelStage.MS.cart_item_model.updateTotalAmount();
-        ModelStage.MS.cart_item_model.cart_refresh();
+        ModelClothingPart.ALL_PARTS.length = 0;
+        ModelStage.MS.cart_item_model.updateTotalAmount();*/
+        window.location.reload();
+        
 
     }
 }
