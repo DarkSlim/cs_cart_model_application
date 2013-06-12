@@ -15,7 +15,7 @@ function ProductsManager() {
         $.ajax({
             url: "lib/tools.php",
             type: "post",
-            data: {products_count: 1},
+            data: {products_count: 1, model_type : modelSelected},
             success: function(data) {
                 $("span.total-pagination").html(ProductsManager.PM.currPageNumber + "/" + data);
                 ProductsManager.PM.getTotalPageCount = data;
@@ -196,7 +196,7 @@ function categoryManager() {
         $.ajax({
             url: "lib/tools.php",
             type: "post",
-            data: {cat_products_count: 1, catt_id: catID, model_type : modelSelected},
+            data: {cat_products_count: 1, catt_id: catID, model_type : modelSelected, product_type : ProductsManager.PM.currentProductType},
             success: function(data) {
                 $("span.total-pagination").html(ProductsManager.PM.currPageNumber + "/" + data);
                 ProductsManager.PM.getTotalPageCount = data;
