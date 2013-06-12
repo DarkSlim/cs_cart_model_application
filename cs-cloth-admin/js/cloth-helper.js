@@ -102,13 +102,13 @@ var clothHelper = {
             clothHelper.removeClothOnDrag();
         });
         $(thumbnail).error(function() {
-            alert('Error wile loading image. Image not found');
+            //alert('Error wile loading image. Image not found');
             $(".loader").hide();
         })
     },
     //////////////////////////////////////////////////////////
     //Change model boy or girl
-    changeModelType : function() {
+    changeModelType: function() {
         $('loader').show();
         var img = $("<img>");
         if (clothHelper.model_type == "girl") {
@@ -134,6 +134,22 @@ var clothHelper = {
             });
             $(img).attr('src', 'images/models/body_girl_front.png');
         }
+    },
+    //////////////////////////////////////////////////////////
+    //Save cloth type
+    updateClothType: function() {
+        $(".update-result").html('working...');
+        $.ajax({
+            url: "library/cloth.php",
+            type: "post",
+            data: {upd_cloth_type: 1, product_id: $("#product_id").val(), cloth_tpe : $("#dress-type").val()},
+            success: function(data) {
+                if(data == 1){
+                    $(".update-result").html('Product updated');
+                }
+                
+            }
+        });
     }
 }
 
@@ -168,5 +184,12 @@ $(window).load(function() {
         $('.cs-women').addClass('cs-active');
         clothHelper.model_type = "girl";
         clothHelper.changeModelType();
+    });
+    //Update product type
+    $("#update-btn").click(function(event){
+        if($("#product_id").val() != "" && $("#dress-type").val() != ""){
+            clothHelper.updateClothType();
+        }
+        
     });
 })

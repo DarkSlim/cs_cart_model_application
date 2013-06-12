@@ -32,8 +32,6 @@ class Tools {
     public static $DRESS_TYPE_SHOES = "shoes";
     //додатоци, миленици, маски, украси, и други додатоци.
     public static $DRESS_TYPE_EXTRAS = "extras";
-    
-    
     public function __construct() {
         
     }
@@ -188,6 +186,83 @@ class Tools {
         }
         return $product_data;
     }
+    ////////////////////////////////////////////////////////////////////////
+    //GET ALL PRODUCTS BY PRODUCT TYPE
+    public static function GET_ALL_PRODUCTS_BY_TYPE($prd_type, $curr_page = 1) {
+        $model_type = $_POST['model_type'];
+
+        if ($prd_type == 'no-type') {
+            switch ($model_type) {
+                case "girl":
+                    Db_Actions::DbSelect("SELECT * FROM cscart_products_categories WHERE category_id=260");
+                    break;
+                case "boy":
+                    Db_Actions::DbSelect("SELECT * FROM cscart_products_categories WHERE category_id=261");
+                    break;
+                default:
+                    Db_Actions::DbSelect("SELECT * FROM cscart_products_categories WHERE category_id=260");
+                    break;
+            }
+            $products_ids = Db_Actions::DbGetResults();
+        }
+        else if ($prd_type != 'no-type') {
+            switch ($model_type) {
+                case "girl":
+                    Db_Actions::DbSelect("SELECT * FROM cscart_products_categories WHERE  dress_type='" . $prd_type . "' AND category_id=260");
+                    break;
+                case "boy":
+                    Db_Actions::DbSelect("SELECT * FROM cscart_products_categories WHERE  dress_type='" . $prd_type . "' AND category_id=261");
+                    break;
+                default:
+                    Db_Actions::DbSelect("SELECT * FROM cscart_products_categories WHERE  dress_type='" . $prd_type . "' AND category_id=260");
+                    break;
+            }
+            $products_ids = Db_Actions::DbGetResults();
+        }
+
+
+
+        if (!isset($products_ids->empty_result)) {
+            $product_data = array();
+            foreach ($products_ids as $product) {
+                $product_data[] = array('product_id' => $product->product_id,
+                    'product_name' => self::getProductName($product->product_id),
+                    'product_image_url' => $root_url . self::getProductImage($product->product_id),
+                    'product_price' => self::getProductPrice($product->product_id),
+                    'dress_type' => $product->dress_type);
+            }
+
+            $max_products_per_page = 9;
+            $offset = $curr_page * $max_products_per_page - $max_products_per_page;
+            $slice = array_slice($product_data, $offset, $max_products_per_page);
+            $counter = 0;
+            foreach ($slice as $product_item) {
+                $counter++;
+                if ($counter == 1) {
+                    ?><div class="cs-product-row"><?php
+                }
+                ?>
+                    <div class="cs-product" product_id="<?php echo $product_item['product_id'] ?>" product_title="<?php echo $product_item['product_name'] ?>" product_price="<?php echo $product_item['product_price'] ?>" category_ids="<?php echo $product_item['category_id'] ?>" dress_type="<?php echo $product_item['dress_type'] ?>">
+                        <img src="<?php echo $product_item['product_image_url'] ?>" width="97" height="126" alt="dress" product_title="<?php echo $product_item['product_name'] ?>" class="cs-main-product-image" draggable="false" dress_type="<?php echo $product_item['dress_type'] ?>" />
+                        <h3 class="cs-product-title"><?php echo substr($product_item['product_name'], 0, 14) ?></h3>
+                        <h4 class="cs-price">$<?php echo number_format($product_item['product_price'], 2) ?></h4>
+                        <div class="cs-variations">
+                            <a href="#" class="cs-varr"><img src="img/product-images/variation-1.jpg" width="14" height="13" /></a>
+                            <a href="#" class="cs-varr"><img src="img/product-images/variation-2.jpg" width="14" height="13" /></a>
+                            <a href="#" class="cs-varr"><img src="img/product-images/variation-3.jpg" width="14" height="13" /></a>
+                        </div>
+                    </div>
+                    <?php
+                    if ($counter == 3) {
+                        ?></div><?php
+                    $counter = 0;
+                }
+            }
+        }
+        else {
+            return new stdClass();
+        }
+    }
 /////////////////////////////////////////////////////////////////////////
 // Get total products count
     public static function getTotalproductsCount($cat_id) {
@@ -223,8 +298,8 @@ class Tools {
             $counter++;
             if ($counter == 1) {
                 ?><div class="cs-product-row"><?php
-            }
-            ?>
+                }
+                ?>
                 <div class="cs-product" product_id="<?php echo $product_item['product_id'] ?>" product_title="<?php echo $product_item['product_name'] ?>" product_price="<?php echo $product_item['product_price'] ?>" category_ids="<?php echo $product_item['category_id'] ?>" dress_type="<?php echo $product_item['dress_type'] ?>">
                     <img src="<?php echo $product_item['product_image_url'] ?>" width="97" height="126" alt="dress" product_title="<?php echo $product_item['product_name'] ?>" class="cs-main-product-image" draggable="false" dress_type="<?php echo $product_item['dress_type'] ?>" />
                     <h3 class="cs-product-title"><?php echo substr($product_item['product_name'], 0, 14) ?></h3>
@@ -491,7 +566,22 @@ if (isset($_POST['products_count'])) {
     require_once('../lib/db_actions.php');
     require_once("../lib/tools.php");
     $root_url = $config['current_location'];
-    $cat_id = (isset($_POST['cat_id']) && !empty($_POST['cat_id']) && is_numeric($_POST['cat_id'])) ? $_POST['cat_id'] : 260;
+    //$cat_id = (isset($_POST['cat_id']) && !empty($_POST['cat_id']) && is_numeric($_POST['cat_id'])) ? $_POST['cat_id'] : "";
+
+    $model_type = $_POST['model_type'];
+
+    switch ($model_type) {
+        case "girl":
+            $cat_id = 260;
+            break;
+        case "boy":
+            $cat_id = 261;
+            break;
+        default:
+            $cat_id = 260;
+            break;
+    }
+
     Tools::getTotalproductsCount($cat_id);
 }
 /////////////////////////////////////////////////////////////////////////////////////////////////
@@ -506,9 +596,12 @@ if (isset($_POST['load_products'])) {
     $root_url = $config['current_location'];
 
 
-    $cat_id = (isset($_POST['cat_id']) && !empty($_POST['cat_id']) && is_numeric($_POST['cat_id'])) ? $_POST['cat_id'] : 260;
+    $cat_id = (isset($_POST['cat_id']) && !empty($_POST['cat_id']) && is_numeric($_POST['cat_id'])) ? $_POST['cat_id'] : "";
 
-    Tools::displayProductsData($cat_id, $_POST['page']);
+    //Tools::displayProductsData($cat_id, $_POST['page']);
+    $prd_type = isset($_POST['product_type']) && !empty($_POST['product_type']) ? $_POST['product_type'] : 'no-type';
+
+    Tools::GET_ALL_PRODUCTS_BY_TYPE($prd_type, $_POST['page']);
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////
 //Load recent products
@@ -533,5 +626,21 @@ if (isset($_POST['cat_products_count'])) {
     require_once("../lib/tools.php");
     $root_url = $config['current_location'];
 
-    Tools::getTotalCategoryPageCount($_POST['catt_id']);
+    //Tools::getTotalCategoryPageCount($_POST['catt_id']);
+
+    $model_type = $_POST['model_type'];
+
+    switch ($model_type) {
+        case "girl":
+            $cat_id = 260;
+            break;
+        case "boy":
+            $cat_id = 261;
+            break;
+        default:
+            $cat_id = 260;
+            break;
+    }
+
+    Tools::getTotalproductsCount($cat_id);
 }

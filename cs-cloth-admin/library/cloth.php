@@ -213,7 +213,7 @@ class Cloth {
     ////////////////////////////////////////////////////////////////////////
     //Get products IDS
     public static function getProductsIds() {
-        Db_Actions::DbSelect("SELECT product_id FROM cscart_products");
+        Db_Actions::DbSelect("SELECT product_id FROM cscart_products_categories WHERE category_id=260 OR category_id=261");
         $result = Db_Actions::DbGetResults();
         if (!isset($result->empty_result)) {
             foreach ($result as $id) {
@@ -227,6 +227,13 @@ class Cloth {
         $html .= "<h3 class='prd-price'><strong>$" . number_format(self::getProductPrice($productID), 2) . "</strong></h3>";
         $html .= "<div class='prd-thumb'><img src='" . $root_url . self::getProductImage($productID) . "' style='max-width: 120px; height: auto;' productid='" . $productID . "' /></div>";
         echo $html;
+    }
+    //Update product type
+    public static function updateProductType($productID, $productType){
+        
+        Db_Actions::DbUpdate("UPDATE cscart_products_categories SET dress_type='".$productType."' WHERE product_id=$productID");
+        Db_Actions::DbUpdate("UPDATE cscart_products SET dress_type='".$productType."' WHERE product_id=$productID");
+        echo 1;
     }
 }
 
@@ -243,4 +250,16 @@ if (isset($_POST['get_prd_data'])) {
     $root_url = $config['current_location'];
 
     Cloth::getProductInfo($_POST['product_id']);
+}
+//////////////////////////////////////////
+//Update product type
+if(isset($_POST['upd_cloth_type'])){
+    define('AREA', 'C');
+    require '../../../prepare.php';
+    require '../../../init.php';
+    require(DIR_ROOT . '/config.php');
+    require_once('../../lib/db_actions.php');
+    $root_url = $config['current_location'];
+    
+    Cloth::updateProductType($_POST['product_id'], $_POST['cloth_tpe']);
 }

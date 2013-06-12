@@ -9,6 +9,8 @@ function ProductsManager() {
     //current category
     this.currentCat = defaultCat;
     //pagination links
+    // Current product type
+    this.currentProductType = null;
     this.writePagination = function() {
         $.ajax({
             url: "lib/tools.php",
@@ -22,7 +24,7 @@ function ProductsManager() {
     };
     this.totalPages = -1;
     //Load products
-    this.loadProducts = function(recentProducts) {
+    this.loadProducts = function(event) {
         $('.cs-product-wrap').html("");
         $('.cs-cloth-opts a').each(function() {
             $(this).removeClass('cs-active');
@@ -30,10 +32,12 @@ function ProductsManager() {
         $('.ajax-load').show();
         $(".cs-clothes").addClass('cs-active');
         ProductsManager.PM.currentCat = defaultCat;
+        var currProduct_type = (typeof event != "undefined") ? $(event.target).data('typec')  : "";
+        ProductsManager.PM.currentProductType = currProduct_type;
         $.ajax({
             url: "lib/tools.php",
             type: "post",
-            data: {load_products: 1, page: ProductsManager.PM.currPageNumber, cat_id: ProductsManager.PM.currentCat},
+            data: {load_products: 1, page: ProductsManager.PM.currPageNumber, cat_id: ProductsManager.PM.currentCat, product_type : ProductsManager.PM.currentProductType, model_type : modelSelected},
             success: function(data) {
                 $('.ajax-load').hide();
                 //Populate data
@@ -182,17 +186,17 @@ function recentlyUsedProducts() {
 //Categories 
 function categoryManager() {
     //load all categories
-    this.loadProductsFromCategory = function(catID) {
+    this.loadProductsFromCategory = function(catID, event) {
         ProductsManager.PM.currentCat = catID;
         ProductsManager.PM.currPageNumber = 1;
-        ProductsManager.PM.loadProducts();
+        ProductsManager.PM.loadProducts(event);
     }
     //get products count in category
     this.getCategoryProductCount = function(catID) {
         $.ajax({
             url: "lib/tools.php",
             type: "post",
-            data: {cat_products_count: 1, catt_id: catID},
+            data: {cat_products_count: 1, catt_id: catID, model_type : modelSelected},
             success: function(data) {
                 $("span.total-pagination").html(ProductsManager.PM.currPageNumber + "/" + data);
                 ProductsManager.PM.getTotalPageCount = data;
@@ -425,11 +429,11 @@ $(window).load(function() {
         })
     })
     //Load category products
-    $(".cs-cat-dropd a:not(.recently-viewed)").each(function() {
+    $(".cs-cat-dropd a:not(.recently-viewed, .trigger-link)").each(function() {
         if ($(this).data('catid') != "") {
             $(this).on('click', function(event) {
                 var currCatID = $(this).data('catid');
-                categoryManager.CM.loadProductsFromCategory(currCatID);
+                categoryManager.CM.loadProductsFromCategory(currCatID, event);
                 categoryManager.CM.getCategoryProductCount(currCatID);
             });
         }

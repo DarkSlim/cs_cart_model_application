@@ -11,7 +11,7 @@ if (empty($auth['user_id']) && Registry::get('settings.General.allow_anonymous_s
 }
 
 $root_url = $config['current_location'];
-if(!isset($_GET['model_type'])){
+if (!isset($_GET['model_type'])) {
     $_GET['model_type'] = "girl";
 }
 ?>
@@ -38,25 +38,26 @@ if(!isset($_GET['model_type'])){
         <script type="text/javascript" src="js/jquery.mousewheel.min.js"></script>
         <script type="text/javascript" src="js/jquery.mCustomScrollbar.concat.min.js"></script>
         <script type="text/javascript">
-            <?php
-            if (isset($_GET['model_type']) && $_GET['model_type'] == "girl") {
-                $categories = Tools::getSubCategories(260);
-                ?>var defaultCat = 260;<?php
-            }
-            else if (isset($_GET['model_type']) && $_GET['model_type'] == "boy") {
-                $categories = Tools::getSubCategories(261);
-                 ?>var defaultCat = 261;<?php
-            }
-            else {
-                $categories = Tools::getSubCategories(260);
-                 ?>var defaultCat = 260;<?php
-            }
-            ?>
+<?php
+if (isset($_GET['model_type']) && $_GET['model_type'] == "girl") {
+    $categories = Tools::getSubCategories(260);
+    ?>var defaultCat = 260;<?php
+}
+else if (isset($_GET['model_type']) && $_GET['model_type'] == "boy") {
+    $categories = Tools::getSubCategories(261);
+    ?>var defaultCat = 261;<?php
+}
+else {
+    $categories = Tools::getSubCategories(260);
+    ?>var defaultCat = 260;<?php
+}
+?>
         </script>
         <script type="text/javascript" src="js/product-data-class.js"></script>
         <script type="text/javascript" src="js/model_class_editor.js"></script>
         <script>
             Model.MODEL_TYPE_SELECTED = "<?php print $_GET["model_type"]; ?>";
+            var modelSelected = "<?php print $_GET["model_type"]; ?>";
         </script>
         <!--<script type="text/javascript" src="js/modernizr.min.js"></script>
         <script type="text/javascript" src="js/pixastic.core.js"></script>
@@ -129,7 +130,7 @@ if(!isset($_GET['model_type'])){
 
                             <div class="cs-pagination">
                                 <a href="#" class="cs-prev prev-cloth"></a>&nbsp;&nbsp;
-                                <span class="total-pagination">1/20</span>&nbsp;&nbsp;
+                                <span class="total-pagination">-/-</span>&nbsp;&nbsp;
                                 <a href="#" class="cs-next next-cloth"></a>
                             </div>
                         </div>
@@ -159,6 +160,26 @@ if(!isset($_GET['model_type'])){
                                     <?php
                                 }
                                 ?>
+                                <div class="cs-catt">
+                                    <a href="#" class="trigger-link" data-catid="type">Type</a>
+                                    <ul>
+                                        <li><a href="#" data-typec="<?php echo $scat->category_id ?>"><?php echo $scat->category ?></a></li>
+                                        <li><a href="#" data-typec="<?php echo Tools::$DRESS_TYPE_JACKETS ?>"><?php echo Tools::$DRESS_TYPE_JACKETS ?></a></li>
+                                        <li><a href="#" data-typec="<?php echo Tools::$DRESS_TYPE_TOPS ?>"><?php echo Tools::$DRESS_TYPE_TOPS ?></a></li>
+                                        <li><a href="#" data-typec="<?php echo Tools::$DRESS_TYPE_DRESSES ?>"><?php echo Tools::$DRESS_TYPE_DRESSES ?></a></li>
+                                        <li><a href="#" data-typec="<?php echo Tools::$DRESS_TYPE_UNDERWEAR ?>"><?php echo Tools::$DRESS_TYPE_UNDERWEAR ?></a></li>
+                                        <li><a href="#" data-typec="<?php echo Tools::$DRESS_TYPE_HOSIERY ?>"><?php echo Tools::$DRESS_TYPE_HOSIERY ?></a></li>
+                                        <li><a href="#" data-typec="<?php echo Tools::$DRESS_TYPE_JEWELLERY ?>"><?php echo Tools::$DRESS_TYPE_JEWELLERY ?></a></li>
+                                        <li><a href="#" data-typec="<?php echo Tools::$DRESS_TYPE_HATS ?>"><?php echo Tools::$DRESS_TYPE_HATS ?></a></li>
+                                        <li><a href="#" data-typec="<?php echo Tools::$DRESS_TYPE_GLOVES ?>"><?php echo Tools::$DRESS_TYPE_GLOVES ?></a></li>
+                                        <li><a href="#" data-typec="<?php echo Tools::$DRESS_TYPE_BAGS ?>"><?php echo Tools::$DRESS_TYPE_BAGS ?></a></li>
+                                        <li><a href="#" data-typec="<?php echo Tools::$DRESS_TYPE_BELTS ?>"><?php echo Tools::$DRESS_TYPE_BELTS ?></a></li>
+                                        <li><a href="#" data-typec="<?php echo Tools::$DRESS_TYPE_EYEWEAR ?>"><?php echo Tools::$DRESS_TYPE_EYEWEAR ?></a></li>
+                                        <li><a href="#" data-typec="<?php echo Tools::$DRESS_TYPE_SHOES ?>"><?php echo Tools::$DRESS_TYPE_SHOES ?></a></li>
+                                        <li><a href="#" data-typec="<?php echo Tools::$DRESS_TYPE_EXTRAS ?>"><?php echo Tools::$DRESS_TYPE_EXTRAS ?></a></li>
+                                    </ul>
+                                </div>
+
                             </div>
                         </div>
                     </div>

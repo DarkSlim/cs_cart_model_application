@@ -19,6 +19,7 @@
 	 if($uploaded_fle_name != ""){
              //Update products table and et cloth type
              Db_Actions::DbUpdate("UPDATE cscart_products SET dress_type='".$_POST['dress_type']."' WHERE product_id=".$_POST['product_id']);
+             Db_Actions::DbUpdate("UPDATE cscart_products_categories SET dress_type='".$_POST['dress_type']."' WHERE product_id=".$_POST['product_id']);
 		 sleep(1);
 	     ?><script type="text/javascript">window.top.window.uploadFinished("<?php echo $uploadedImageFilename .".". $ext; ?>");</script><?php 
 	 }
