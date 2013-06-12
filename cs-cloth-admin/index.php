@@ -125,11 +125,31 @@ require('library/cloth.php');
                             </div>
                         </div>
                         <div class="control-group">
-                            <label class="control-label" for="cloth-type">Choose Cloth type</label>
+                            <label class="control-label" for="cloth-type">Choose Cloth Position</label>
                             <div class="controls">
                                 <select id="cloth-type" name="cloth_type" class="input-xlarge">
                                     <option value="front">Front</option>
                                     <option value="back">Back</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label" for="cloth-type">Choose Cloth Type</label>
+                            <div class="controls">
+                                <select id="cloth-type" name="dress_type" class="input-xlarge">
+                                    <option value="<?php echo Cloth::$DRESS_TYPE_JACKETS ?>"><?php echo Cloth::$DRESS_TYPE_JACKETS ?></option>
+                                    <option value="<?php echo Cloth::$DRESS_TYPE_TOPS ?>"><?php echo Cloth::$DRESS_TYPE_TOPS ?></option>
+                                    <option value="<?php echo Cloth::$DRESS_TYPE_DRESSES ?>"><?php echo Cloth::$DRESS_TYPE_DRESSES ?></option>
+                                    <option value="<?php echo Cloth::$DRESS_TYPE_UNDERWEAR ?>"><?php echo Cloth::$DRESS_TYPE_UNDERWEAR ?></option>
+                                    <option value="<?php echo Cloth::$DRESS_TYPE_HOSIERY ?>"><?php echo Cloth::$DRESS_TYPE_HOSIERY ?></option>
+                                    <option value="<?php echo Cloth::$DRESS_TYPE_JEWELLERY ?>"><?php echo Cloth::$DRESS_TYPE_JEWELLERY ?></option>
+                                    <option value="<?php echo Cloth::$DRESS_TYPE_HATS ?>"><?php echo Cloth::$DRESS_TYPE_HATS ?></option>
+                                    <option value="<?php echo Cloth::$DRESS_TYPE_GLOVES ?>"><?php echo Cloth::$DRESS_TYPE_GLOVES ?></option>
+                                    <option value="<?php echo Cloth::$DRESS_TYPE_BAGS ?>"><?php echo Cloth::$DRESS_TYPE_BAGS ?></option>
+                                    <option value="<?php echo Cloth::$DRESS_TYPE_BELTS ?>"><?php echo Cloth::$DRESS_TYPE_BELTS ?></option>
+                                    <option value="<?php echo Cloth::$DRESS_TYPE_EYEWEAR ?>"><?php echo Cloth::$DRESS_TYPE_EYEWEAR ?></option>
+                                    <option value="<?php echo Cloth::$DRESS_TYPE_SHOES ?>"><?php echo Cloth::$DRESS_TYPE_SHOES ?></option>
+                                    <option value="<?php echo Cloth::$DRESS_TYPE_EXTRAS ?>"><?php echo Cloth::$DRESS_TYPE_EXTRAS ?></option>
                                 </select>
                             </div>
                         </div>

@@ -1,11 +1,44 @@
 <?php
 
 class Tools {
+    //Јакни
+    public static $DRESS_TYPE_JACKETS = "jackets";
+    //Блузи
+    public static $DRESS_TYPE_TOPS = "tops";
+    //Пантолони, кратки пантолони, Фармерки, сукњи, 
+    public static $DRESS_TYPE_BOTTOMS = "bottoms";
+    //фустани
+    public static $DRESS_TYPE_DRESSES = "dresses";
+    //public static $DRESS_TYPE_SUITS="suits";
+    //долна облека
+    public static $DRESS_TYPE_UNDERWEAR = "underwear";
+    //хулахопки, трикотажа
+    public static $DRESS_TYPE_HOSIERY = "hosiery";
+    //накит
+    public static $DRESS_TYPE_JEWELLERY = "jewellery";
+    //капи
+    public static $DRESS_TYPE_HATS = "hats";
+    //марами
+    public static $DRESS_TYPE_SCARVES = "scarves";
+    //ракавици
+    public static $DRESS_TYPE_GLOVES = "gloves";
+    //торби
+    public static $DRESS_TYPE_BAGS = "bags";
+    //појаси
+    public static $DRESS_TYPE_BELTS = "belts";
+    //цвикери
+    public static $DRESS_TYPE_EYEWEAR = "eyewear";
+    //обувки
+    public static $DRESS_TYPE_SHOES = "shoes";
+    //додатоци, миленици, маски, украси, и други додатоци.
+    public static $DRESS_TYPE_EXTRAS = "extras";
+    
+    
     public function __construct() {
         
     }
-    /////////////////////////////////////////////////////////////////////
-    // Get data from url
+/////////////////////////////////////////////////////////////////////
+// Get data from url
     public static function get_data($url) {
         $ch = curl_init();
         $timeout = 5;
@@ -16,16 +49,16 @@ class Tools {
         curl_close($ch);
         return $data;
     }
-    /////////////////////////////////////////////////////////////////////
-    //Get total product count
+/////////////////////////////////////////////////////////////////////
+//Get total product count
     public static function getTotalProductCount() {
         Db_Actions::DbSelect("SELECT COUNT(id) FROM  cscart_products");
     }
-    /////////////////////////////////////////////////////////////////////
-    //Get all top level categories
+/////////////////////////////////////////////////////////////////////
+//Get all top level categories
     public static function getCategories() {
         $top_level_cats = array();
-        //Select all top level categories
+//Select all top level categories
         Db_Actions::DbSelect("SELECT * FROM cscart_categories LEFT OUTER JOIN cscart_category_descriptions ON cscart_categories.category_id = cscart_category_descriptions.category_id WHERE cscart_categories.parent_id=0");
         $result = Db_Actions::DbGetResults();
         if (!isset($result->empty_result)) {
@@ -46,8 +79,8 @@ class Tools {
             return new stdClass();
         }
     }
-    /////////////////////////////////////////////////////////////////////
-    //Get subcategories from some category
+/////////////////////////////////////////////////////////////////////
+//Get subcategories from some category
     public static function getSubCategories($parent_cat_id) {
         Db_Actions::DbSelect("SELECT * FROM cscart_categories LEFT OUTER JOIN cscart_category_descriptions ON cscart_categories.category_id = cscart_category_descriptions.category_id WHERE cscart_categories.parent_id=$parent_cat_id");
         $result = Db_Actions::DbGetResults();
@@ -58,22 +91,21 @@ class Tools {
             return new stdClass();
         }
     }
-    
-    ////////////////////////////////////////////////////////////////////////
-    // Get category data
+////////////////////////////////////////////////////////////////////////
+// Get category data
     public static function getCategoryData($category_id) {
         $data = fn_get_category_data($category_id);
         return $data;
     }
-    /////////////////////////////////////////////////////////////////////////
-    // Get product data
+/////////////////////////////////////////////////////////////////////////
+// Get product data
     public static function getProductData($product_id) {
         $auth = fn_fill_auth();
         $data = fn_get_product_data($product_id, $auth);
         return $data;
     }
-    ////////////////////////////////////////////////////////////////////////
-    //Add product to cart
+////////////////////////////////////////////////////////////////////////
+//Add product to cart
     public static function addProductToCart($product_id) {
         $auth = fn_fill_auth();
         $cart = & $_SESSION['cart'];
@@ -86,28 +118,28 @@ class Tools {
         $data = fn_add_product_to_cart($products_array, $cart, $auth);
         return $data;
     }
-    ////////////////////////////////////////////////////////////////////////
-    //Delete product from cart
+////////////////////////////////////////////////////////////////////////
+//Delete product from cart
     public static function deleteProductFromCart($product_id) {
         $auth = fn_fill_auth();
         $cart = $_SESSION['cart'];
         fn_delete_cart_product($cart, $cart_id);
     }
-    ////////////////////////////////////////////////////////////////////////
-    // Get product name
+////////////////////////////////////////////////////////////////////////
+// Get product name
     public static function getProductName($product_id) {
         $name = fn_get_product_name($product_id, $lang_code = CART_LANGUAGE, $as_array = false);
         return $name;
     }
-    ////////////////////////////////////////////////////////////////////////
-    // Get product price
+////////////////////////////////////////////////////////////////////////
+// Get product price
     public static function getProductPrice($product_id, $amount = 1) {
         $auth = fn_fill_auth();
         $price = fn_get_product_price($product_id, $amount, $auth);
         return $price;
     }
-    /////////////////////////////////////////////////////////////////////////
-    // Get product image
+/////////////////////////////////////////////////////////////////////////
+// Get product image
     public static function getProductImage($product_id) {
         $products = array($product_id);
         $data = fn_get_image_pairs($products, 'product', 'M', true, true);
@@ -122,15 +154,15 @@ class Tools {
         }
         return false;
     }
-    /////////////////////////////////////////////////////////////////////////
-    // Get products filters
+/////////////////////////////////////////////////////////////////////////
+// Get products filters
     public static function getProductsFilters($category_ids = 0, $items_per_page = 0) {
         $params = array('category_ids' => $category_ids);
         $data = fn_get_product_filters($params, $items_per_page);
         return $data;
     }
-    /////////////////////////////////////////////////////////////////////////
-    // Get products from category
+/////////////////////////////////////////////////////////////////////////
+// Get products from category
     public static function getCategoryProducts($category_id, $products_per_page = 9, $curr_page = 1) {
         $params = array();
         $params['cid'] = $category_id;
@@ -139,10 +171,10 @@ class Tools {
         list($products, $search) = fn_get_products($params, $products_per_page);
         return $products;
     }
-    /////////////////////////////////////////////////////////////////////////
-    // Get products data from any category in desired format
+/////////////////////////////////////////////////////////////////////////
+// Get products data from any category in desired format
     public static function getMyProductsData($category_id, $products_per_page = 9, $curr_page = 1) {
-        //First get the products ids from the selected category
+//First get the products ids from the selected category
         $products_ids = self::getCategoryProducts($category_id, $products_per_page, $curr_page);
         $product_data = array();
         $category_data = self::getCategoryData($category_id);
@@ -151,14 +183,15 @@ class Tools {
                 'product_name' => self::getProductName($product['product_id']),
                 'product_image_url' => $root_url . self::getProductImage($product['product_id']),
                 'product_price' => self::getProductPrice($product['product_id']),
-                'product_count' => $category_data['product_count']);
+                'product_count' => $category_data['product_count'],
+                'dress_type' => $product['dress_type']);
         }
         return $product_data;
     }
-    /////////////////////////////////////////////////////////////////////////
-    // Get total products count
+/////////////////////////////////////////////////////////////////////////
+// Get total products count
     public static function getTotalproductsCount($cat_id) {
-        //First get the products ids from the selected category
+//First get the products ids from the selected category
         $products_ids = self::getCategoryProducts($cat_id, "");
         $product_count = 0;
         foreach ($products_ids as $product) {
@@ -166,10 +199,10 @@ class Tools {
         }
         echo ceil($product_count / 9);
     }
-    /////////////////////////////////////////////////////////////////////////
-    // Display products
+/////////////////////////////////////////////////////////////////////////
+// Display products
     public static function displayProductsData($category_id, $curr_page = 1) {
-        //First get the products ids from the selected category
+//First get the products ids from the selected category
         $products_ids = self::getCategoryProducts($category_id, "", $curr_page);
         $product_data = array();
         foreach ($products_ids as $product) {
@@ -177,10 +210,11 @@ class Tools {
                 'product_name' => self::getProductName($product['product_id']),
                 'product_image_url' => $root_url . self::getProductImage($product['product_id']),
                 'product_price' => self::getProductPrice($product['product_id']),
-                'category_id' => $product['category_ids']);
+                'category_id' => $product['category_ids'],
+                'dress_type' => $product['dress_type']);
         }
 
-        //display the products
+//display the products
         $max_products_per_page = 9;
         $offset = $curr_page * $max_products_per_page - $max_products_per_page;
         $slice = array_slice($product_data, $offset, $max_products_per_page);
@@ -191,8 +225,8 @@ class Tools {
                 ?><div class="cs-product-row"><?php
             }
             ?>
-                <div class="cs-product" product_id="<?php echo $product_item['product_id'] ?>" product_title="<?php echo $product_item['product_name'] ?>" product_price="<?php echo $product_item['product_price'] ?>" category_ids="<?php echo $product_item['category_id'] ?>">
-                    <img src="<?php echo $product_item['product_image_url'] ?>" width="97" height="126" alt="dress" product_title="<?php echo $product_item['product_name'] ?>" class="cs-main-product-image" draggable="false" />
+                <div class="cs-product" product_id="<?php echo $product_item['product_id'] ?>" product_title="<?php echo $product_item['product_name'] ?>" product_price="<?php echo $product_item['product_price'] ?>" category_ids="<?php echo $product_item['category_id'] ?>" dress_type="<?php echo $product_item['dress_type'] ?>">
+                    <img src="<?php echo $product_item['product_image_url'] ?>" width="97" height="126" alt="dress" product_title="<?php echo $product_item['product_name'] ?>" class="cs-main-product-image" draggable="false" dress_type="<?php echo $product_item['dress_type'] ?>" />
                     <h3 class="cs-product-title"><?php echo substr($product_item['product_name'], 0, 14) ?></h3>
                     <h4 class="cs-price">$<?php echo number_format($product_item['product_price'], 2) ?></h4>
                     <div class="cs-variations">
@@ -341,7 +375,8 @@ class Tools {
                 $product_data[] = array('product_id' => $product,
                     'product_name' => self::getProductName($product),
                     'product_image_url' => $root_url . self::getProductImage($product),
-                    'product_price' => self::getProductPrice($product)
+                    'product_price' => self::getProductPrice($product),
+                    'dress_type' => $product['dress_type']
                 );
             }
             //display the products
@@ -355,8 +390,8 @@ class Tools {
                     ?><div class="cs-product-row"><?php
                     }
                     ?>
-                    <div class="cs-product" product_id="<?php echo $product_item['product_id'] ?>" product_title="<?php echo $product_item['product_name'] ?>" product_price="<?php echo $product_item['product_price'] ?>" category_ids="<?php echo $product_item['category_id'] ?>">
-                        <img src="<?php echo $product_item['product_image_url'] ?>" width="97" height="126" product_title="<?php echo $product_item['product_name'] ?>" alt="dress" class="cs-main-product-image" draggable="false" />
+                    <div class="cs-product" product_id="<?php echo $product_item['product_id'] ?>" product_title="<?php echo $product_item['product_name'] ?>" product_price="<?php echo $product_item['product_price'] ?>" category_ids="<?php echo $product_item['category_id'] ?>" dress_type="<?php echo $product_item['dress_type'] ?>">
+                        <img src="<?php echo $product_item['product_image_url'] ?>" width="97" height="126" product_title="<?php echo $product_item['product_name'] ?>" alt="dress" class="cs-main-product-image" draggable="false" dress_type="<?php echo $product_item['dress_type'] ?>" />
                         <h3 class="cs-product-title"><?php echo substr($product_item['product_name'], 0, 14) ?></h3>
                         <h4 class="cs-price">$<?php echo number_format($product_item['product_price'], 2) ?></h4>
                         <div class="cs-variations">
@@ -469,8 +504,8 @@ if (isset($_POST['load_products'])) {
     require_once('../lib/db_actions.php');
     require_once("../lib/tools.php");
     $root_url = $config['current_location'];
-    
-    
+
+
     $cat_id = (isset($_POST['cat_id']) && !empty($_POST['cat_id']) && is_numeric($_POST['cat_id'])) ? $_POST['cat_id'] : 260;
 
     Tools::displayProductsData($cat_id, $_POST['page']);

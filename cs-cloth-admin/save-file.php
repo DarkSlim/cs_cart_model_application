@@ -1,4 +1,5 @@
 <?php
+ include("../lib/db_actions.php");
  include_once("library/uploader.php");
  include("library/imageManager.php");
  
@@ -16,6 +17,8 @@
 	 $uploadedImageFilename = pathinfo($uploadedImagepath,PATHINFO_FILENAME);
        $ext = pathinfo($uploadedImagepath,4);
 	 if($uploaded_fle_name != ""){
+             //Update products table and et cloth type
+             Db_Actions::DbUpdate("UPDATE cscart_products SET dress_type='".$_POST['dress_type']."' WHERE product_id=".$_POST['product_id']);
 		 sleep(1);
 	     ?><script type="text/javascript">window.top.window.uploadFinished("<?php echo $uploadedImageFilename .".". $ext; ?>");</script><?php 
 	 }

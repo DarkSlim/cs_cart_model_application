@@ -1,6 +1,39 @@
 <?php
 
 class Cloth {
+    //Јакни
+    public static $DRESS_TYPE_JACKETS = "jackets";
+    //Блузи
+    public static $DRESS_TYPE_TOPS = "tops";
+    //Пантолони, кратки пантолони, Фармерки, сукњи, 
+    public static $DRESS_TYPE_BOTTOMS = "bottoms";
+    //фустани
+    public static $DRESS_TYPE_DRESSES = "dresses";
+    //public static $DRESS_TYPE_SUITS="suits";
+    //долна облека
+    public static $DRESS_TYPE_UNDERWEAR = "underwear";
+    //хулахопки, трикотажа
+    public static $DRESS_TYPE_HOSIERY = "hosiery";
+    //накит
+    public static $DRESS_TYPE_JEWELLERY = "jewellery";
+    //капи
+    public static $DRESS_TYPE_HATS = "hats";
+    //марами
+    public static $DRESS_TYPE_SCARVES = "scarves";
+    //ракавици
+    public static $DRESS_TYPE_GLOVES = "gloves";
+    //торби
+    public static $DRESS_TYPE_BAGS = "bags";
+    //појаси
+    public static $DRESS_TYPE_BELTS = "belts";
+    //цвикери
+    public static $DRESS_TYPE_EYEWEAR = "eyewear";
+    //обувки
+    public static $DRESS_TYPE_SHOES = "shoes";
+    //додатоци, миленици, маски, украси, и други додатоци.
+    public static $DRESS_TYPE_EXTRAS = "extras";
+    
+    
     public function __construct() {
         
     }
@@ -191,8 +224,8 @@ class Cloth {
     //Display product data by id
     public static function getProductInfo($productID) {
         $html = "<h3 class='prd-name'>" . self::getProductName($productID) . "</h3>";
-        $html .= "<h3 class='prd-price'><strong>$" . number_format(self::getProductPrice($productID),2) . "</strong></h3>";
-        $html .= "<div class='prd-thumb'><img src='" . $root_url . self::getProductImage($productID) . "' style='max-width: 120px; height: auto;' productid='".$productID."' /></div>";
+        $html .= "<h3 class='prd-price'><strong>$" . number_format(self::getProductPrice($productID), 2) . "</strong></h3>";
+        $html .= "<div class='prd-thumb'><img src='" . $root_url . self::getProductImage($productID) . "' style='max-width: 120px; height: auto;' productid='" . $productID . "' /></div>";
         echo $html;
     }
 }
@@ -201,13 +234,13 @@ class Cloth {
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //Display product info
-if(isset($_POST['get_prd_data'])) {
+if (isset($_POST['get_prd_data'])) {
     define('AREA', 'C');
     require '../../../prepare.php';
     require '../../../init.php';
     require(DIR_ROOT . '/config.php');
     require_once('../../lib/db_actions.php');
     $root_url = $config['current_location'];
-    
+
     Cloth::getProductInfo($_POST['product_id']);
 }
