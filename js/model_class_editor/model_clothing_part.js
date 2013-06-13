@@ -1,43 +1,67 @@
 function ModelClothingPart(details_part)
 {
     this.is_destroited = false;
-    this.product_id = details_part.product_id;//it is coming from cs cart my sql table "cscart_products"
-    this.price = parseFloat(details_part.price);
-    this.product_title = details_part.product_title;
-    this.dress_type = details_part.dress_type;
-    //this.product_thumb_image_url, it is coming from url right parts thumbs,html src attribute
-    this.product_thumb_image_url = details_part.product_thumb_image_url;
+    this.setData = function(__details_part___)
+    {
+        if(__details_part___ == null)
+        {
+            this.details = {};
+            return;
+        }
+        this.details = __details_part___;
+        this.product_id = __details_part___.product_id;//it is coming from cs cart my sql table "cscart_products"
+        this.price = parseFloat(__details_part___.price);
+        this.product_title = __details_part___.product_title;
+        this.dress_type = __details_part___.dress_type;
+        //this.product_thumb_image_url, it is coming from url right parts thumbs,html src attribute
+        this.product_thumb_image_url = __details_part___.product_thumb_image_url;
+    }
+    this.setData( details_part );
+    this.toStringClothObject = function()
+    {
+        var info = "ModelClothingPart(";
+        for(var i in this.details)
+        {
+            info += i+":"+this.details[i]+" | "
+        }
+        info += ")";
+        return info;
+    }
+    this.set_layer_position = function()
+    {
+        var layer_position = 1;
+        switch(this.dress_type)
+        {
+            case ModelClothingPart.DRESS_TYPE_UNDERWEAR:{layer_position = 1;}break;
+            case ModelClothingPart.DRESS_TYPE_HOSIERY:{layer_position = 2;}break;
+            case ModelClothingPart.DRESS_TYPE_BOTTOMS:{layer_position = 3;}break;
+            case ModelClothingPart.DRESS_TYPE_DRESSES:{layer_position = 4;}break;
+            case ModelClothingPart.DRESS_TYPE_BELTS:{layer_position = 5;}break;
+            case ModelClothingPart.DRESS_TYPE_TOPS:{layer_position = 6;}break;
+            case ModelClothingPart.DRESS_TYPE_JEWELLERY:{layer_position = 7;}break;
+            case ModelClothingPart.DRESS_TYPE_JACKETS:{layer_position = 8;}break;
+            case ModelClothingPart.DRESS_TYPE_HATS:{layer_position = 9;}break;
+            case ModelClothingPart.DRESS_TYPE_SCARVES:{layer_position = 10;}break;
+            case ModelClothingPart.DRESS_TYPE_GLOVES:{layer_position = 10;}break;
+            case ModelClothingPart.DRESS_TYPE_BAGS:{layer_position = 10;}break;
+            case ModelClothingPart.DRESS_TYPE_EYEWEAR:{layer_position = 10;}break;
+            case ModelClothingPart.DRESS_TYPE_SHOES:{layer_position = 10;}break;
+        }
+        this.kinetic_clot_object_front.setZIndex( layer_position );
+    }
     /*product_id:$(this).attr("product_id"),
      product_thumb_image_url:$(this).find(".cs-main-product-image").attr("src")
      ModelClothingPart*/
-    this.kinetic_clot_object_front_of = null;
-    this.kinetic_clot_object = null;
-    this.kinetic_clot_object_tween = null
+    this.part_sprite = new ModelPart( this );
+    /*this.kinetic_clot_object_front_of = null;
+    this.kinetic_clot_object_front = null;
+    this.kinetic_clot_object_tween = null;*/
     this.path_clout = function()
     {
         if (ModelStage.MS.model.is_front_body) {
             return "img/cloth/" + this.product_id + "_front.png";
         }
         return "img/cloth/" + this.product_id + "_back.png";
-    }
-
-    this.draw_back = function() {
-    }
-    this.draw_front = function() {
-    }
-
-    /*
-     * 
-     * @returns {undefined}
-     * Funkcija za dragiranje na oblekata od modelot
-     */
-    this.drag = function()
-    {
-        //this.dispatch_event(ModelClothingPart.ON_DRAG_THUMB, {draged_object:this});
-    }
-    this.drop = function()
-    {
-        //slicno i ovde treba da napravis dispatc event
     }
 
     this.create_sprite_for_this_clot = function()
@@ -53,28 +77,9 @@ function ModelClothingPart(details_part)
             })
             return;
         }
-        if (this.kinetic_clot_object == null || this.is_destroited)
-        {
-            this.kinetic_clot_object = new Kinetic.Image({
-                image: null,
-                x: 0,
-                y: 0,
-                visible: true,
-                draggable: false/*,
-                filter: Kinetic.Filters.Blur,
-                filterRadius: 5*/
-            });
-            
-            this.kinetic_clot_object_front_of = new Kinetic.Image({
-                image: null,
-                x: 0,
-                y: 0,
-                visible: false,
-                draggable: true
-            });
-
-            //for(var i in this.kinetic_clot_object_front_of){console.log(i);}
-            this.kinetic_clot_object.on("mouseover", function()
+        if (this.kinetic_clot_object_front == null || this.is_destroited)
+        {/*
+            this.kinetic_clot_object_front.on("mouseover", function()
             {
                 console.log("object over");
                 $("#model_holder_selected_part").removeClass("displayNone");
@@ -142,35 +147,37 @@ function ModelClothingPart(details_part)
             this.kinetic_clot_object_front_of.on("click", function()
             {
                 //console.log("Front object CLICK event !!!");
-            });
-            ModelStage.MS.layer_model.add(this.kinetic_clot_object);
-            ModelStage.MS.layer_model_selected_part.add(this.kinetic_clot_object_front_of);
-            
-            
-
-            this.kinetic_clot_object_tween = new Kinetic.Tween({
-             node: this.kinetic_clot_object, 
-             duration: 0.6,
-             filterRadius: 5,
-             easing: Kinetic.Easings.EaseInOut
-             });
+            });*/
         }
-        //ImageModerator.loaded_images[this.path_clout()].image
-        this.kinetic_clot_object.setImage(ImageModerator.loaded_images[this.path_clout()].image);
-        this.kinetic_clot_object_front_of.setImage(ImageModerator.loaded_images[this.path_clout()].image);
-        this.kinetic_clot_object.reference_clot_item = this;
-        this.kinetic_clot_object_front_of.reference_clot_item = this;
-        /*this.kinetic_clot_object.on("dragstart", function()
+        this.part_sprite.setup( ModelStage.MS.model.is_front_body, ImageModerator.loaded_images[this.path_clout()].image, 
+                                ModelStage.MS.layer_model );
+        this.part_sprite.setup_front_sprite( ModelStage.MS.layer_model_selected_part );
+        //this.set_layer_position();
+        //this.kinetic_clot_object_tween.play();
+        
+        //this.kinetic_clot_object_front.reference_clot_item = this;
+        //this.kinetic_clot_object_front_of.reference_clot_item = this;
+        /*this.kinetic_clot_object_front.on("dragstart", function()
          {
          ModelStage.MS.layer_model.draw();
          });*/
-        this.kinetic_clot_object.createImageHitRegion(function() {
+        this.part_sprite.sprite__________front.createImageHitRegion(function() {
             ModelStage.MS.layer_model.draw();
         });
-        this.kinetic_clot_object_front_of.createImageHitRegion(function() {
+        this.part_sprite.sprite___________back.createImageHitRegion(function() {
             ModelStage.MS.layer_model.draw();
+        });
+        this.part_sprite.sprite_front_of_model.createImageHitRegion(function() {
+            ModelStage.MS.layer_model_selected_part.draw();
         });
         //ModelStage.MS.layer_model.draw();
+    }
+    
+    this.setup_front_and_back_sprite_for_draging = function(sprite_front_or_back)
+    {trsdaf sdsdfd
+        sprite.createImageHitRegion(function() {
+            ModelStage.MS.layer_model.draw();
+        });
     }
 
     /*
@@ -180,12 +187,27 @@ function ModelClothingPart(details_part)
      */
     this.destroy = function()
     {
-        this.kinetic_clot_object.remove();
-        this.kinetic_clot_object_front_of.remove();
+        console.log(this.toStringClothObject()+" destroing started.");
+        /*this.kinetic_clot_object_front.remove();
+        this.kinetic_clot_object_front_of.remove();*/
+        var tween_hide_kinetic_clot_object = new Kinetic.Tween
+        ({
+            node: this.kinetic_clot_object_front, 
+            duration: 0.5,
+            opacity: 0,
+            onFinish:function()
+            {
+                this.node.reference_clot_item.kinetic_clot_object_front.remove();
+                this.node.reference_clot_item.kinetic_clot_object_front_of.remove();
+                console.log(this.node.reference_clot_item.toStringClothObject()+" destroy complete.");
+            }
+        });
+        
+        tween_hide_kinetic_clot_object.play();
         this.is_destroited = true;
+        ModelStage.MS.layer_model.draw();
         ModelClothingPart.ALL_PARTS["__" + this.product_id + "__"] = null;
         ModelStage.MS.model.parts["__" + this.product_id + "__"] = null;
-        ModelStage.MS.layer_model.draw();
     }
     this.do_on_mouse_up_click = false;
     this.do_on_mouse_up_click_interval_timeout = -1;

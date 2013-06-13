@@ -4,6 +4,27 @@ function Model()
      * Ke drzi site itemi za Modelot, i tie ke bidat od klasa ModelClothingPart.
      */
     this.parts = [];
+    /*
+     * 
+     * @type type
+     * Model can hold just one part of different types of dresses.
+     * So for each dress hsould be object
+     */
+    this.part_jackets = null;
+    this.part_tops = null;
+    this.part_bottoms = null;
+    this.part_dresses = null;
+    this.part_underwear = null;
+    this.part_hosiery = null;
+    this.part_jewellery = null;
+    this.part_hats = null;
+    this.part_scarves = null;
+    this.part_gloves = null;
+    this.part_bags = null;
+    this.part_belts = null;
+    this.part_eyewear = null;
+    this.part_shoes = null;
+    this.part_extras = null;
 
     /*
      * 
@@ -52,7 +73,8 @@ function Model()
     }
     this.is_front_body = true;
     this.is_girl = true;
-    this.kinetic_body_object = null;
+    //this.kinetic_body_object = null;
+    this.body_sprite = new ModelPart();
     this.image_front = null;
     this.image_back = null;
     this.set_boy = function() {
@@ -74,7 +96,7 @@ function Model()
             });
             return;
         }
-        if (this.kinetic_body_object != null)
+        /*if (this.kinetic_body_object != null)
         {
             this.kinetic_body_object.remove();
         }
@@ -85,7 +107,7 @@ function Model()
                 x: 0,
                 y: 0
             });
-        }
+        }*/
         /*var image_image = new Image();
          image_image.onload = function()
          {
@@ -96,12 +118,14 @@ function Model()
                 "[w:" + ImageModerator.loaded_images[this.path_to_body()].image.width + ", h:"
                 + ImageModerator.loaded_images[this.path_to_body()].image.height + "]");
         //console.log($(ImageModerator.loaded_images[this.path_to_body()].image).width());
-        this.kinetic_body_object.setImage(ImageModerator.loaded_images[this.path_to_body()].image);
+        /*this.kinetic_body_object.setImage(ImageModerator.loaded_images[this.path_to_body()].image);
         //for(var i in this.kinetic_body_object){console.log(i);}
         ModelStage.MS.layer_model.add(this.kinetic_body_object);
         this.kinetic_body_object.moveToBottom();
-        ModelStage.MS.layer_model.draw(  );
-
+        ModelStage.MS.layer_model.draw(  );*/
+        this.body_sprite.setup(this.is_front_body, ImageModerator.loaded_images[this.path_to_body()].image, 
+                                ModelStage.MS.layer_model);
+        this.body_sprite.moveToBottom();
     }
 
     this.change_side = function()
@@ -137,6 +161,7 @@ function Model()
             this.remove_item( this.parts["__"+model_cloting_part_item.product_id+"__"] );
             return;
         }
+        this["part_"+model_cloting_part_item.dress_type] = model_cloting_part_item;
         //ti treba dispatch event, za da mu kaze na kartickata da stavi nov object
         this.parts.push(model_cloting_part_item);
         this.parts["__"+model_cloting_part_item.product_id+"__"] = model_cloting_part_item;

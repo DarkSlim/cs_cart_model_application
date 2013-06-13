@@ -150,7 +150,11 @@ function ModelStage()
         }); 
         this.layer_background = new Kinetic.Layer();
         this.layer_model = new Kinetic.Layer();
-        this.layer_model_selected_part = new Kinetic.Layer(); 
+        for(var i in this.layer_model)
+        {
+            //console.log(i+":"+this.layer_model[i])
+        }
+        this.layer_model_selected_part = new Kinetic.Layer();
         //this.layer_model_objects = new Kinetic.Layer();
 
         this.stage.add(this.layer_background);
@@ -186,3 +190,10 @@ function ModelStage()
 ModelStage.prototype = new Eventor();
 ModelStage.MS = new ModelStage();
 ModelStage.ON_ENTER_FRAME = "ON_ENTER_FRAME";
+
+/*$(document).ready(function(e)
+{
+    $(window).click(function(e)
+    {
+    });
+});*/

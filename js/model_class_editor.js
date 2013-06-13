@@ -1,5 +1,5 @@
 var array_scripts = ["model_redo_undo", "model_additional_tools", 
-    "template_moderator_opening_save", "model_clothing_part","model",
+    "template_moderator_opening_save", "model_part", "model_clothing_part","model",
             "model_background","model_cart_moderator","model_stage"];
 for(var i=0;i<array_scripts.length;i++)
 {
