@@ -193,9 +193,13 @@ function ModelStage()
     this.layer_model = null;
     this.layer_model_selected_part = null;
     //this.layer_model_objects = null;
+    /*
+     * different type of the objects have different layer positions.
+     * Because of that i am using this array.
+     */
     this.array_layers_for_parts = ["underwear", "hosiery", "bottoms", "dresses", "belts",
                                 "tops", "jewellery", "jackets", "hats", "scarves",
-                            "gloves", "bags", "eyewear", "shoes"];
+                            "gloves", "bags", "eyewear", "shoes", "extras"];
 }
 ModelStage.prototype = new Eventor();
 ModelStage.MS = new ModelStage();

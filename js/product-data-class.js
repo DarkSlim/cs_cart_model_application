@@ -568,7 +568,8 @@ $(window).load(function() {
         $("#prd-popup").addClass('follower');
         var productID = $(this).attr('product_id');
        
-        ModelStage.MS.model.remove_item(ModelClothingPart.ALL_PARTS["__" + productID + "__"]);
-        GlobalEventor.GE.dispatch_event(GlobalEventor.ON_CLICK_BUTTON_FROM_POPUPFORM_FOR_REMOVING_PART, ModelClothingPart.ALL_PARTS["__" + productID + "__"]);
+       var object_part_cloth_for_removing = ModelClothingPart.ALL_PARTS["__" + productID + "__"];
+        ModelStage.MS.model.remove_item( object_part_cloth_for_removing );
+        GlobalEventor.GE.dispatch_event(GlobalEventor.ON_CLICK_BUTTON_FROM_POPUPFORM_FOR_REMOVING_PART, object_part_cloth_for_removing);
     })
 })

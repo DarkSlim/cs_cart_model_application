@@ -320,6 +320,7 @@ ModelClothingPart.DRESS_TYPE_EXTRAS="extras";
  */
 GlobalEventor.GE.add_event(GlobalEventor.ON_CLICK_BUTTON_FROM_POPUPFORM_FOR_REMOVING_PART, function(part_cloth)
 {
+    console.log(part_cloth.toStringClothObject()+", after removing additional event[GlobalEventor.ON_CLICK_BUTTON_FROM_POPUPFORM_FOR_REMOVING_PART]");
     part_cloth.part_sprite.hide_front();
     ModelStage.MS.model.blur_of();
 });
