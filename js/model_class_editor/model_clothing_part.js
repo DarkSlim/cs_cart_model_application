@@ -27,8 +27,9 @@ function ModelClothingPart(details_part)
         info += ")";
         return info;
     }
-    this.set_layer_position = function()
+    /*this.set_layer_position = function()
     {
+        console.log("==================index position setup=======================");
         var layer_position = 1;
         switch(this.dress_type)
         {
@@ -47,8 +48,10 @@ function ModelClothingPart(details_part)
             case ModelClothingPart.DRESS_TYPE_EYEWEAR:{layer_position = 10;}break;
             case ModelClothingPart.DRESS_TYPE_SHOES:{layer_position = 10;}break;
         }
-        this.kinetic_clot_object_front.setZIndex( layer_position );
-    }
+        console.log(this.toStringClothObject()+"[layer_position="+layer_position+"]");
+        this.part_sprite.setZIndex( layer_position );
+        console.log("==================index position setup=======================");
+    }*/
     /*product_id:$(this).attr("product_id"),
      product_thumb_image_url:$(this).find(".cs-main-product-image").attr("src")
      ModelClothingPart*/
@@ -117,10 +120,9 @@ function ModelClothingPart(details_part)
             });*/
         }
         this.part_sprite.setup( ModelStage.MS.model.is_front_body, ImageModerator.loaded_images[this.path_clout()].image, 
-                                ModelStage.MS.layer_model );
+                                ModelStage.MS["layer_cloth_part__"+this.dress_type] );
         this.part_sprite.setup_front_sprite( ModelStage.MS.layer_model_selected_part, 
                             ImageModerator.loaded_images[this.path_clout()].image );
-        //this.set_layer_position();
         //this.kinetic_clot_object_tween.play();
         
         //this.kinetic_clot_object_front.reference_clot_item = this;
@@ -133,6 +135,8 @@ function ModelClothingPart(details_part)
         this.setup_front_and_back_sprite_for_draging( this.part_sprite.sprite___________back );
         
         this.setup_front_sprite_when_over_the_part();
+        
+        //this.set_layer_position();
         //ModelStage.MS.layer_model.draw();
     }
     
@@ -317,4 +321,5 @@ ModelClothingPart.DRESS_TYPE_EXTRAS="extras";
 GlobalEventor.GE.add_event(GlobalEventor.ON_CLICK_BUTTON_FROM_POPUPFORM_FOR_REMOVING_PART, function(part_cloth)
 {
     part_cloth.part_sprite.hide_front();
+    ModelStage.MS.model.blur_of();
 });

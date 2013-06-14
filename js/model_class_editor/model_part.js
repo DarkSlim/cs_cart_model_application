@@ -4,6 +4,7 @@ function ModelPart()
     this.sprite___________back = null;
     this.sprite_front_of_model = null;
     this.isForFront = true;
+    this.z__index = 0;
     
     this.setup = function(isForFront, image, layer_holder)
     {
@@ -30,10 +31,15 @@ function ModelPart()
             sprite_for_hide = this.sprite__________front;
             sprite_for_show = this.sprite___________back;
         }
+        sprite_for_show.holder = this;
         var tween_show = new Kinetic.Tween({
         node: sprite_for_show, 
         duration: 0.5,
-        opacity: 1
+        opacity: 1,
+        onFinish:function()
+        {
+            //this.node.setZIndex( this.node.holder.z__index );
+        }
         });
         sprite_for_show.show();
         tween_show.play();
@@ -123,6 +129,11 @@ function ModelPart()
     {
         if(this.sprite___________back != null){this.sprite___________back.moveToBottom();}
         if(this.sprite__________front != null){this.sprite__________front.moveToBottom();}
+    }
+    
+    this.setZIndex = function(__z__index__)
+    {
+        this.z__index = __z__index__;
     }
     
     

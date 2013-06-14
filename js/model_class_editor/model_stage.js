@@ -149,16 +149,23 @@ function ModelStage()
             height: 576
         }); 
         this.layer_background = new Kinetic.Layer();
+        this.stage.add(this.layer_background);
         this.layer_model = new Kinetic.Layer();
+        this.stage.add(this.layer_model);
+        for(var i=0;i<this.array_layers_for_parts.length;i++)
+        {
+            var layer_cloth_part = 
+            this["layer_cloth_part__"+this.array_layers_for_parts[i]] = new Kinetic.Layer();
+            this.stage.add( layer_cloth_part );
+        }
+        
+        
         for(var i in this.layer_model)
         {
             //console.log(i+":"+this.layer_model[i])
         }
         this.layer_model_selected_part = new Kinetic.Layer();
         //this.layer_model_objects = new Kinetic.Layer();
-
-        this.stage.add(this.layer_background);
-        this.stage.add(this.layer_model);
         this.stage_for_roll_over_parts.add(this.layer_model_selected_part);
         //this.stage.add( this.layer_model_objects );
 
@@ -186,14 +193,46 @@ function ModelStage()
     this.layer_model = null;
     this.layer_model_selected_part = null;
     //this.layer_model_objects = null;
+    this.array_layers_for_parts = ["underwear", "hosiery", "bottoms", "dresses", "belts",
+                                "tops", "jewellery", "jackets", "hats", "scarves",
+                            "gloves", "bags", "eyewear", "shoes"];
 }
 ModelStage.prototype = new Eventor();
 ModelStage.MS = new ModelStage();
 ModelStage.ON_ENTER_FRAME = "ON_ENTER_FRAME";
 
-/*$(document).ready(function(e)
-{
-    $(window).click(function(e)
-    {
-    });
-});*/
+/*
+ * 
+ * 
+//Јакни
+ModelClothingPart.DRESS_TYPE_JACKETS="jackets";
+//Блузи
+ModelClothingPart.DRESS_TYPE_TOPS="tops";
+//Пантолони, кратки пантолони, Фармерки, сукњи, 
+ModelClothingPart.DRESS_TYPE_BOTTOMS="bottoms";
+//фустани
+ModelClothingPart.DRESS_TYPE_DRESSES="dresses";
+//ModelClothingPart.DRESS_TYPE_SUITS="suits";
+//долна облека
+ModelClothingPart.DRESS_TYPE_UNDERWEAR="underwear";
+//хулахопки, трикотажа
+ModelClothingPart.DRESS_TYPE_HOSIERY="hosiery";
+//накит
+ModelClothingPart.DRESS_TYPE_JEWELLERY="jewellery";
+//капи
+ModelClothingPart.DRESS_TYPE_HATS="hats";
+//марами
+ModelClothingPart.DRESS_TYPE_SCARVES="scarves";
+//ракавици
+ModelClothingPart.DRESS_TYPE_GLOVES="gloves";
+//торби
+ModelClothingPart.DRESS_TYPE_BAGS="bags";
+//појаси
+ModelClothingPart.DRESS_TYPE_BELTS="belts";
+//цвикери
+ModelClothingPart.DRESS_TYPE_EYEWEAR="eyewear";
+//обувки
+ModelClothingPart.DRESS_TYPE_SHOES="shoes";
+//додатоци, миленици, маски, украси, и други додатоци.
+ModelClothingPart.DRESS_TYPE_EXTRAS="extras";
+ */
