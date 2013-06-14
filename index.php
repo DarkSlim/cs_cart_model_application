@@ -193,7 +193,7 @@ else {
             <div class="extra-info">
                 <div class="sepp"></div>
                 <div class="prd-color">Color: Dark Purple</div>
-                <div class="sepp"></div>
+                
                 <div class="rem-item"><a href="#">Remove item</a></div>
             </div>
         </div>

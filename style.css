@@ -552,8 +552,6 @@ a.go-to-cart{
     top: 0;
 }
 
-.displayNone{display: none;}
-
 .blurFilter
 {
     box-shadow: 0px 0px 20px 10px rgba(255,255,255,1);
@@ -602,7 +600,7 @@ h4.empty-result{
 div.sepp{
     display: block;
     height:1px;
-    background:#ebebec;
+    border-bottom: 2px #ebebec dotted;
     margin: 2px 0 2px 0 !important;
     clear: both;
     overflow: hidden;

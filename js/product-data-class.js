@@ -307,13 +307,14 @@ function ProductPopups() {
         $("div.transparent-overlay").hide();
         $('div.product-popup').hide();
     }
-    this.showProductInfo = function() {
+    this.showProductInfo = function(object_part_cloth_for_removing) {
         $("#prd-popup").removeClass('follower');
         //$('a.quick-look').show();
         $('div.extra-info').slideDown('fast', function() {
             inervalID = setTimeout(function() {
                 $("#prd-popup").fadeOut('fast');
                 $('div.extra-info').slideUp('fast');
+                GlobalEventor.GE.dispatch_event(GlobalEventor.ON_CLICK_BUTTON_FROM_POPUPFORM_FOR_REMOVING_PART, object_part_cloth_for_removing);
             }, 2000);
         });
         /////////////////
@@ -324,6 +325,7 @@ function ProductPopups() {
             inervalID = setTimeout(function() {
                 $("#prd-popup").fadeOut('fast');
                 $('div.extra-info').slideUp('fast');
+                GlobalEventor.GE.dispatch_event(GlobalEventor.ON_CLICK_BUTTON_FROM_POPUPFORM_FOR_REMOVING_PART, object_part_cloth_for_removing);
             }, 1000);
         });
     }
@@ -511,6 +513,7 @@ $(window).load(function() {
     });
     GlobalEventor.GE.add_event(GlobalEventor.ON_MOUSE_OVER_FRONT_PART_CLOUTH,
             function(data) {
+               
                 $("#prd-popup").find('.prd-name').html(data.product_title);
                 $("#prd-popup").find('.prd-price').html('$' + data.price);
                 $("#prd-popup .rem-item a:first").attr('product_id', data.product_id);
@@ -520,16 +523,17 @@ $(window).load(function() {
 
             });
     GlobalEventor.GE.add_event(GlobalEventor.ON_MOUSE_OUT_FRONT_PART_CLOUTH,
-            function(data) {
+            function(object_part_cloth_for_removing) {
                 $("#prd-popup").stop().animate({'opacity' : 0},400);
                 $('div.extra-info').slideUp('fast');
                 //$('a.quick-look').hide();
                 $("#prd-popup").addClass('follower');
+                GlobalEventor.GE.dispatch_event(GlobalEventor.ON_CLICK_BUTTON_FROM_POPUPFORM_FOR_REMOVING_PART, object_part_cloth_for_removing);
             });
     var inervalID = null;
     GlobalEventor.GE.add_event(GlobalEventor.ON_CLICKED_FRONT_PART_CLOUTH,
             function(data) {
-               ProductPopups.PP.showProductInfo();
+               ProductPopups.PP.showProductInfo(data);
             });
 
 
