@@ -79,27 +79,8 @@ function ModelClothingPart(details_part)
         }
         if (this.kinetic_clot_object_front == null || this.is_destroited)
         {/*
-            this.kinetic_clot_object_front.on("mouseover", function()
-            {
-                console.log("object over");
-                $("#model_holder_selected_part").removeClass("displayNone");
-                this.reference_clot_item.kinetic_clot_object_front_of.show();
-                this.reference_clot_item.kinetic_clot_object_front_of.setX(0);
-                this.reference_clot_item.kinetic_clot_object_front_of.setY(0);
-                this.reference_clot_item.kinetic_clot_object_front_of.moveToTop();
-                ModelStage.MS.layer_model_selected_part.draw();
-            });
-            this.kinetic_clot_object_front_of.on("mouseover", function()
-            {
-                console.log("object front over");
-                document.body.style.cursor = 'pointer';
-                if(this.reference_clot_item.do_on_mouse_up_click)
-                {
-                    return;
-                }
-                GlobalEventor.GE.dispatch_event(GlobalEventor.ON_MOUSE_OVER_FRONT_PART_CLOUTH, this.reference_clot_item);
-                ModelStage.MS.model.blur_on();
-            });
+            this.kinetic_clot_object_front
+            this.kinetic_clot_object_front_of
             this.kinetic_clot_object_front_of.on("mouseout", function()
             {
                 document.body.style.cursor = 'default';
@@ -151,7 +132,8 @@ function ModelClothingPart(details_part)
         }
         this.part_sprite.setup( ModelStage.MS.model.is_front_body, ImageModerator.loaded_images[this.path_clout()].image, 
                                 ModelStage.MS.layer_model );
-        this.part_sprite.setup_front_sprite( ModelStage.MS.layer_model_selected_part );
+        this.part_sprite.setup_front_sprite( ModelStage.MS.layer_model_selected_part, 
+                            ImageModerator.loaded_images[this.path_clout()].image );
         //this.set_layer_position();
         //this.kinetic_clot_object_tween.play();
         
@@ -161,23 +143,99 @@ function ModelClothingPart(details_part)
          {
          ModelStage.MS.layer_model.draw();
          });*/
-        this.part_sprite.sprite__________front.createImageHitRegion(function() {
-            ModelStage.MS.layer_model.draw();
-        });
-        this.part_sprite.sprite___________back.createImageHitRegion(function() {
-            ModelStage.MS.layer_model.draw();
-        });
-        this.part_sprite.sprite_front_of_model.createImageHitRegion(function() {
-            ModelStage.MS.layer_model_selected_part.draw();
-        });
+        this.setup_front_and_back_sprite_for_draging( this.part_sprite.sprite__________front );
+        this.setup_front_and_back_sprite_for_draging( this.part_sprite.sprite___________back );
+        
+        this.setup_front_sprite_when_over_the_part();
         //ModelStage.MS.layer_model.draw();
     }
     
     this.setup_front_and_back_sprite_for_draging = function(sprite_front_or_back)
-    {trsdaf sdsdfd
-        sprite.createImageHitRegion(function() {
+    {
+        if(sprite_front_or_back == null){return;}
+        sprite_front_or_back.createImageHitRegion(function() {
             ModelStage.MS.layer_model.draw();
         });
+        if(sprite_front_or_back.i_have_events == true){return;}
+        sprite_front_or_back.i_have_events = true;
+        sprite_front_or_back.reference_clot_item = this;
+        sprite_front_or_back.on("mouseover", function()
+        {
+            console.log("object over");
+            this.reference_clot_item.part_sprite.show_front();
+        });
+    }
+    this.setup_front_sprite_when_over_the_part = function()
+    {
+        this.part_sprite.sprite_front_of_model.createImageHitRegion(function() {
+            ModelStage.MS.layer_model_selected_part.draw();
+        });
+        if(this.part_sprite.sprite_front_of_model.i_have_events == true){return;}
+        this.part_sprite.sprite_front_of_model.i_have_events = true;
+        this.part_sprite.sprite_front_of_model.reference_clot_item = this;
+        this.part_sprite.sprite_front_of_model.on("mouseover", function()
+        {
+            console.log("object front over");
+            document.body.style.cursor = 'pointer';
+            if(this.reference_clot_item.do_on_mouse_up_click)
+            {
+                return;
+            }
+            GlobalEventor.GE.dispatch_event(GlobalEventor.ON_MOUSE_OVER_FRONT_PART_CLOUTH, this.reference_clot_item);
+            ModelStage.MS.model.blur_on();
+        });
+        this.part_sprite.sprite_front_of_model.on("mouseup", function()
+        {
+            document.body.style.cursor = 'default';
+            if(this.reference_clot_item.do_on_mouse_up_click)
+            {
+                this.reference_clot_item.click();
+                return;
+            }
+            this.hide();
+            ModelStage.MS.layer_model_selected_part.draw();
+            $("#model_holder_selected_part").addClass("displayNone");
+            ModelStage.MS.layer_model.draw();
+            if (Math.abs(this.getX()) > 50
+                    || Math.abs(this.getY()) > 50)
+            {
+                console.log('this.kinetic_clot_object_front_of.on("mouseup"), it is ready for remove clode');
+                ModelStage.MS.model.remove_item(this.reference_clot_item);
+                RedoUndoModerator.RUM.add_undo_action(
+                        {
+                            object: ModelStage.MS.model,
+                            f_string_for_object: "add_item",
+                            object_for_function: this.reference_clot_item
+                        });
+            }
+        });
+        this.part_sprite.sprite_front_of_model.on("mousedown", function()
+        {
+            this.reference_clot_item.set_mouse_up_to_be_click_after_interval();
+        });
+        this.part_sprite.sprite_front_of_model.on("click", function()
+        {
+            //console.log("Front object CLICK event !!!");
+        });
+    }
+    this.do_on_mouse_up_click = false;
+    this.do_on_mouse_up_click_interval_timeout = -1;
+    this.set_mouse_up_to_be_click_after_interval = function()
+    {
+        this.do_on_mouse_up_click = true;
+        clearTimeout(this.do_on_mouse_up_click_interval_timeout);
+        this.do_on_mouse_up_click_interval_timeout = 
+                setTimeout("ModelClothingPart.ALL_PARTS['__"+this.product_id+"__'].stop_click_event();", 100);
+    }
+    this.stop_click_event = function()
+    {
+        this.do_on_mouse_up_click = false;
+    }
+    this.click = function()
+    {
+        clearTimeout(this.do_on_mouse_up_click_interval_timeout);
+        console.log("Clouth part item on click.");
+        GlobalEventor.GE.dispatch_event(GlobalEventor.ON_CLICKED_FRONT_PART_CLOUTH, this);
     }
 
     /*
@@ -190,7 +248,7 @@ function ModelClothingPart(details_part)
         console.log(this.toStringClothObject()+" destroing started.");
         /*this.kinetic_clot_object_front.remove();
         this.kinetic_clot_object_front_of.remove();*/
-        var tween_hide_kinetic_clot_object = new Kinetic.Tween
+        /*var tween_hide_kinetic_clot_object = new Kinetic.Tween
         ({
             node: this.kinetic_clot_object_front, 
             duration: 0.5,
@@ -201,31 +259,13 @@ function ModelClothingPart(details_part)
                 this.node.reference_clot_item.kinetic_clot_object_front_of.remove();
                 console.log(this.node.reference_clot_item.toStringClothObject()+" destroy complete.");
             }
-        });
-        
-        tween_hide_kinetic_clot_object.play();
+        });*/
+        //tween_hide_kinetic_clot_object.play();
+        this.part_sprite.destroy();
         this.is_destroited = true;
         ModelStage.MS.layer_model.draw();
         ModelClothingPart.ALL_PARTS["__" + this.product_id + "__"] = null;
         ModelStage.MS.model.parts["__" + this.product_id + "__"] = null;
-    }
-    this.do_on_mouse_up_click = false;
-    this.do_on_mouse_up_click_interval_timeout = -1;
-    this.set_mouse_up_to_be_click_after_interval = function()
-    {
-        this.do_on_mouse_up_click = true;
-        clearTimeout(this.do_on_mouse_up_click_interval_timeout);
-        this.do_on_mouse_up_click_interval_timeout = setTimeout("ModelClothingPart.ALL_PARTS['__"+this.product_id+"__'].stop_click_event();", 100);
-    }
-    this.stop_click_event = function()
-    {
-        this.do_on_mouse_up_click = false;
-    }
-    this.click = function()
-    {
-        clearTimeout(this.do_on_mouse_up_click_interval_timeout);
-        console.log("Clouth part item on click.");
-        GlobalEventor.GE.dispatch_event(GlobalEventor.ON_CLICKED_FRONT_PART_CLOUTH, this);
     }
     
     ModelClothingPart.ALL_PARTS["__" + this.product_id + "__"] = this;

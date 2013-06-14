@@ -11,7 +11,7 @@ function ModelPart()
         var actual_sprite = this.create_sprite_and_return(isForFront, layer_holder);
         for(var i in actual_sprite)
         {
-            console.log(i+":"+actual_sprite[i]);
+            //console.log(i+":"+actual_sprite[i]);
         }
         actual_sprite.setImage( image );
         this.animate_on_change();
@@ -88,7 +88,7 @@ function ModelPart()
         }
     }
     
-    this.setup_front_sprite = function( layer_holder )
+    this.setup_front_sprite = function( layer_holder, image )
     {
         if(this.sprite_front_of_model == null)
         {
@@ -96,12 +96,23 @@ function ModelPart()
                 image: null,
                 x: 0,
                 y: 0,
-                visible: true,
-                draggable: false,
-                opacity:0
+                visible: false,
+                draggable: true,
+                opacity:1
             });
             layer_holder.add( this.sprite_front_of_model );
         } 
+        this.sprite_front_of_model.setImage( image );
+    }
+    
+    this.show_front = function()
+    {
+        $("#model_holder_selected_part").removeClass("displayNone");
+        this.sprite_front_of_model.show();
+        this.sprite_front_of_model.setX(0);
+        this.sprite_front_of_model.setY(0);
+        this.sprite_front_of_model.moveToTop();
+        ModelStage.MS.layer_model_selected_part.draw();
     }
     
     this.moveToBottom = function()
@@ -113,5 +124,30 @@ function ModelPart()
     
     this.destroy = function()
     {
+        var sprite_for_hide;
+        if(this.isForFront)
+        {
+            sprite_for_hide = this.sprite__________front;
+        }
+        else
+        {
+            sprite_for_hide = this.sprite___________back;
+        }
+        sprite_for_hide.holder = this;
+        var tween_hide = new Kinetic.Tween({
+        node: sprite_for_hide, 
+        duration: 0.5,
+        opacity: 0,
+        onFinish:function()
+        {
+            if(this.node.sprite__________front != null)
+            this.node.sprite__________front.remove();
+            if(this.node.sprite___________back != null)
+            this.node.sprite___________back.remove();
+            if(this.node.sprite_front_of_model != null)
+            this.node.sprite_front_of_model.remove();
+        }
+        }); 
+        tween_hide.play();
     }
 }
