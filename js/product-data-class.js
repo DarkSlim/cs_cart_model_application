@@ -520,7 +520,6 @@ $(window).load(function() {
     }
     GlobalEventor.GE.add_event(GlobalEventor.ON_MOUSE_OVER_FRONT_PART_CLOUTH,
             function(data) {
-                
                 onOverCloth(data);
             });
     GlobalEventor.GE.add_event(GlobalEventor.ON_MOUSE_OUT_FRONT_PART_CLOUTH,

@@ -580,6 +580,7 @@ h4.empty-result{
     line-height: 1.2em;
     font-family: Helvetica;
     font-size: 13px;
+    display: none;
 }
 #prd-popup p{
     text-align: left;
