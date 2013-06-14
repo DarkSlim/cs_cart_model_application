@@ -15,7 +15,7 @@ function ProductsManager() {
         $.ajax({
             url: "lib/tools.php",
             type: "post",
-            data: {products_count: 1, model_type : modelSelected},
+            data: {products_count: 1, model_type: modelSelected},
             success: function(data) {
                 $("span.total-pagination").html(ProductsManager.PM.currPageNumber + "/" + data);
                 ProductsManager.PM.getTotalPageCount = data;
@@ -32,12 +32,12 @@ function ProductsManager() {
         $('.ajax-load').show();
         $(".cs-clothes").addClass('cs-active');
         ProductsManager.PM.currentCat = defaultCat;
-        var currProduct_type = (typeof event != "undefined") ? $(event.target).data('typec')  : "";
+        var currProduct_type = (typeof event != "undefined") ? $(event.target).data('typec') : "";
         ProductsManager.PM.currentProductType = currProduct_type;
         $.ajax({
             url: "lib/tools.php",
             type: "post",
-            data: {load_products: 1, page: ProductsManager.PM.currPageNumber, cat_id: ProductsManager.PM.currentCat, product_type : ProductsManager.PM.currentProductType, model_type : modelSelected},
+            data: {load_products: 1, page: ProductsManager.PM.currPageNumber, cat_id: ProductsManager.PM.currentCat, product_type: ProductsManager.PM.currentProductType, model_type: modelSelected},
             success: function(data) {
                 $('.ajax-load').hide();
                 //Populate data
@@ -196,7 +196,7 @@ function categoryManager() {
         $.ajax({
             url: "lib/tools.php",
             type: "post",
-            data: {cat_products_count: 1, catt_id: catID, model_type : modelSelected, product_type : ProductsManager.PM.currentProductType},
+            data: {cat_products_count: 1, catt_id: catID, model_type: modelSelected, product_type: ProductsManager.PM.currentProductType},
             success: function(data) {
                 $("span.total-pagination").html(ProductsManager.PM.currPageNumber + "/" + data);
                 ProductsManager.PM.getTotalPageCount = data;
@@ -307,6 +307,26 @@ function ProductPopups() {
         $("div.transparent-overlay").hide();
         $('div.product-popup').hide();
     }
+    this.showProductInfo = function() {
+        $("#prd-popup").removeClass('follower');
+        //$('a.quick-look').show();
+        $('div.extra-info').slideDown('fast', function() {
+            inervalID = setTimeout(function() {
+                $("#prd-popup").fadeOut('fast');
+                $('div.extra-info').slideUp('fast');
+            }, 2000);
+        });
+        /////////////////
+        $("#prd-popup").bind('mouseover', function() {
+            clearTimeout(inervalID);
+        });
+        $("#prd-popup").bind('mouseout', function() {
+            inervalID = setTimeout(function() {
+                $("#prd-popup").fadeOut('fast');
+                $('div.extra-info').slideUp('fast');
+            }, 1000);
+        });
+    }
 }
 
 
@@ -350,19 +370,19 @@ function CartHelper() {
     this.NewCart = function() {
 
         /*for (var i = 0; i < ModelStage.MS.model.parts.length; i++) {
-
-            ModelStage.MS.model.remove_item(ModelClothingPart.ALL_PARTS["__" + ModelStage.MS.model.parts[i].product_id + "__"]);
-            ModelStage.MS.cart_item_model.cart_refresh();
-        }
-        $(".cs-shopping-cart .cs-selected-product").each(function() {
-            $(this).remove();
-        })
-        
-        ModelStage.MS.model.parts.length = 0;
-        ModelClothingPart.ALL_PARTS.length = 0;
-        ModelStage.MS.cart_item_model.updateTotalAmount();*/
+         
+         ModelStage.MS.model.remove_item(ModelClothingPart.ALL_PARTS["__" + ModelStage.MS.model.parts[i].product_id + "__"]);
+         ModelStage.MS.cart_item_model.cart_refresh();
+         }
+         $(".cs-shopping-cart .cs-selected-product").each(function() {
+         $(this).remove();
+         })
+         
+         ModelStage.MS.model.parts.length = 0;
+         ModelClothingPart.ALL_PARTS.length = 0;
+         ModelStage.MS.cart_item_model.updateTotalAmount();*/
         window.location.reload();
-        
+
 
     }
 }
@@ -494,23 +514,22 @@ $(window).load(function() {
                 $("#prd-popup").find('.prd-name').html(data.product_title);
                 $("#prd-popup").find('.prd-price').html('$' + data.price);
                 $("#prd-popup .rem-item a:first").attr('product_id', data.product_id);
-                $("#prd-popup").stop().fadeIn();
+                $("#prd-popup").css('opacity',0).show().stop().animate({'opacity' : 1},400);
                 $("#prd-popup").css({'left': ModelStage.MS.position_mouse_on_window.x, 'top': ModelStage.MS.position_mouse_on_window.y})
 
 
             });
     GlobalEventor.GE.add_event(GlobalEventor.ON_MOUSE_OUT_FRONT_PART_CLOUTH,
             function(data) {
-                $("#prd-popup").hide();
+                $("#prd-popup").stop().animate({'opacity' : 0},400);
                 $('div.extra-info').slideUp('fast');
                 //$('a.quick-look').hide();
                 $("#prd-popup").addClass('follower');
             });
+    var inervalID = null;
     GlobalEventor.GE.add_event(GlobalEventor.ON_CLICKED_FRONT_PART_CLOUTH,
             function(data) {
-                $("#prd-popup").removeClass('follower');
-                //$('a.quick-look').show();
-                $('div.extra-info').slideDown('fast');
+               ProductPopups.PP.showProductInfo();
             });
 
 
@@ -559,16 +578,16 @@ $(window).load(function() {
         $('.cs-women').addClass('cs-active');
     }
     //Remove item on popup button click
-    $('.rem-item a').click(function(event){
+    $('.rem-item a').click(function(event) {
         event.preventDefault();
         $('div.extra-info').hide();
         $("#prd-popup").hide();
         $('a.quick-look').hide();
         $("#prd-popup").addClass('follower');
         var productID = $(this).attr('product_id');
-       
-       var object_part_cloth_for_removing = ModelClothingPart.ALL_PARTS["__" + productID + "__"];
-        ModelStage.MS.model.remove_item( object_part_cloth_for_removing );
+
+        var object_part_cloth_for_removing = ModelClothingPart.ALL_PARTS["__" + productID + "__"];
+        ModelStage.MS.model.remove_item(object_part_cloth_for_removing);
         GlobalEventor.GE.dispatch_event(GlobalEventor.ON_CLICK_BUTTON_FROM_POPUPFORM_FOR_REMOVING_PART, object_part_cloth_for_removing);
     })
 })
