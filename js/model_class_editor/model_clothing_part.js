@@ -309,3 +309,12 @@ ModelClothingPart.DRESS_TYPE_EYEWEAR="eyewear";
 ModelClothingPart.DRESS_TYPE_SHOES="shoes";
 //додатоци, миленици, маски, украси, и други додатоци.
 ModelClothingPart.DRESS_TYPE_EXTRAS="extras";
+
+/*
+ * Function that will close the front of part after click remove 
+ * part from pop up form.
+ */
+GlobalEventor.GE.add_event(GlobalEventor.ON_CLICK_BUTTON_FROM_POPUPFORM_FOR_REMOVING_PART, function(part_cloth)
+{
+    part_cloth.part_sprite.hide_front();
+});

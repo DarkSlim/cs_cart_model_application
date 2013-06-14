@@ -96,6 +96,15 @@ GlobalEventor.ON_MOUSE_OVER_FRONT_PART_CLOUTH = "ON_MOUSE_OVER_FRONT_PART_CLOUTH
 GlobalEventor.ON_MOUSE_OUT_FRONT_PART_CLOUTH = "ON_MOUSE_OUT_FRONT_PART_CLOUTH";
 
 
+/*
+ * On click over the par tof the model it is showing pop up
+ * there is remove button
+ * on click on that button it should close front of image
+ */
+GlobalEventor.ON_CLICK_BUTTON_FROM_POPUPFORM_FOR_REMOVING_PART = "ON_CLICK_BUTTON_FROM_POPUPFORM_FOR_REMOVING_PART";
+//GlobalEventor.GE.dispatch_event(GlobalEventor.ON_CLICK_BUTTON_FROM_POPUPFORM_FOR_REMOVING_PART, part_cloth_that_is_deleted);
+
+
 
 
 function ImageModerator(image_details)
