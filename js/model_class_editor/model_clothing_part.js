@@ -81,21 +81,7 @@ function ModelClothingPart(details_part)
         {/*
             this.kinetic_clot_object_front
             this.kinetic_clot_object_front_of
-            this.kinetic_clot_object_front_of.on("mouseout", function()
-            {
-                document.body.style.cursor = 'default';
-                if(this.reference_clot_item.do_on_mouse_up_click)
-                {
-                    return;
-                }
-                console.log("object front out");
-                this.reference_clot_item.kinetic_clot_object_front_of.hide();
-                ModelStage.MS.layer_model_selected_part.draw();
-                ModelStage.MS.layer_model.draw();
-                $("#model_holder_selected_part").addClass("displayNone");
-                GlobalEventor.GE.dispatch_event(GlobalEventor.ON_MOUSE_OUT_FRONT_PART_CLOUTH, this.reference_clot_item);
-                ModelStage.MS.model.blur_of();
-            });
+            this.kinetic_clot_object_front_of.
             this.kinetic_clot_object_front_of.on("mouseup", function()
             {
                 document.body.style.cursor = 'default';
@@ -183,6 +169,22 @@ function ModelClothingPart(details_part)
             }
             GlobalEventor.GE.dispatch_event(GlobalEventor.ON_MOUSE_OVER_FRONT_PART_CLOUTH, this.reference_clot_item);
             ModelStage.MS.model.blur_on();
+        });
+        this.part_sprite.sprite_front_of_model.on("mouseout", function()
+        {
+            document.body.style.cursor = 'default';
+            if(this.reference_clot_item.do_on_mouse_up_click)
+            {
+                return;
+            }
+            console.log("object front out");
+            /*this.reference_clot_item.part_sprite.sprite_front_of_model.hide();
+            ModelStage.MS.layer_model_selected_part.draw();
+            ModelStage.MS.layer_model.draw();
+            $("#model_holder_selected_part").addClass("displayNone");*/
+            this.reference_clot_item.part_sprite.hide_front();
+            GlobalEventor.GE.dispatch_event(GlobalEventor.ON_MOUSE_OUT_FRONT_PART_CLOUTH, this.reference_clot_item);
+            ModelStage.MS.model.blur_of();
         });
         this.part_sprite.sprite_front_of_model.on("mouseup", function()
         {

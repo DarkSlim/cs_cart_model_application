@@ -114,6 +114,10 @@ function ModelPart()
         this.sprite_front_of_model.moveToTop();
         ModelStage.MS.layer_model_selected_part.draw();
     }
+    this.hide_front = function()
+    {
+        $("#model_holder_selected_part").addClass("displayNone"); 
+    }
     
     this.moveToBottom = function()
     {
@@ -140,12 +144,22 @@ function ModelPart()
         opacity: 0,
         onFinish:function()
         {
-            if(this.node.sprite__________front != null)
-            this.node.sprite__________front.remove();
-            if(this.node.sprite___________back != null)
-            this.node.sprite___________back.remove();
-            if(this.node.sprite_front_of_model != null)
-            this.node.sprite_front_of_model.remove();
+            if(this.node.holder.sprite__________front != null)
+            {
+                console.log("this.node.sprite__________front.remove()");
+                this.node.holder.sprite__________front.remove();
+            }
+            if(this.node.holder.sprite___________back != null)
+            {
+                console.log("this.node.sprite___________back.remove()");
+                this.node.holder.sprite___________back.remove();
+            }
+            if(this.node.holder.sprite_front_of_model != null)
+            {
+                console.log("this.node.sprite_front_of_model.remove()");
+                this.node.holder.sprite_front_of_model.remove();
+            }
+            console.log("==========================================================");
         }
         }); 
         tween_hide.play();
