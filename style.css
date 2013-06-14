@@ -730,3 +730,6 @@ div.black-row a{
     color: #fff;
     font-size: 14px;
 }
+a.quick-look{
+    display: none !important;
+}

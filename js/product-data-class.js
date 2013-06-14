@@ -491,27 +491,26 @@ $(window).load(function() {
     });
     GlobalEventor.GE.add_event(GlobalEventor.ON_MOUSE_OVER_FRONT_PART_CLOUTH,
             function(data) {
-                $('body').append('aa,');
                 $("#prd-popup").find('.prd-name').html(data.product_title);
                 $("#prd-popup").find('.prd-price').html('$' + data.price);
                 $("#prd-popup .rem-item a:first").attr('product_id', data.product_id);
-                $("#prd-popup").fadeIn();
+                $("#prd-popup").stop().fadeIn();
                 $("#prd-popup").css({'left': ModelStage.MS.position_mouse_on_window.x, 'top': ModelStage.MS.position_mouse_on_window.y})
 
 
             });
     GlobalEventor.GE.add_event(GlobalEventor.ON_MOUSE_OUT_FRONT_PART_CLOUTH,
             function(data) {
-                $('div.extra-info').hide();
                 $("#prd-popup").hide();
-                $('a.quick-look').hide();
+                $('div.extra-info').slideUp('fast');
+                //$('a.quick-look').hide();
                 $("#prd-popup").addClass('follower');
             });
     GlobalEventor.GE.add_event(GlobalEventor.ON_CLICKED_FRONT_PART_CLOUTH,
             function(data) {
                 $("#prd-popup").removeClass('follower');
-                $('a.quick-look').show();
-                $('div.extra-info').show();
+                //$('a.quick-look').show();
+                $('div.extra-info').slideDown('fast');
             });
 
 
