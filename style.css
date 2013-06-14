@@ -582,10 +582,14 @@ h4.empty-result{
     font-size: 13px;
 }
 #prd-popup p{
-    text-align: center;
+    text-align: left;
     margin:0 !important;
-    padding: 3px 60px 3px 60px !important;
+    padding: 7px 80px 7px 10px !important;
     display: block;
+}
+#prd-popup p.prd-name{
+    text-transform: uppercase;
+    font-size: 12px;
 }
 
 #prd-popup div.extra-info div{

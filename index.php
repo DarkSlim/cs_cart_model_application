@@ -188,8 +188,8 @@ else {
         </div>
         <div id="prd-popup" class="displayNone follower">
             <a href="#" class="quick-look">Quick Look</a>
-            <p class="prd-name">Top</p>
-            <p class="prd-price">$12.49</p>
+            <p class="prd-name"></p>
+            <!-- <p class="prd-price">$12.49</p> -->
             <div class="extra-info">
                 <div class="sepp"></div>
                 <div class="prd-color">Color: Dark Purple</div>

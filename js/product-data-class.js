@@ -511,20 +511,21 @@ $(window).load(function() {
     {
         CartHelper.CH.colapseItems();
     });
+    function onOverCloth(data) {
+        $("#prd-popup").find('.prd-name').html(data.product_title);
+        $("#prd-popup").find('.prd-price').html('$' + data.price);
+        $("#prd-popup .rem-item a:first").attr('product_id', data.product_id);
+        $("#prd-popup").css('opacity', 0).show().stop().animate({'opacity': 1}, 400);
+        $("#prd-popup").css({'left': ModelStage.MS.position_mouse_on_window.x, 'top': ModelStage.MS.position_mouse_on_window.y})
+    }
     GlobalEventor.GE.add_event(GlobalEventor.ON_MOUSE_OVER_FRONT_PART_CLOUTH,
             function(data) {
-               
-                $("#prd-popup").find('.prd-name').html(data.product_title);
-                $("#prd-popup").find('.prd-price').html('$' + data.price);
-                $("#prd-popup .rem-item a:first").attr('product_id', data.product_id);
-                $("#prd-popup").css('opacity',0).show().stop().animate({'opacity' : 1},400);
-                $("#prd-popup").css({'left': ModelStage.MS.position_mouse_on_window.x, 'top': ModelStage.MS.position_mouse_on_window.y})
-
-
+                
+                onOverCloth(data);
             });
     GlobalEventor.GE.add_event(GlobalEventor.ON_MOUSE_OUT_FRONT_PART_CLOUTH,
             function(object_part_cloth_for_removing) {
-                $("#prd-popup").stop().animate({'opacity' : 0},400);
+                $("#prd-popup").stop().animate({'opacity': 0}, 400);
                 $('div.extra-info').slideUp('fast');
                 //$('a.quick-look').hide();
                 $("#prd-popup").addClass('follower');
@@ -533,7 +534,7 @@ $(window).load(function() {
     var inervalID = null;
     GlobalEventor.GE.add_event(GlobalEventor.ON_CLICKED_FRONT_PART_CLOUTH,
             function(data) {
-               ProductPopups.PP.showProductInfo(data);
+                ProductPopups.PP.showProductInfo(data);
             });
 
 
