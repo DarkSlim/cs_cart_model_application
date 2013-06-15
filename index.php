@@ -151,7 +151,7 @@ else {
                                         <ul>
                                             <?php
                                             foreach (Tools::$DESIGNERS as $designer) {
-                                                ?><li><a href="#" data-typedesigner="<?php echo $designer ?>"><?php echo $designer ?></a></li><?php
+                                                ?><li><a href="#" class="designer-link" data-typedesigner="<?php echo $designer ?>"><?php echo $designer ?></a></li><?php
                                             }
                                             ?>
                                         </ul>

@@ -6,58 +6,55 @@ class Tools {
     //Јакни
     public static $DRESS_TYPE_JACKETS = "jackets";
     //subcategories
-    public static $SUB_JACKETS = array('Blazer','Fur','Jeans jacket','Jacket','Coat','Cape','Leather jacket','Suit jacket','Wind breaker','Rain jacket','Trench coat','Winter jacket'); 
+    public static $SUB_JACKETS = array('Blazer', 'Fur', 'Jeans jacket', 'Jacket', 'Coat', 'Cape', 'Leather jacket', 'Suit jacket', 'Wind breaker', 'Rain jacket', 'Trench coat', 'Winter jacket');
     //Блузи
     public static $DRESS_TYPE_TOPS = "tops";
-    public static $SUB_TOPS = array('Top','Tank top', 'T-shirt','Blouse','Turtleneck','Polo shirt','Shirt','Tunic','Sweater','Vest','Cardigan','Hoodie','Tracksuit jack','Suspemders','Pullover','Cache-ceur'); 
+    public static $SUB_TOPS = array('Top', 'Tank top', 'T-shirt', 'Blouse', 'Turtleneck', 'Polo shirt', 'Shirt', 'Tunic', 'Sweater', 'Vest', 'Cardigan', 'Hoodie', 'Tracksuit jack', 'Suspemders', 'Pullover', 'Cache-ceur');
     //Пантолони, кратки пантолони, Фармерки, сукњи, 
     public static $DRESS_TYPE_BOTTOMS = "bottoms";
-    public static $SUB_BOTTOMS = array('Pants','Shorts','Jeans','Sweatpants','Suit pants','Pedal pusher','Knickers','Long shorts','Skirt','Suit skirt','Sarong'); 
+    public static $SUB_BOTTOMS = array('Pants', 'Shorts', 'Jeans', 'Sweatpants', 'Suit pants', 'Pedal pusher', 'Knickers', 'Long shorts', 'Skirt', 'Suit skirt', 'Sarong');
     //фустани
     public static $DRESS_TYPE_DRESSES = "dresses";
-    public static $SUB_DRESSES = array('Dress','Jumpsuit','Maxi Dress','Mini Dress','Dungarees','Playsuit'); 
+    public static $SUB_DRESSES = array('Dress', 'Jumpsuit', 'Maxi Dress', 'Mini Dress', 'Dungarees', 'Playsuit');
     //public static $DRESS_TYPE_SUITS="suits";
     //долна облека
     public static $DRESS_TYPE_UNDERWEAR = "underwear";
-    public static $SUB_UNDERWEAR = array('Underwear','Body','Corset','Swimsuit','Negligee','Bikini','Bra','Pantie','Garter','Pyjamas','Sports bra','Boxer shorts','Swim pants','Long johns'); 
+    public static $SUB_UNDERWEAR = array('Underwear', 'Body', 'Corset', 'Swimsuit', 'Negligee', 'Bikini', 'Bra', 'Pantie', 'Garter', 'Pyjamas', 'Sports bra', 'Boxer shorts', 'Swim pants', 'Long johns');
     //хулахопки, трикотажа
     public static $DRESS_TYPE_HOSIERY = "hosiery";
-    public static $SUB_HOSIERY = array('Tights','Treggings','Socks','Over-knees','Stay ups','Leg warmers'); 
+    public static $SUB_HOSIERY = array('Tights', 'Treggings', 'Socks', 'Over-knees', 'Stay ups', 'Leg warmers');
     //накит
     public static $DRESS_TYPE_JEWELLERY = "jewellery";
-    public static $SUB_JEWELLERY = array('Necklase','Braclet','Brooch','Ring','Earring','Anklet','Watch'); 
+    public static $SUB_JEWELLERY = array('Necklase', 'Braclet', 'Brooch', 'Ring', 'Earring', 'Anklet', 'Watch');
     //капи
     public static $DRESS_TYPE_HATS = "hats";
-    public static $SUB_HATS = array('Hat','Cap','Head band','Beret','Turban','Helmet','Ear muffs','Winter hat'); 
+    public static $SUB_HATS = array('Hat', 'Cap', 'Head band', 'Beret', 'Turban', 'Helmet', 'Ear muffs', 'Winter hat');
     //марами
     public static $DRESS_TYPE_SCARVES = "scarves";
-    public static $SUB_SCARVES = array('Scarf','Bow tie','Collar','Tie','Hoodie scarf');
+    public static $SUB_SCARVES = array('Scarf', 'Bow tie', 'Collar', 'Tie', 'Hoodie scarf');
     //ракавици
     public static $DRESS_TYPE_GLOVES = "gloves";
-    public static $SUB_GLOVES = array('Gloves','Boxing gloves');
+    public static $SUB_GLOVES = array('Gloves', 'Boxing gloves');
     //торби
     public static $DRESS_TYPE_BAGS = "bags";
-    public static $SUB_BAGS = array('Handbag','Shoulderbag','Clutch','Briefcase','Paperbag','Basket','Fanny pack','Rucksack','Suitcase','Shopping bag','Wallet','iPhone Case','iPad Bag');
+    public static $SUB_BAGS = array('Handbag', 'Shoulderbag', 'Clutch', 'Briefcase', 'Paperbag', 'Basket', 'Fanny pack', 'Rucksack', 'Suitcase', 'Shopping bag', 'Wallet', 'iPhone Case', 'iPad Bag');
     //појаси
     public static $DRESS_TYPE_BELTS = "belts";
     //цвикери
     public static $DRESS_TYPE_EYEWEAR = "eyewear";
-    public static $SUB_EYEWEAR = array('Glasses','Sunglasses','Mask');
+    public static $SUB_EYEWEAR = array('Glasses', 'Sunglasses', 'Mask');
     //обувки
     public static $DRESS_TYPE_SHOES = "shoes";
-    public static $SUB_SHOES = array('Heels','Boots','Sneakers','Wedges','Sandals','Flats','Rubber boot','Skates');
+    public static $SUB_SHOES = array('Heels', 'Boots', 'Sneakers', 'Wedges', 'Sandals', 'Flats', 'Rubber boot', 'Skates');
     //додатоци, миленици, маски, украси, и други додатоци.
     public static $DRESS_TYPE_EXTRAS = "extras";
     public static $SUB_EXTRAS = array('Tattoos');
     //////////////////////////////////////////////////////////////////////////////////
     //DESIGNER
-    public static $DESIGNERS = array("Acne", "Adidas", "Alexander Wang", "Burberry Prorsum", "By Marlene Birger", "Cheap Monday", "D&G", "Diane von Furstenb","Fifth Avenue Shoe",
-        "Hugo Boss","Issey Miyake", "Karren Millen", "Thopshop", "Longchamp", "Lipsy London", "Marc Jacobs", "Matthew Williamson", "Max Mara", "Minimarket", "Mulberry", "Ralph Lauren",
+    public static $DESIGNERS = array("Acne", "Adidas", "Alexander Wang", "Burberry Prorsum", "By Marlene Birger", "Cheap Monday", "D&G", "Diane von Furstenb", "Fifth Avenue Shoe",
+        "Hugo Boss", "Issey Miyake", "Karren Millen", "Thopshop", "Longchamp", "Lipsy London", "Marc Jacobs", "Matthew Williamson", "Max Mara", "Minimarket", "Mulberry", "Ralph Lauren",
         "Rita Saardi", "Rodebjer", "Chloe", "Zadig&Voltarie", "Zara");
-    
-    
     public static $totalSearchPages = 0;
-    
     public function __construct() {
         
     }
@@ -273,7 +270,7 @@ class Tools {
                 ?><div class="cs-product-row"><?php
             }
             ?>
-                <div class="cs-product  <?php if($counter == 2) echo 'cs-prd-middle'; ?>" product_id="<?php echo $product_item['product_id'] ?>" product_title="<?php echo $product_item['product_name'] ?>" product_price="<?php echo $product_item['product_price'] ?>" category_ids="<?php echo $product_item['category_id'] ?>" dress_type="<?php echo $product_item['dress_type'] ?>">
+                <div class="cs-product  <?php if ($counter == 2) echo 'cs-prd-middle'; ?>" product_id="<?php echo $product_item['product_id'] ?>" product_title="<?php echo $product_item['product_name'] ?>" product_price="<?php echo $product_item['product_price'] ?>" category_ids="<?php echo $product_item['category_id'] ?>" dress_type="<?php echo $product_item['dress_type'] ?>">
                     <img src="<?php echo $product_item['product_image_url'] ?>" width="97" height="126" alt="dress" product_title="<?php echo $product_item['product_name'] ?>" class="cs-main-product-image" draggable="false" dress_type="<?php echo $product_item['dress_type'] ?>" />
                     <h3 class="cs-product-title"><?php echo substr($product_item['product_name'], 0, 14) ?></h3>
                     <h4 class="cs-price">$<?php echo number_format($product_item['product_price'], 2) ?></h4>
@@ -333,8 +330,9 @@ class Tools {
     //GET ALL PRODUCTS BY PRODUCT TYPE
     public static function GET_ALL_PRODUCTS_BY_TYPE($prd_type, $curr_page = 1) {
         $model_type = $_POST['model_type'];
+        $designer_type = isset($_POST['designer_type']) && !empty($_POST['designer_type']) ? $_POST['designer_type'] : "";
 
-        if ($prd_type == 'no-type') {
+        if ($prd_type == 'no-type' && $designer_type == "") {
             switch ($model_type) {
                 case "girl":
                     Db_Actions::DbSelect("SELECT * FROM cscart_products_categories WHERE category_id=260");
@@ -362,6 +360,20 @@ class Tools {
             }
             $products_ids = Db_Actions::DbGetResults();
         }
+        else if ($prd_type == 'no-type' && $designer_type != "") {
+            switch ($model_type) {
+                case "girl":
+                    Db_Actions::DbSelect("SELECT * FROM cscart_products_categories WHERE  brand_type='" . $designer_type . "' AND category_id=260");
+                    break;
+                case "boy":
+                    Db_Actions::DbSelect("SELECT * FROM cscart_products_categories WHERE  brand_type='" . $designer_type . "' AND category_id=261");
+                    break;
+                default:
+                    Db_Actions::DbSelect("SELECT * FROM cscart_products_categories WHERE  brand_type='" . $designer_type . "' AND category_id=260");
+                    break;
+            }
+            $products_ids = Db_Actions::DbGetResults();
+        }
 
 
 
@@ -385,7 +397,7 @@ class Tools {
                     ?><div class="cs-product-row"><?php
                     }
                     ?>
-                    <div class="cs-product <?php if($counter == 2) echo 'cs-prd-middle'; ?>" product_id="<?php echo $product_item['product_id'] ?>" product_title="<?php echo $product_item['product_name'] ?>" product_price="<?php echo $product_item['product_price'] ?>" category_ids="<?php echo $product_item['category_id'] ?>" dress_type="<?php echo $product_item['dress_type'] ?>">
+                    <div class="cs-product <?php if ($counter == 2) echo 'cs-prd-middle'; ?>" product_id="<?php echo $product_item['product_id'] ?>" product_title="<?php echo $product_item['product_name'] ?>" product_price="<?php echo $product_item['product_price'] ?>" category_ids="<?php echo $product_item['category_id'] ?>" dress_type="<?php echo $product_item['dress_type'] ?>">
                         <img src="<?php echo $product_item['product_image_url'] ?>" width="97" height="126" alt="dress" product_title="<?php echo $product_item['product_name'] ?>" class="cs-main-product-image" draggable="false" dress_type="<?php echo $product_item['dress_type'] ?>" />
                         <h3 class="cs-product-title"><?php echo substr($product_item['product_name'], 0, 14) ?></h3>
                         <h4 class="cs-price">$<?php echo number_format($product_item['product_price'], 2) ?></h4>
@@ -411,8 +423,8 @@ class Tools {
     public static function getTotalSearchResultsCount() {
 
         $dress_type = isset($_POST['product_type']) ? $_POST['product_type'] : '';
-        $search_term  = $_POST['search_term'];
-        
+        $search_term = $_POST['search_term'];
+
         if (isset($_POST['model_type'])) {
             $model_type = $_POST['model_type'];
             switch ($model_type) {
@@ -440,19 +452,18 @@ class Tools {
 // Get total products count
     public static function getTotalproductsCount($cat_id) {
 //First get the products ids from the selected category
-        /* $products_ids = self::getCategoryProducts($cat_id, "");
-          $product_count = 0;
-
-          foreach ($products_ids as $product) {
-          $product_count++;
-          } */
+        
         $dress_type = isset($_POST['product_type']) ? $_POST['product_type'] : '';
+        $designer_type = isset($_POST['designer_type']) && !empty($_POST['designer_type']) ? $_POST['designer_type'] : "";
         if (isset($_POST['model_type'])) {
             $model_type = $_POST['model_type'];
             switch ($model_type) {
                 case "girl":
                     if (!empty($dress_type)) {
                         Db_Actions::DbSelect("SELECT DISTINCT COUNT(product_id) AS totalprds FROM cscart_products_categories WHERE category_id=260 AND dress_type='$dress_type'");
+                    }
+                    else if(!empty($designer_type)){
+                        Db_Actions::DbSelect("SELECT DISTINCT COUNT(product_id) AS totalprds FROM cscart_products_categories WHERE category_id=260 AND brand_type='$designer_type'");
                     }
                     else {
                         Db_Actions::DbSelect("SELECT DISTINCT COUNT(product_id) AS totalprds FROM cscart_products_categories WHERE category_id=260");
@@ -462,6 +473,9 @@ class Tools {
                     if (!empty($dress_type)) {
                         Db_Actions::DbSelect("SELECT DISTINCT COUNT(product_id) AS totalprds FROM cscart_products_categories WHERE category_id=261 AND dress_type='$dress_type'");
                     }
+                    else if(!empty($designer_type)){
+                        Db_Actions::DbSelect("SELECT DISTINCT COUNT(product_id) AS totalprds FROM cscart_products_categories WHERE category_id=261 AND brand_type='$designer_type'");
+                    }
                     else {
                         Db_Actions::DbSelect("SELECT DISTINCT COUNT(product_id) AS totalprds FROM cscart_products_categories WHERE category_id=261");
                     }
@@ -470,6 +484,9 @@ class Tools {
                 default:
                     if (!empty($dress_type)) {
                         Db_Actions::DbSelect("SELECT DISTINCT COUNT(product_id) AS totalprds FROM cscart_products_categories WHERE category_id=260 AND dress_type='$dress_type'");
+                    }
+                    else if(!empty($designer_type)){
+                        Db_Actions::DbSelect("SELECT DISTINCT COUNT(product_id) AS totalprds FROM cscart_products_categories WHERE category_id=260 AND brand_type='$designer_type'");
                     }
                     else {
                         Db_Actions::DbSelect("SELECT DISTINCT COUNT(product_id) AS totalprds FROM cscart_products_categories WHERE category_id=260");
@@ -513,7 +530,7 @@ class Tools {
                 ?><div class="cs-product-row"><?php
                 }
                 ?>
-                <div class="cs-product <?php if($counter == 2) echo 'cs-prd-middle'; ?>" product_id="<?php echo $product_item['product_id'] ?>" product_title="<?php echo $product_item['product_name'] ?>" product_price="<?php echo $product_item['product_price'] ?>" category_ids="<?php echo $product_item['category_id'] ?>" dress_type="<?php echo $product_item['dress_type'] ?>">
+                <div class="cs-product <?php if ($counter == 2) echo 'cs-prd-middle'; ?>" product_id="<?php echo $product_item['product_id'] ?>" product_title="<?php echo $product_item['product_name'] ?>" product_price="<?php echo $product_item['product_price'] ?>" category_ids="<?php echo $product_item['category_id'] ?>" dress_type="<?php echo $product_item['dress_type'] ?>">
                     <img src="<?php echo $product_item['product_image_url'] ?>" width="97" height="126" alt="dress" product_title="<?php echo $product_item['product_name'] ?>" class="cs-main-product-image" draggable="false" dress_type="<?php echo $product_item['dress_type'] ?>" />
                     <h3 class="cs-product-title"><?php echo substr($product_item['product_name'], 0, 14) ?></h3>
                     <h4 class="cs-price">$<?php echo number_format($product_item['product_price'], 2) ?></h4>
@@ -872,15 +889,15 @@ if (isset($_POST['search_me'])) {
 }
 //////////////////////////
 //total search results
-if(isset($_POST['search_pages_count'])){
-     define('AREA', 'C');
+if (isset($_POST['search_pages_count'])) {
+    define('AREA', 'C');
     require '../../prepare.php';
     require '../../init.php';
     require(DIR_ROOT . '/config.php');
     require_once('../lib/db_actions.php');
     require_once("../lib/tools.php");
     $root_url = $config['current_location'];
-    
+
     Tools::SEARCH_PRODUCTS_COUNT();
     echo ceil(Tools::$totalSearchPages / 9);
 }

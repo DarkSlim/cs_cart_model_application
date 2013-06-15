@@ -11,6 +11,8 @@ function ProductsManager() {
     //pagination links
     // Current product type
     this.currentProductType = null;
+    //Current designeer type
+    this.currDesignerType = null;
     this.writePagination = function() {
         $.ajax({
             url: "lib/tools.php",
@@ -24,7 +26,7 @@ function ProductsManager() {
     };
     this.totalPages = -1;
     //Load products
-    this.loadProducts = function(event) {
+    this.loadProducts = function(event, designer) {
         $('.cs-product-wrap').html("");
         $('.cs-cloth-opts a').each(function() {
             $(this).removeClass('cs-active');
@@ -34,10 +36,16 @@ function ProductsManager() {
         ProductsManager.PM.currentCat = defaultCat;
         var currProduct_type = (typeof event != "undefined") ? $(event.target).data('typec') : "";
         ProductsManager.PM.currentProductType = currProduct_type;
+        //load designer if it is set
+        var currDesigner = "";
+        if(typeof designer != "undefined"){
+            currDesigner = designer;
+        }
+        ProductsManager.PM.currDesignerType = currDesigner;
         $.ajax({
             url: "lib/tools.php",
             type: "post",
-            data: {load_products: 1, page: ProductsManager.PM.currPageNumber, cat_id: ProductsManager.PM.currentCat, product_type: ProductsManager.PM.currentProductType, model_type: modelSelected},
+            data: {load_products: 1, page: ProductsManager.PM.currPageNumber, cat_id: ProductsManager.PM.currentCat, product_type: ProductsManager.PM.currentProductType, model_type: modelSelected, designer_type : currDesigner},
             success: function(data) {
                 $('.ajax-load').hide();
                 //Populate data
@@ -200,17 +208,21 @@ function recentlyUsedProducts() {
 //Categories 
 function categoryManager() {
     //load all categories
-    this.loadProductsFromCategory = function(catID, event) {
+    this.loadProductsFromCategory = function(catID, event, designer) {
         ProductsManager.PM.currentCat = catID;
         ProductsManager.PM.currPageNumber = 1;
-        ProductsManager.PM.loadProducts(event);
+        var designer_type = "";
+        if(typeof designer != "undefined"){
+            designer_type = designer;
+        }
+        ProductsManager.PM.loadProducts(event, designer_type);
     }
     //get products count in category
     this.getCategoryProductCount = function(catID) {
         $.ajax({
             url: "lib/tools.php",
             type: "post",
-            data: {cat_products_count: 1, catt_id: catID, model_type: modelSelected, product_type: ProductsManager.PM.currentProductType},
+            data: {cat_products_count: 1, catt_id: catID, model_type: modelSelected, product_type: ProductsManager.PM.currentProductType, designer_type : ProductsManager.PM.currDesignerType},
             success: function(data) {
                 $("span.total-pagination").html(ProductsManager.PM.currPageNumber + "/" + data);
                 ProductsManager.PM.getTotalPageCount = data;
@@ -540,13 +552,24 @@ $(window).load(function() {
        }
     });
     //Load category products
-    $(".cs-cat-dropd a:not(.recently-viewed, .trigger-link)").each(function() {
+    $(".cs-cat-dropd a:not(.recently-viewed, .trigger-link, .designer-link)").each(function() {
         if ($(this).data('catid') != "") {
             $(this).on('click', function(e) {
                  e.preventDefault();
                 var currCatID = $(this).data('catid');
                 categoryManager.CM.loadProductsFromCategory(currCatID, e);
                 categoryManager.CM.getCategoryProductCount(currCatID);
+            });
+        }
+    });
+    //Load designer cloth
+    $(".designer-link").each(function() {
+        if ($(this).data('typedesigner') != "") {
+            $(this).on('click', function(e) {
+                 e.preventDefault();
+                var currDesigner = $(this).data('typedesigner');
+                categoryManager.CM.loadProductsFromCategory('', e,currDesigner);
+                categoryManager.CM.getCategoryProductCount(currDesigner);
             });
         }
     });
