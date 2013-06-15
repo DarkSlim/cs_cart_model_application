@@ -38,14 +38,14 @@ function ProductsManager() {
         ProductsManager.PM.currentProductType = currProduct_type;
         //load designer if it is set
         var currDesigner = "";
-        if(typeof designer != "undefined"){
+        if (typeof designer != "undefined") {
             currDesigner = designer;
         }
         ProductsManager.PM.currDesignerType = currDesigner;
         $.ajax({
             url: "lib/tools.php",
             type: "post",
-            data: {load_products: 1, page: ProductsManager.PM.currPageNumber, cat_id: ProductsManager.PM.currentCat, product_type: ProductsManager.PM.currentProductType, model_type: modelSelected, designer_type : currDesigner},
+            data: {load_products: 1, page: ProductsManager.PM.currPageNumber, cat_id: ProductsManager.PM.currentCat, product_type: ProductsManager.PM.currentProductType, model_type: modelSelected, designer_type: currDesigner},
             success: function(data) {
                 $('.ajax-load').hide();
                 //Populate data
@@ -212,7 +212,7 @@ function categoryManager() {
         ProductsManager.PM.currentCat = catID;
         ProductsManager.PM.currPageNumber = 1;
         var designer_type = "";
-        if(typeof designer != "undefined"){
+        if (typeof designer != "undefined") {
             designer_type = designer;
         }
         ProductsManager.PM.loadProducts(event, designer_type);
@@ -222,7 +222,7 @@ function categoryManager() {
         $.ajax({
             url: "lib/tools.php",
             type: "post",
-            data: {cat_products_count: 1, catt_id: catID, model_type: modelSelected, product_type: ProductsManager.PM.currentProductType, designer_type : ProductsManager.PM.currDesignerType},
+            data: {cat_products_count: 1, catt_id: catID, model_type: modelSelected, product_type: ProductsManager.PM.currentProductType, designer_type: ProductsManager.PM.currDesignerType},
             success: function(data) {
                 $("span.total-pagination").html(ProductsManager.PM.currPageNumber + "/" + data);
                 ProductsManager.PM.getTotalPageCount = data;
@@ -317,6 +317,8 @@ function BodyModel() {
 ///////////////////////////////////////////////////////////////
 //popup windows
 function ProductPopups() {
+
+    this.object_part_cloth_for_removing___ebana_referenca_do_kliknata_eban_objekt_obleka;
     //Show popup with product name and price
     this.showPopup = function(event) {
         $("#prd-popup").fadeIn(100);
@@ -334,31 +336,94 @@ function ProductPopups() {
         $('div.product-popup').hide();
     }
     this.showProductInfo = function(object_part_cloth_for_removing) {
+        this.object_part_cloth_for_removing___ebana_referenca_do_kliknata_eban_objekt_obleka = object_part_cloth_for_removing;
         $("#prd-popup").removeClass('follower');
         //$('a.quick-look').show();
+
+        ///ovaj kod ne znam so ti pravi toa be dolniot del slideDown mu pravi 
         $('div.extra-info').slideDown('fast', function() {
-            inervalID = setTimeout(function() {
-                $("#prd-popup").fadeOut('fast');
-                $('div.extra-info').slideUp('fast');
-                GlobalEventor.GE.dispatch_event(GlobalEventor.ON_CLICK_BUTTON_FROM_POPUPFORM_FOR_REMOVING_PART, object_part_cloth_for_removing);
-            }, 2000);
+            //za sto e toa intervalID? pa kako ke mu napravam clearInterval ako nemam varijabla znaci vo voaa variajbla go cuvam setTimeout
+            /*this.mi_treba_eban_index__timeout_id = setTimeout(function() {
+             $("#prd-popup").fadeOut('fast');
+             $('div.extra-info').slideUp('fast');
+             GlobalEventor.GE.dispatch_event(GlobalEventor.ON_CLICK_BUTTON_FROM_POPUPFORM_FOR_REMOVING_PART, object_part_cloth_for_removing);
+             }, 2000);*/
+            //eve vaka treba....ne moze ist kod pisuvan 10 pati!!!!
+
+            ProductPopups.PP.stopiraj_timerout_stosaka_da_ja_zatvori_ebanata_forma();
         });
         /////////////////
-        $("#prd-popup").bind('mouseover', function() {
-            clearTimeout(inervalID);
+        $("#prd-popup").bind('mouseover', function()
+        {
+            ProductPopups.PP.stopiraj_timerout_stosaka_da_ja_zatvori_ebanata_forma();
         });
         $("#prd-popup").bind('mouseout', function() {
-            inervalID = setTimeout(function() {
-                $("#prd-popup").fadeOut('fast');
-                $('div.extra-info').slideUp('fast');
-                GlobalEventor.GE.dispatch_event(GlobalEventor.ON_CLICK_BUTTON_FROM_POPUPFORM_FOR_REMOVING_PART, object_part_cloth_for_removing);
-            }, 1000);
+            //napoisi ja referencata do objektot od popapot ajde
+            ProductPopups.PP.init_hide_popup();//eve tolku treba ovde
+            /**/
         });
+    }
+    //ovaj koristi go postojano.ajde smeni sekade, vo ebaniov popap pa tuka smenav
+    this.mi_treba_eban_index__timeout_id = -1;
+
+    ///vaka treba da ti se funkciite.
+    this.init_hide_popup = function()
+    {
+        this.mi_treba_eban_index__timeout_id = setTimeout(/*function() {
+         
+         }*/"ProductPopups.PP.final_hide_popup();", 1000);
+    }
+    this.stopiraj_timerout_stosaka_da_ja_zatvori_ebanata_forma = function()
+    {
+        console.log(this.mi_treba_eban_index__timeout_id);
+        clearTimeout(this.mi_treba_eban_index__timeout_id);
+    }
+    this.final_hide_popup = function()
+    {
+        //ovde pravis hide posle timer.
+        //eve vaka treba ovde.
+        $("#prd-popup").fadeOut('fast');
+        $('div.extra-info').slideUp('fast');
+        GlobalEventor.GE.dispatch_event(GlobalEventor.ON_CLICK_BUTTON_FROM_POPUPFORM_FOR_REMOVING_PART,
+                this.object_part_cloth_for_removing___ebana_referenca_do_kliknata_eban_objekt_obleka);
     }
 }
 
 
 function CartHelper() {
+
+    ///////////////////////////////////////////////////
+    //Add products to cart
+    this.addProductsToCart = function() {
+        //get products
+        var productToSend = new Array();
+        var products = ModelStage.MS.model.parts;
+        for (var h = 0; h < products.length; h++) {
+            productToSend.push(products[h].product_id);
+        }
+        if (productToSend.length > 0) {
+            $('.ajax-load2').show();
+            $.ajax({
+                url: "lib/tools.php",
+                type: "post",
+                data: {add_prd: 1,
+                    product_ids: productToSend
+                },
+                success: function(data) {
+                    $('.ajax-load2').hide();
+                    if (data == 1) {
+                        $("div.cart-success").show();
+                        //clothObject.clearData();
+                        setTimeout(function() {
+                            $("div.cart-success").fadeOut(500);
+                            window.location = site_url + "/index.php?dispatch=checkout.cart";
+                        }, 2500);
+                    }
+                }
+            });
+        }
+
+    }
     this.colapseItems = function() {
         $('.cs-shopping-cart').css('height', 'auto');
         var currCartHeight = $('.cs-shopping-cart').outerHeight();
@@ -464,7 +529,7 @@ function CartHelper() {
             }
         });
     }
-    this.getTotalSearchResultsPages = function(){
+    this.getTotalSearchResultsPages = function() {
         $.ajax({
             url: "lib/tools.php",
             type: "post",
@@ -519,8 +584,8 @@ $(window).load(function() {
             updateOnContentResize: true
         }
     });
-    $('.cs-categories a').click(function(){
-         $("#product_search").val('');
+    $('.cs-categories a').click(function() {
+        $("#product_search").val('');
     })
     //Categories menu
     $('.trigger-link').each(function() {
@@ -543,19 +608,19 @@ $(window).load(function() {
         })
     })
     //Subcategories show/hide
-    $(".cs-catt > ul > li > a").click(function(e){
-       e.preventDefault();
-       if($(this).parent().find('ul').length){
-           if($(this).parent().find('ul').find('li').length){
-               $(this).parent().find('ul').toggle('fast');
-           }
-       }
+    $(".cs-catt > ul > li > a").click(function(e) {
+        e.preventDefault();
+        if ($(this).parent().find('ul').length) {
+            if ($(this).parent().find('ul').find('li').length) {
+                $(this).parent().find('ul').toggle('fast');
+            }
+        }
     });
     //Load category products
     $(".cs-cat-dropd a:not(.recently-viewed, .trigger-link, .designer-link)").each(function() {
         if ($(this).data('catid') != "") {
             $(this).on('click', function(e) {
-                 e.preventDefault();
+                e.preventDefault();
                 var currCatID = $(this).data('catid');
                 categoryManager.CM.loadProductsFromCategory(currCatID, e);
                 categoryManager.CM.getCategoryProductCount(currCatID);
@@ -566,9 +631,9 @@ $(window).load(function() {
     $(".designer-link").each(function() {
         if ($(this).data('typedesigner') != "") {
             $(this).on('click', function(e) {
-                 e.preventDefault();
+                e.preventDefault();
                 var currDesigner = $(this).data('typedesigner');
-                categoryManager.CM.loadProductsFromCategory('', e,currDesigner);
+                categoryManager.CM.loadProductsFromCategory('', e, currDesigner);
                 categoryManager.CM.getCategoryProductCount(currDesigner);
             });
         }
@@ -643,11 +708,17 @@ $(window).load(function() {
                 $("#prd-popup").addClass('follower');
                 GlobalEventor.GE.dispatch_event(GlobalEventor.ON_CLICK_BUTTON_FROM_POPUPFORM_FOR_REMOVING_PART, object_part_cloth_for_removing);
             });
+    /*
+     * 
+     * @type typeOva ti e global ID......ne ti e vo klasta od popapot?taka? da globalen egreska.
+     * odi vo glasata od popaot ajde
+     */
     var inervalID = null;
     GlobalEventor.GE.add_event(GlobalEventor.ON_CLICKED_FRONT_PART_CLOUTH,
             function(data) {
                 ProductPopups.PP.showProductInfo(data);
             });
+
 
 
     GlobalEventor.GE.add_event(GlobalEventor.ON_START_LOADING,
@@ -720,4 +791,9 @@ $(window).load(function() {
             }
         }
     })
+    //Add to cart button
+    $('.add-to-cart-btn').on('click', function() {
+        CartHelper.CH.addProductsToCart();
+    });
+    
 })
