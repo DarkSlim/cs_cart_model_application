@@ -151,7 +151,7 @@ function ModelClothingPart(details_part)
         sprite_front_or_back.reference_clot_item = this;
         sprite_front_or_back.on("mouseover", function()
         {
-            console.log("object over");
+            console.log("sprite_front_or_back object over");
             this.reference_clot_item.part_sprite.show_front();
         });
     }
@@ -165,7 +165,7 @@ function ModelClothingPart(details_part)
         this.part_sprite.sprite_front_of_model.reference_clot_item = this;
         this.part_sprite.sprite_front_of_model.on("mouseover", function()
         {
-            console.log("object front over");
+            console.log("sprite_front_of_model object front over");
             document.body.style.cursor = 'pointer';
             if(this.reference_clot_item.do_on_mouse_up_click)
             {
@@ -173,6 +173,7 @@ function ModelClothingPart(details_part)
             }
             GlobalEventor.GE.dispatch_event(GlobalEventor.ON_MOUSE_OVER_FRONT_PART_CLOUTH, this.reference_clot_item);
             ModelStage.MS.model.blur_on();
+            console.log("sprite_front_of_model object front over end");
         });
         this.part_sprite.sprite_front_of_model.on("mouseout", function()
         {
@@ -242,6 +243,20 @@ function ModelClothingPart(details_part)
         clearTimeout(this.do_on_mouse_up_click_interval_timeout);
         console.log("Clouth part item on click.");
         GlobalEventor.GE.dispatch_event(GlobalEventor.ON_CLICKED_FRONT_PART_CLOUTH, this);
+    }
+    
+    /*
+     * 
+     * @returns {undefined}
+     * When popup will be closed 
+     * then this should do to work again normaly everything.
+     */
+    this.do_actions_after_closing_popup = function()
+    {
+        this.do_on_mouse_up_click = false;
+        console.log(this.toStringClothObject()+", after removing additional event[GlobalEventor.ON_CLICK_BUTTON_FROM_POPUPFORM_FOR_REMOVING_PART]");
+        this.part_sprite.hide_front();
+        ModelStage.MS.model.blur_of();
     }
 
     /*
@@ -320,7 +335,5 @@ ModelClothingPart.DRESS_TYPE_EXTRAS="extras";
  */
 GlobalEventor.GE.add_event(GlobalEventor.ON_CLICK_BUTTON_FROM_POPUPFORM_FOR_REMOVING_PART, function(part_cloth)
 {
-    console.log(part_cloth.toStringClothObject()+", after removing additional event[GlobalEventor.ON_CLICK_BUTTON_FROM_POPUPFORM_FOR_REMOVING_PART]");
-    part_cloth.part_sprite.hide_front();
-    ModelStage.MS.model.blur_of();
+    part_cloth.do_actions_after_closing_popup();
 });

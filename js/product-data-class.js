@@ -320,11 +320,25 @@ function ProductPopups() {
 
     this.object_part_cloth_for_removing___ebana_referenca_do_kliknata_eban_objekt_obleka;
     //Show popup with product name and price
-    this.showPopup = function(event) {
+    /*this.showPopup = function(___ebana_referenca_do_kliknata_eban_objekt_obleka___) 
+    {
+        this.object_part_cloth_for_removing___ebana_referenca_do_kliknata_eban_objekt_obleka = ___ebana_referenca_do_kliknata_eban_objekt_obleka___;
         $("#prd-popup").fadeIn(100);
         $(".follower").css({'left': ModelStage.MS.position_mouse_on_window.x + 16, 'top': ModelStage.MS.position_mouse_on_window.y - 15})
+    }*/
+    this.showPopup = function(__parce_obleka_on_mouse_over__) 
+    {
+        this.object_part_cloth_for_removing___ebana_referenca_do_kliknata_eban_objekt_obleka = 
+                __parce_obleka_on_mouse_over__;
+        $("#prd-popup").find('.prd-name').html(__parce_obleka_on_mouse_over__.product_title);
+        $("#prd-popup").find('.prd-price').html('$' + __parce_obleka_on_mouse_over__.price);
+        $("#prd-popup .rem-item a:first").attr('product_id', __parce_obleka_on_mouse_over__.product_id);
+        $("#prd-popup").css('opacity', 0).show().stop().animate({'opacity': 1}, 400);
+        $("#prd-popup").css({'left': ModelStage.MS.position_mouse_on_window.x, 'top': ModelStage.MS.position_mouse_on_window.y});
+        $("#prd-popup").addClass('follower');
     }
-    this.followPopup = function() {
+    this.followPopup = function() 
+    {
         $(".follower").css({'left': ModelStage.MS.position_mouse_on_window.x + 16, 'top': ModelStage.MS.position_mouse_on_window.y - 15})
     }
     this.showOverlay = function() {
@@ -335,33 +349,17 @@ function ProductPopups() {
         $("div.transparent-overlay").hide();
         $('div.product-popup').hide();
     }
-    this.showProductInfo = function(object_part_cloth_for_removing) {
+    this.showProductInfo = function(object_part_cloth_for_removing) 
+    {
         this.object_part_cloth_for_removing___ebana_referenca_do_kliknata_eban_objekt_obleka = object_part_cloth_for_removing;
         $("#prd-popup").removeClass('follower');
+        ProductPopups.PP.stopiraj_timerout_stosaka_da_ja_zatvori_ebanata_forma();
         //$('a.quick-look').show();
-
         ///ovaj kod ne znam so ti pravi toa be dolniot del slideDown mu pravi 
-        $('div.extra-info').slideDown('fast', function() {
-            //za sto e toa intervalID? pa kako ke mu napravam clearInterval ako nemam varijabla znaci vo voaa variajbla go cuvam setTimeout
-            /*this.mi_treba_eban_index__timeout_id = setTimeout(function() {
-             $("#prd-popup").fadeOut('fast');
-             $('div.extra-info').slideUp('fast');
-             GlobalEventor.GE.dispatch_event(GlobalEventor.ON_CLICK_BUTTON_FROM_POPUPFORM_FOR_REMOVING_PART, object_part_cloth_for_removing);
-             }, 2000);*/
-            //eve vaka treba....ne moze ist kod pisuvan 10 pati!!!!
-
-            ProductPopups.PP.stopiraj_timerout_stosaka_da_ja_zatvori_ebanata_forma();
+        $('div.extra-info').slideDown('fast', function() 
+        {
         });
         /////////////////
-        $("#prd-popup").bind('mouseover', function()
-        {
-            ProductPopups.PP.stopiraj_timerout_stosaka_da_ja_zatvori_ebanata_forma();
-        });
-        $("#prd-popup").bind('mouseout', function() {
-            //napoisi ja referencata do objektot od popapot ajde
-            ProductPopups.PP.init_hide_popup();//eve tolku treba ovde
-            /**/
-        });
     }
     //ovaj koristi go postojano.ajde smeni sekade, vo ebaniov popap pa tuka smenav
     this.mi_treba_eban_index__timeout_id = -1;
@@ -387,6 +385,88 @@ function ProductPopups() {
         GlobalEventor.GE.dispatch_event(GlobalEventor.ON_CLICK_BUTTON_FROM_POPUPFORM_FOR_REMOVING_PART,
                 this.object_part_cloth_for_removing___ebana_referenca_do_kliknata_eban_objekt_obleka);
     }
+    this.remove_selected_product = function()
+    {
+        event.preventDefault();
+        $('div.extra-info').hide();
+        $("#prd-popup").hide();
+        $('a.quick-look').hide();
+        //$("#prd-popup").addClass('follower');
+        //var productID = $(this).attr('product_id');
+        //var object_part_cloth_for_removing = ModelClothingPart.ALL_PARTS["__" + productID + "__"];
+        ModelStage.MS.model.remove_item(this.object_part_cloth_for_removing___ebana_referenca_do_kliknata_eban_objekt_obleka);
+        GlobalEventor.GE.dispatch_event(GlobalEventor.ON_CLICK_BUTTON_FROM_POPUPFORM_FOR_REMOVING_PART, 
+            this.object_part_cloth_for_removing___ebana_referenca_do_kliknata_eban_objekt_obleka);
+    }
+    
+    $(document).ready(function(e)
+    {
+        $(window).mouseover(function(e)
+        {
+            //console.log("mouseover window.");
+        });
+        $(window).mouseout(function(e)
+        {
+            //console.log("mouseout window.");
+        });
+        $("#prd-popup").mouseover(function(me)
+        {
+            console.log("mouseover popup.");
+            ProductPopups.PP.stopiraj_timerout_stosaka_da_ja_zatvori_ebanata_forma();
+        });
+        $("#prd-popup").mouseout(function(me) {
+            //napoisi ja referencata do objektot od popapot ajde
+            console.log("mouseout popup.");
+            ProductPopups.PP.init_hide_popup();//eve tolku treba ovde
+            /**/
+        });
+        GlobalEventor.GE.add_event(GlobalEventor.ON_MOUSE_OVER_FRONT_PART_CLOUTH,
+                function(__on_mouse_over_selected_part__) {
+                    ProductPopups.PP.showPopup(__on_mouse_over_selected_part__);
+                });
+        GlobalEventor.GE.add_event(GlobalEventor.ON_MOUSE_OUT_FRONT_PART_CLOUTH,
+                function(object_part_cloth_for_removing) {
+                    $("#prd-popup").stop().animate({'opacity': 0}, 400);
+                    $('div.extra-info').slideUp('fast');
+                    //$('a.quick-look').hide();
+                    $("#prd-popup").removeClass('follower');
+                    GlobalEventor.GE.dispatch_event(GlobalEventor.ON_CLICK_BUTTON_FROM_POPUPFORM_FOR_REMOVING_PART, 
+                            object_part_cloth_for_removing);
+                });
+
+        GlobalEventor.GE.add_event(GlobalEventor.ON_CLICKED_FRONT_PART_CLOUTH,
+                function(data) {
+                    ProductPopups.PP.showProductInfo(data);
+                });
+        ModelStage.MS.add_event(ModelStage.ON_ENTER_FRAME, ProductPopups.PP.followPopup);
+        $("a.quick-look").click(function(event) {
+            event.preventDefault();
+            $('div.extra-info').hide();
+            $("#prd-popup").hide();
+            $('a.quick-look').hide();
+            $("#prd-popup").addClass('follower');
+            var bg = $("<img>");
+            $(bg).load(function() {
+                ProductPopups.PP.showOverlay();
+            })
+            $(bg).attr('src', 'img/transprent-bg.png');
+        });
+        $("div.close-popup").click(function(event) {
+            ProductPopups.PP.hideOverlay();
+        });
+        $("#prd-popup").mouseout(function() {
+            /*$('div.extra-info').slideUp('fast');
+             $("#prd-popup").hide();
+             $('a.quick-look').hide();
+             $("#prd-popup").addClass('follower');*/
+        });
+        //Remove item on popup button click
+        $('.rem-item a').click(function(event) {
+            ProductPopups.PP.remove_selected_product();
+        });
+    });
+    
+    
 }
 
 
@@ -689,35 +769,8 @@ $(window).load(function() {
     {
         CartHelper.CH.colapseItems();
     });
-    function onOverCloth(data) {
-        $("#prd-popup").find('.prd-name').html(data.product_title);
-        $("#prd-popup").find('.prd-price').html('$' + data.price);
-        $("#prd-popup .rem-item a:first").attr('product_id', data.product_id);
-        $("#prd-popup").css('opacity', 0).show().stop().animate({'opacity': 1}, 400);
-        $("#prd-popup").css({'left': ModelStage.MS.position_mouse_on_window.x, 'top': ModelStage.MS.position_mouse_on_window.y})
-    }
-    GlobalEventor.GE.add_event(GlobalEventor.ON_MOUSE_OVER_FRONT_PART_CLOUTH,
-            function(data) {
-                onOverCloth(data);
-            });
-    GlobalEventor.GE.add_event(GlobalEventor.ON_MOUSE_OUT_FRONT_PART_CLOUTH,
-            function(object_part_cloth_for_removing) {
-                $("#prd-popup").stop().animate({'opacity': 0}, 400);
-                $('div.extra-info').slideUp('fast');
-                //$('a.quick-look').hide();
-                $("#prd-popup").addClass('follower');
-                GlobalEventor.GE.dispatch_event(GlobalEventor.ON_CLICK_BUTTON_FROM_POPUPFORM_FOR_REMOVING_PART, object_part_cloth_for_removing);
-            });
-    /*
-     * 
-     * @type typeOva ti e global ID......ne ti e vo klasta od popapot?taka? da globalen egreska.
-     * odi vo glasata od popaot ajde
-     */
-    var inervalID = null;
-    GlobalEventor.GE.add_event(GlobalEventor.ON_CLICKED_FRONT_PART_CLOUTH,
-            function(data) {
-                ProductPopups.PP.showProductInfo(data);
-            });
+            
+            
 
 
 
@@ -729,29 +782,7 @@ $(window).load(function() {
             function() {
                 $(".ajax-load2").hide();
             });
-    ModelStage.MS.add_event(ModelStage.ON_ENTER_FRAME, ProductPopups.PP.followPopup)
 
-    $("a.quick-look").click(function(event) {
-        event.preventDefault();
-        $('div.extra-info').hide();
-        $("#prd-popup").hide();
-        $('a.quick-look').hide();
-        $("#prd-popup").addClass('follower');
-        var bg = $("<img>");
-        $(bg).load(function() {
-            ProductPopups.PP.showOverlay();
-        })
-        $(bg).attr('src', 'img/transprent-bg.png');
-    })
-    $("div.close-popup").click(function(event) {
-        ProductPopups.PP.hideOverlay();
-    })
-    $("#prd-popup").mouseout(function() {
-        /*$('div.extra-info').slideUp('fast');
-         $("#prd-popup").hide();
-         $('a.quick-look').hide();
-         $("#prd-popup").addClass('follower');*/
-    })
 
     //Model type
     if (BodyModel.MM.getParameterByName('model_type') == 'boy') {
@@ -765,19 +796,6 @@ $(window).load(function() {
     else {
         $('.cs-women').addClass('cs-active');
     }
-    //Remove item on popup button click
-    $('.rem-item a').click(function(event) {
-        event.preventDefault();
-        $('div.extra-info').hide();
-        $("#prd-popup").hide();
-        $('a.quick-look').hide();
-        $("#prd-popup").addClass('follower');
-        var productID = $(this).attr('product_id');
-
-        var object_part_cloth_for_removing = ModelClothingPart.ALL_PARTS["__" + productID + "__"];
-        ModelStage.MS.model.remove_item(object_part_cloth_for_removing);
-        GlobalEventor.GE.dispatch_event(GlobalEventor.ON_CLICK_BUTTON_FROM_POPUPFORM_FOR_REMOVING_PART, object_part_cloth_for_removing);
-    })
 
     //Search
     $('.search-form').bind('submit', function(event) {
