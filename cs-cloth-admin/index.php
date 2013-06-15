@@ -11,6 +11,7 @@ define('AREA', 'C');
 
   $root_url = $config['current_location']; */
 require("../lib/db_actions.php");
+require("../lib/tools.php");
 require('library/cloth.php');
 ?>
 <!DOCTYPE html>
@@ -167,8 +168,8 @@ require('library/cloth.php');
                                     <?php
                                     foreach (Cloth::$DESIGNERS as $designer) {
                                         ?><option value="<?php echo $designer ?>"><?php echo $designer ?><?php
-                                    }
-                                    ?>
+                                        }
+                                        ?>
                                 </select>
                             </div>
                             <input type="button" id="update-brand-btn" class="btn" value="Update Brand" /><span class="update-result2"></span>
@@ -177,19 +178,112 @@ require('library/cloth.php');
                             <label class="control-label" for="dress-type">Choose Cloth Type</label>
                             <div class="controls">
                                 <select id="dress-type" name="dress_type" class="input-xlarge">
-                                    <option value="<?php echo Cloth::$DRESS_TYPE_JACKETS ?>"><?php echo Cloth::$DRESS_TYPE_JACKETS ?></option>
-                                    <option value="<?php echo Cloth::$DRESS_TYPE_TOPS ?>"><?php echo Cloth::$DRESS_TYPE_TOPS ?></option>
-                                    <option value="<?php echo Cloth::$DRESS_TYPE_DRESSES ?>"><?php echo Cloth::$DRESS_TYPE_DRESSES ?></option>
-                                    <option value="<?php echo Cloth::$DRESS_TYPE_UNDERWEAR ?>"><?php echo Cloth::$DRESS_TYPE_UNDERWEAR ?></option>
-                                    <option value="<?php echo Cloth::$DRESS_TYPE_HOSIERY ?>"><?php echo Cloth::$DRESS_TYPE_HOSIERY ?></option>
-                                    <option value="<?php echo Cloth::$DRESS_TYPE_JEWELLERY ?>"><?php echo Cloth::$DRESS_TYPE_JEWELLERY ?></option>
-                                    <option value="<?php echo Cloth::$DRESS_TYPE_HATS ?>"><?php echo Cloth::$DRESS_TYPE_HATS ?></option>
-                                    <option value="<?php echo Cloth::$DRESS_TYPE_GLOVES ?>"><?php echo Cloth::$DRESS_TYPE_GLOVES ?></option>
-                                    <option value="<?php echo Cloth::$DRESS_TYPE_BAGS ?>"><?php echo Cloth::$DRESS_TYPE_BAGS ?></option>
+                                    <optgroup label="<?php echo Cloth::$DRESS_TYPE_JACKETS ?>">
+                                        <?php
+                                        foreach (Tools::$SUB_JACKETS as $cloth) {
+                                            ?><option value="<?php echo $cloth ?>"><?php echo $cloth ?></option><?php
+                                        }
+                                        ?>
+                                    </optgroup>
+                                    <optgroup label="<?php echo Cloth::$DRESS_TYPE_TOPS ?>">
+                                        <?php
+                                        foreach (Tools::$SUB_TOPS as $cloth) {
+                                            ?><option value="<?php echo $cloth ?>"><?php echo $cloth ?></option><?php
+                                        }
+                                        ?>
+                                    </optgroup>
+                                    <optgroup label="<?php echo Cloth::$DRESS_TYPE_BOTTOMS ?>">
+                                        <?php
+                                        foreach (Tools::$SUB_BOTTOMS as $cloth) {
+                                            ?><option value="<?php echo $cloth ?>"><?php echo $cloth ?></option><?php
+                                        }
+                                        ?>
+                                    </optgroup>
+                                    <optgroup label="<?php echo Cloth::$DRESS_TYPE_DRESSES ?>">
+                                        <?php
+                                        foreach (Tools::$SUB_DRESSES as $cloth) {
+                                            ?><option value="<?php echo $cloth ?>"><?php echo $cloth ?></option><?php
+                                        }
+                                        ?>
+                                    </optgroup>
+                                    <optgroup label="<?php echo Cloth::$DRESS_TYPE_UNDERWEAR ?>">
+                                        <?php
+                                        foreach (Tools::$SUB_UNDERWEAR as $cloth) {
+                                            ?><option value="<?php echo $cloth ?>"><?php echo $cloth ?></option><?php
+                                        }
+                                        ?>
+                                    </optgroup>
+                                    <optgroup label="<?php echo Cloth::$DRESS_TYPE_UNDERWEAR ?>">
+                                        <?php
+                                        foreach (Tools::$SUB_UNDERWEAR as $cloth) {
+                                            ?><option value="<?php echo $cloth ?>"><?php echo $cloth ?></option><?php
+                                        }
+                                        ?>
+                                    </optgroup>
+                                    <optgroup label="<?php echo Cloth::$DRESS_TYPE_HOSIERY ?>">
+                                        <?php
+                                        foreach (Tools::$SUB_HOSIERY as $cloth) {
+                                            ?><option value="<?php echo $cloth ?>"><?php echo $cloth ?></option><?php
+                                        }
+                                        ?>
+                                    </optgroup>
+                                    <optgroup label="<?php echo Cloth::$DRESS_TYPE_JEWELLERY ?>">
+                                        <?php
+                                        foreach (Tools::$SUB_JEWELLERY as $cloth) {
+                                            ?><option value="<?php echo $cloth ?>"><?php echo $cloth ?></option><?php
+                                        }
+                                        ?>
+                                    </optgroup>
+                                    <optgroup label="<?php echo Cloth::$DRESS_TYPE_HATS ?>">
+                                        <?php
+                                        foreach (Tools::$SUB_HATS as $cloth) {
+                                            ?><option value="<?php echo $cloth ?>"><?php echo $cloth ?></option><?php
+                                        }
+                                        ?>
+                                    </optgroup>
+                                    <optgroup label="<?php echo Cloth::$DRESS_TYPE_GLOVES ?>">
+                                        <?php
+                                        foreach (Tools::$SUB_GLOVES as $cloth) {
+                                            ?><option value="<?php echo $cloth ?>"><?php echo $cloth ?></option><?php
+                                        }
+                                        ?>
+                                    </optgroup>
+                                    <optgroup label="<?php echo Cloth::$DRESS_TYPE_SCARVES ?>">
+                                        <?php
+                                        foreach (Tools::$SUB_SCARVES as $cloth) {
+                                            ?><option value="<?php echo $cloth ?>"><?php echo $cloth ?></option><?php
+                                        }
+                                        ?>
+                                    </optgroup>
+                                    <optgroup label="<?php echo Cloth::$DRESS_TYPE_BAGS ?>">
+                                        <?php
+                                        foreach (Tools::$SUB_BAGS as $cloth) {
+                                            ?><option value="<?php echo $cloth ?>"><?php echo $cloth ?></option><?php
+                                        }
+                                        ?>
+                                    </optgroup>
                                     <option value="<?php echo Cloth::$DRESS_TYPE_BELTS ?>"><?php echo Cloth::$DRESS_TYPE_BELTS ?></option>
-                                    <option value="<?php echo Cloth::$DRESS_TYPE_EYEWEAR ?>"><?php echo Cloth::$DRESS_TYPE_EYEWEAR ?></option>
-                                    <option value="<?php echo Cloth::$DRESS_TYPE_SHOES ?>"><?php echo Cloth::$DRESS_TYPE_SHOES ?></option>
-                                    <option value="<?php echo Cloth::$DRESS_TYPE_EXTRAS ?>"><?php echo Cloth::$DRESS_TYPE_EXTRAS ?></option>
+                                    <optgroup label="<?php echo Cloth::$DRESS_TYPE_EYEWEAR ?>">
+                                        <?php
+                                        foreach (Tools::$SUB_EYEWEAR as $cloth) {
+                                            ?><option value="<?php echo $cloth ?>"><?php echo $cloth ?></option><?php
+                                        }
+                                        ?>
+                                    </optgroup>
+                                    <optgroup label="<?php echo Cloth::$DRESS_TYPE_SHOES ?>">
+                                        <?php
+                                        foreach (Tools::$SUB_SHOES as $cloth) {
+                                            ?><option value="<?php echo $cloth ?>"><?php echo $cloth ?></option><?php
+                                        }
+                                        ?>
+                                    </optgroup>
+                                     <optgroup label="<?php echo Cloth::$DRESS_TYPE_EXTRAS ?>">
+                                        <?php
+                                        foreach (Tools::$SUB_EXTRAS as $cloth) {
+                                            ?><option value="<?php echo $cloth ?>"><?php echo $cloth ?></option><?php
+                                        }
+                                        ?>
+                                    </optgroup>
                                 </select>
                             </div>
                             <input type="button" id="update-btn" class="btn" value="Update Cloth Type" /><span class="update-result"></span>
