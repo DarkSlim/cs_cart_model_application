@@ -130,11 +130,16 @@ div.prd-info .prd-price{
     padding: 5px;
     background: #CCC;
 }
-#update-btn{
+#update-btn, #update-brand-btn{
     float: left;
     margin: 8px 0 10px 180px;
 }
 .update-result{
+    float: left;
+    margin-top: 10px;
+    margin-left: 10px;
+}
+.update-result2{
     float: left;
     margin-top: 10px;
     margin-left: 10px;

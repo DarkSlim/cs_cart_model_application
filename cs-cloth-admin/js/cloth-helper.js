@@ -150,6 +150,22 @@ var clothHelper = {
                 
             }
         });
+    },
+    //////////////////////////////////////////////////////////
+    //Update brand
+    updateBrandType: function() {
+        $(".update-result2").html('working...');
+        $.ajax({
+            url: "library/cloth.php",
+            type: "post",
+            data: {upd_brand_type: 1, product_id: $("#product_id").val(), brand_tpe : $("#brand-type").val()},
+            success: function(data) {
+                if(data == 1){
+                    $(".update-result2").html('Product updated');
+                }
+                
+            }
+        });
     }
 }
 
@@ -190,6 +206,11 @@ $(window).load(function() {
         if($("#product_id").val() != "" && $("#dress-type").val() != ""){
             clothHelper.updateClothType();
         }
-        
+    });
+    //Update brand
+    $("#update-brand-btn").click(function(event){
+        if($("#product_id").val() != "" && $("#brand-type").val() != ""){
+            clothHelper.updateBrandType();
+        }
     });
 })

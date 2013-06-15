@@ -133,7 +133,7 @@ require('library/cloth.php');
                                 </select>
                             </div>
                         </div>
-      
+
                         <div class="control-group">
                             <label class="control-label" for="product_id">Choose version</label>
                             <div class="controls">
@@ -159,6 +159,19 @@ require('library/cloth.php');
 
                                 </div>
                             </div>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label" for="dress-type">Choose Brand</label>
+                            <div class="controls">
+                                <select id="brand-type" name="brand_type" class="input-xlarge">
+                                    <?php
+                                    foreach (Cloth::$DESIGNERS as $designer) {
+                                        ?><option value="<?php echo $designer ?>"><?php echo $designer ?><?php
+                                    }
+                                    ?>
+                                </select>
+                            </div>
+                            <input type="button" id="update-brand-btn" class="btn" value="Update Brand" /><span class="update-result2"></span>
                         </div>
                         <div class="control-group">
                             <label class="control-label" for="dress-type">Choose Cloth Type</label>

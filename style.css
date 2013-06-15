@@ -284,7 +284,7 @@ div.cs-product-row{
     margin:0 10px 0px 10px;
     border-bottom: 6px #fbfbfb solid;
     background: #fff;
-    /*overflow: hidden;*/
+    overflow: hidden;
     clear: both;
 }
 div.cs-product{
@@ -294,9 +294,10 @@ div.cs-product{
     font-family: Arial, Helvetica  !important;
 }
 div.cs-product img.cs-main-product-image{
-    width: 97px !important;
-    height: 126px !important;
+    width: 74px !important;
+    height: auto !important;
     cursor: pointer;
+    margin-top: 14px;
 }
 div.cs-product-row div.cs-product h3.cs-product-title{
     color: #7f7f80 !important;
@@ -379,6 +380,20 @@ div.cs-categories ul li{
     margin-bottom: 0;
     padding-bottom: 0;
     line-height: 1.1em;
+}
+div.cs-categories ul li ul{
+    padding-left: 8px !important;
+    margin-left: 0 !important;
+    display: none;
+}
+div.cs-categories ul li ul li{
+    padding-left: 8px !important;
+    background: url(img/dot-icon.jpg) left center no-repeat;
+    margin-left: 15px !important;
+}
+div.cs-categories ul li ul li a{
+    padding-left: 0 !important;
+    margin-left: 0 !important;
 }
 div.cs-categories a.trigger-link{
     font-size: 13px !important;

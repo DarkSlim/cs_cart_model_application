@@ -88,14 +88,21 @@ function ProductsManager() {
     this.loadNextPage = function() {
         if (ProductsManager.PM.currPageNumber < ProductsManager.PM.getTotalPageCount) {
             ProductsManager.PM.currPageNumber += 1;
-            //load products
-            if (ProductsManager.PM.loadPrds == true) {
-                ProductsManager.PM.loadProducts();
+
+            if ($("#product_search").val() != "") {
+                CartHelper.CH.searchProducts();
             }
-            //load backgrounds
-            else if (BackgroundLoader.BL.loadBgs == true) {
-                BackgroundLoader.BL.loadBackgrounds()
+            else {
+                //load products
+                if (ProductsManager.PM.loadPrds == true) {
+                    ProductsManager.PM.loadProducts();
+                }
+                //load backgrounds
+                else if (BackgroundLoader.BL.loadBgs == true) {
+                    BackgroundLoader.BL.loadBackgrounds()
+                }
             }
+
         }
 
     }
@@ -103,14 +110,21 @@ function ProductsManager() {
     this.loadPrevPage = function() {
         if (ProductsManager.PM.currPageNumber > 1) {
             ProductsManager.PM.currPageNumber -= 1;
-            //load products
-            if (ProductsManager.PM.loadPrds == true) {
-                ProductsManager.PM.loadProducts();
+
+            if ($("#product_search").val() != "") {
+                CartHelper.CH.searchProducts();
             }
-            //load backgrounds
-            else if (BackgroundLoader.BL.loadBgs == true) {
-                BackgroundLoader.BL.loadBackgrounds()
+            else {
+                //load products
+                if (ProductsManager.PM.loadPrds == true) {
+                    ProductsManager.PM.loadProducts();
+                }
+                //load backgrounds
+                else if (BackgroundLoader.BL.loadBgs == true) {
+                    BackgroundLoader.BL.loadBackgrounds()
+                }
             }
+
 
         }
     }
@@ -387,6 +401,68 @@ function CartHelper() {
 
 
     }
+
+    this.searchProducts = function() {
+        $('.cs-product-wrap').html('');
+        $('.ajax-load').show();
+        $.ajax({
+            url: "lib/tools.php",
+            type: "post",
+            data: {search_me: 1, search_term: $("#product_search").val(), model_type: modelSelected, page: ProductsManager.PM.currPageNumber},
+            success: function(data) {
+                $('.ajax-load').hide();
+                $('.cs-product-wrap').html(data);
+                $("span.total-pagination").html(ProductsManager.PM.currPageNumber + "/" + ProductsManager.PM.getTotalPageCount);
+                $(".cs-product").mousedown(function(e)
+                {
+                    ModelStage.MS.drag_clot_from_products_thumbs_set_temp_clout_object(
+                            {
+                                product_id: $(this).attr("product_id"),
+                                price: $(this).attr("product_price"),
+                                product_thumb_image_url: $(this).find(".cs-main-product-image").attr("src"),
+                                product_title: $(this).find(".cs-main-product-image").attr("product_title"),
+                                dress_type: $(this).find(".cs-main-product-image").attr("dress_type")
+                            });
+                    /*ModelStage.MS.drag_clot_from_products_thumbs(
+                     {
+                     product_id: $(this).attr("product_id"),
+                     product_thumb_image_url: $(this).find(".cs-main-product-image").attr("src")
+                     });*/
+                });
+                $(".cs-product").click(function(e)
+                {
+                    var model_part = new ModelClothingPart(
+                            {
+                                product_id: $(this).attr("product_id"),
+                                price: $(this).attr("product_price"),
+                                product_thumb_image_url: $(this).find(".cs-main-product-image").attr("src"),
+                                product_title: $(this).find(".cs-main-product-image").attr("product_title"),
+                                dress_type: $(this).find(".cs-main-product-image").attr("dress_type")
+                            });
+                    ModelStage.MS.model.add_item(model_part);
+                    RedoUndoModerator.RUM.add_undo_action(
+                            {
+                                object: ModelStage.MS.model,
+                                f_string_for_object: "remove_item",
+                                object_for_function: model_part
+                            });
+                    clearTimeout(ModelStage.MS.index_interval_after_how_much_start_drag);
+
+                });
+            }
+        });
+    }
+    this.getTotalSearchResultsPages = function(){
+        $.ajax({
+            url: "lib/tools.php",
+            type: "post",
+            data: {search_pages_count: 1, search_term: $("#product_search").val(), model_type: modelSelected},
+            success: function(data) {
+                $("span.total-pagination").html(ProductsManager.PM.currPageNumber + "/" + data);
+                ProductsManager.PM.getTotalPageCount = data;
+            }
+        });
+    }
 }
 
 
@@ -406,6 +482,7 @@ $(window).load(function() {
     //Load products
     ProductsManager.PM.loadProducts();
     $(".cs-clothes").click(function(event) {
+        $("#product_search").val('');
         ProductsManager.PM.loadPrds = true;
         BackgroundLoader.BL.loadBgs = false;
         ProductsManager.PM.resetData();
@@ -430,15 +507,18 @@ $(window).load(function() {
             updateOnContentResize: true
         }
     });
+    $('.cs-categories a').click(function(){
+         $("#product_search").val('');
+    })
     //Categories menu
     $('.trigger-link').each(function() {
         $(this).on('click', function(event) {
             event.preventDefault();
             event.stopPropagation();
-            var currUl = $(this).parent().find('ul');
+            var currUl = $(this).parent().find('ul:first');
             var currTriggerLink = $(this);
-            if ($(this).parent().find('ul').find('li').length) {
-                $(this).parent().find('ul').toggle(function() {
+            if ($(this).parent().find('ul:first').find('li').length) {
+                $(this).parent().find('ul:first').toggle(function() {
                     if (currUl.css('display') == 'block') {
                         currTriggerLink.css('background', 'url(img/cat-arrow-open.png) left 30% no-repeat');
                     }
@@ -450,12 +530,22 @@ $(window).load(function() {
 
         })
     })
+    //Subcategories show/hide
+    $(".cs-catt > ul > li > a").click(function(e){
+       e.preventDefault();
+       if($(this).parent().find('ul').length){
+           if($(this).parent().find('ul').find('li').length){
+               $(this).parent().find('ul').toggle('fast');
+           }
+       }
+    });
     //Load category products
     $(".cs-cat-dropd a:not(.recently-viewed, .trigger-link)").each(function() {
         if ($(this).data('catid') != "") {
-            $(this).on('click', function(event) {
+            $(this).on('click', function(e) {
+                 e.preventDefault();
                 var currCatID = $(this).data('catid');
-                categoryManager.CM.loadProductsFromCategory(currCatID, event);
+                categoryManager.CM.loadProductsFromCategory(currCatID, e);
                 categoryManager.CM.getCategoryProductCount(currCatID);
             });
         }
@@ -593,5 +683,18 @@ $(window).load(function() {
         var object_part_cloth_for_removing = ModelClothingPart.ALL_PARTS["__" + productID + "__"];
         ModelStage.MS.model.remove_item(object_part_cloth_for_removing);
         GlobalEventor.GE.dispatch_event(GlobalEventor.ON_CLICK_BUTTON_FROM_POPUPFORM_FOR_REMOVING_PART, object_part_cloth_for_removing);
+    })
+
+    //Search
+    $('.search-form').bind('submit', function(event) {
+        event.preventDefault();
+    })
+    $('#product_search').keydown(function(event) {
+        if (event.keyCode == 13) {
+            if ($('#product_search').val() != "") {
+                CartHelper.CH.getTotalSearchResultsPages();
+                CartHelper.CH.searchProducts();
+            }
+        }
     })
 })

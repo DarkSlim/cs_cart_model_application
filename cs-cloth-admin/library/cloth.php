@@ -33,6 +33,12 @@ class Cloth {
     //додатоци, миленици, маски, украси, и други додатоци.
     public static $DRESS_TYPE_EXTRAS = "extras";
     
+    //////////////////////////////////////////////////////////////////////////////////
+    //DESIGNER
+    public static $DESIGNERS = array("Acne", "Adidas", "Alexander Wang", "Burberry Prorsum", "By Marlene Birger", "Cheap Monday", "D&G", "Diane von Furstenb","Fifth Avenue Shoe",
+        "Hugo Boss","Issey Miyake", "Karren Millen", "Thopshop", "Longchamp", "Lipsy London", "Marc Jacobs", "Matthew Williamson", "Max Mara", "Minimarket", "Mulberry", "Ralph Lauren",
+        "Rita Saardi", "Rodebjer", "Chloe", "Zadig&Voltarie", "Zara");
+    
     
     public function __construct() {
         
@@ -235,6 +241,13 @@ class Cloth {
         Db_Actions::DbUpdate("UPDATE cscart_products SET dress_type='".$productType."' WHERE product_id=$productID");
         echo 1;
     }
+    //Update brand type
+    public static function updateBrandType($productID, $productType){
+        
+        Db_Actions::DbUpdate("UPDATE cscart_products_categories SET brand_type='".$productType."' WHERE product_id=$productID");
+        Db_Actions::DbUpdate("UPDATE cscart_products SET brand_type='".$productType."' WHERE product_id=$productID");
+        echo 1;
+    }
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -262,4 +275,16 @@ if(isset($_POST['upd_cloth_type'])){
     $root_url = $config['current_location'];
     
     Cloth::updateProductType($_POST['product_id'], $_POST['cloth_tpe']);
+}
+//////////////////////////////////////////
+//Update brand type
+if(isset($_POST['upd_brand_type'])){
+    define('AREA', 'C');
+    require '../../../prepare.php';
+    require '../../../init.php';
+    require(DIR_ROOT . '/config.php');
+    require_once('../../lib/db_actions.php');
+    $root_url = $config['current_location'];
+    
+    Cloth::updateBrandType($_POST['product_id'], $_POST['brand_tpe']);
 }

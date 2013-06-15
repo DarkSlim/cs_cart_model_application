@@ -136,7 +136,7 @@ else {
                         </div>
                         <div class="cs-cat-dropd">
                             <!-- search form -->
-                            <form action="#" method="get" class="search-form">
+                            <form action="#" method="post" class="search-form">
                                 <input type="text" name="product_search" id="product_search" placeholder="Search Products" />
                             </form>
                             <div class="cs-categories">
@@ -147,12 +147,11 @@ else {
                                 foreach ($categories as $top_cat) {
                                     ?>
                                     <div class="cs-catt">
-                                        <a href="#" class="trigger-link" data-catid="<?php echo $top_cat->category_id ?>"><?php echo $top_cat->category ?></a>
+                                        <a href="#" class="trigger-link" data-catid="type">Designer</a>
                                         <ul>
                                             <?php
-                                            $sub_cats = Tools::getSubCategories($top_cat->category_id);
-                                            foreach ($sub_cats as $scat) {
-                                                ?> <li><a href="#" data-catid="<?php echo $scat->category_id ?>"><?php echo $scat->category ?></a></li><?php
+                                            foreach (Tools::$DESIGNERS as $designer) {
+                                                ?><li><a href="#" data-typedesigner="<?php echo $designer ?>"><?php echo $designer ?></a></li><?php
                                             }
                                             ?>
                                         </ul>
@@ -163,20 +162,134 @@ else {
                                 <div class="cs-catt">
                                     <a href="#" class="trigger-link" data-catid="type">Type</a>
                                     <ul>
-                                        <li><a href="#" data-typec="<?php echo $scat->category_id ?>"><?php echo $scat->category ?></a></li>
-                                        <li><a href="#" data-typec="<?php echo Tools::$DRESS_TYPE_JACKETS ?>"><?php echo Tools::$DRESS_TYPE_JACKETS ?></a></li>
-                                        <li><a href="#" data-typec="<?php echo Tools::$DRESS_TYPE_TOPS ?>"><?php echo Tools::$DRESS_TYPE_TOPS ?></a></li>
-                                        <li><a href="#" data-typec="<?php echo Tools::$DRESS_TYPE_DRESSES ?>"><?php echo Tools::$DRESS_TYPE_DRESSES ?></a></li>
-                                        <li><a href="#" data-typec="<?php echo Tools::$DRESS_TYPE_UNDERWEAR ?>"><?php echo Tools::$DRESS_TYPE_UNDERWEAR ?></a></li>
-                                        <li><a href="#" data-typec="<?php echo Tools::$DRESS_TYPE_HOSIERY ?>"><?php echo Tools::$DRESS_TYPE_HOSIERY ?></a></li>
-                                        <li><a href="#" data-typec="<?php echo Tools::$DRESS_TYPE_JEWELLERY ?>"><?php echo Tools::$DRESS_TYPE_JEWELLERY ?></a></li>
-                                        <li><a href="#" data-typec="<?php echo Tools::$DRESS_TYPE_HATS ?>"><?php echo Tools::$DRESS_TYPE_HATS ?></a></li>
-                                        <li><a href="#" data-typec="<?php echo Tools::$DRESS_TYPE_GLOVES ?>"><?php echo Tools::$DRESS_TYPE_GLOVES ?></a></li>
-                                        <li><a href="#" data-typec="<?php echo Tools::$DRESS_TYPE_BAGS ?>"><?php echo Tools::$DRESS_TYPE_BAGS ?></a></li>
-                                        <li><a href="#" data-typec="<?php echo Tools::$DRESS_TYPE_BELTS ?>"><?php echo Tools::$DRESS_TYPE_BELTS ?></a></li>
-                                        <li><a href="#" data-typec="<?php echo Tools::$DRESS_TYPE_EYEWEAR ?>"><?php echo Tools::$DRESS_TYPE_EYEWEAR ?></a></li>
-                                        <li><a href="#" data-typec="<?php echo Tools::$DRESS_TYPE_SHOES ?>"><?php echo Tools::$DRESS_TYPE_SHOES ?></a></li>
-                                        <li><a href="#" data-typec="<?php echo Tools::$DRESS_TYPE_EXTRAS ?>"><?php echo Tools::$DRESS_TYPE_EXTRAS ?></a></li>
+                                        <li><a href="#" data-typec="<?php echo Tools::$DRESS_TYPE_JACKETS ?>"><?php echo Tools::$DRESS_TYPE_JACKETS ?></a>
+                                            <ul>
+                                                <?php
+                                                foreach (Tools::$SUB_JACKETS as $cloth) {
+                                                    ?><li><a href="#" data-typec="<?php echo $cloth ?>"><?php echo $cloth ?></a><?php
+                                                }
+                                                ?>
+                                            </ul>
+                                        </li>
+                                        <li><a href="#" data-typec="<?php echo Tools::$DRESS_TYPE_TOPS ?>"><?php echo Tools::$DRESS_TYPE_TOPS ?></a>
+                                            <ul>
+                                                <?php
+                                                foreach (Tools::$SUB_TOPS as $cloth) {
+                                                    ?><li><a href="#" data-typec="<?php echo $cloth ?>"><?php echo $cloth ?></a><?php
+                                                }
+                                                ?>
+                                            </ul>
+                                        </li>
+                                        <li><a href="#" data-typec="<?php echo Tools::$DRESS_TYPE_BOTTOMS ?>"><?php echo Tools::$DRESS_TYPE_BOTTOMS ?></a>
+                                            <ul>
+                                                <?php
+                                                foreach (Tools::$SUB_BOTTOMS as $cloth) {
+                                                    ?><li><a href="#" data-typec="<?php echo $cloth ?>"><?php echo $cloth ?></a><?php
+                                                }
+                                                ?>
+                                            </ul>
+                                        </li>
+                                        <li><a href="#" data-typec="<?php echo Tools::$DRESS_TYPE_DRESSES ?>"><?php echo Tools::$DRESS_TYPE_DRESSES ?></a>
+                                             <ul>
+                                                <?php
+                                                foreach (Tools::$SUB_TOPS as $cloth) {
+                                                    ?><li><a href="#" data-typec="<?php echo $cloth ?>"><?php echo $cloth ?></a><?php
+                                                }
+                                                ?>
+                                            </ul>
+                                        </li>
+                                        <li><a href="#" data-typec="<?php echo Tools::$DRESS_TYPE_UNDERWEAR ?>"><?php echo Tools::$DRESS_TYPE_UNDERWEAR ?></a>
+                                            <ul>
+                                                <?php
+                                                foreach (Tools::$SUB_UNDERWEAR as $cloth) {
+                                                    ?><li><a href="#" data-typec="<?php echo $cloth ?>"><?php echo $cloth ?></a><?php
+                                                }
+                                                ?>
+                                            </ul>
+                                        </li>
+                                        <li><a href="#" data-typec="<?php echo Tools::$DRESS_TYPE_HOSIERY ?>"><?php echo Tools::$DRESS_TYPE_HOSIERY ?></a>
+                                            <ul>
+                                                <?php
+                                                foreach (Tools::$SUB_HOSIERY as $cloth) {
+                                                    ?><li><a href="#" data-typec="<?php echo $cloth ?>"><?php echo $cloth ?></a><?php
+                                                }
+                                                ?>
+                                            </ul>
+                                        </li>
+                                        <li><a href="#" data-typec="<?php echo Tools::$DRESS_TYPE_JEWELLERY ?>"><?php echo Tools::$DRESS_TYPE_JEWELLERY ?></a>
+                                            <ul>
+                                                <?php
+                                                foreach (Tools::$SUB_JEWELLERY as $cloth) {
+                                                    ?><li><a href="#" data-typec="<?php echo $cloth ?>"><?php echo $cloth ?></a><?php
+                                                }
+                                                ?>
+                                            </ul>
+                                        </li>
+                                        <li><a href="#" data-typec="<?php echo Tools::$DRESS_TYPE_HATS ?>"><?php echo Tools::$DRESS_TYPE_HATS ?></a>
+                                            <ul>
+                                                <?php
+                                                foreach (Tools::$SUB_HATS as $cloth) {
+                                                    ?><li><a href="#" data-typec="<?php echo $cloth ?>"><?php echo $cloth ?></a><?php
+                                                }
+                                                ?>
+                                            </ul>
+                                        </li>
+                                        <li><a href="#" data-typec="<?php echo Tools::$DRESS_TYPE_SCARVES ?>"><?php echo Tools::$DRESS_TYPE_SCARVES ?></a>
+                                            <ul>
+                                                <?php
+                                                foreach (Tools::$SUB_SCARVES as $cloth) {
+                                                    ?><li><a href="#" data-typec="<?php echo $cloth ?>"><?php echo $cloth ?></a><?php
+                                                }
+                                                ?>
+                                            </ul>
+                                        </li>
+                                        <li><a href="#" data-typec="<?php echo Tools::$DRESS_TYPE_GLOVES ?>"><?php echo Tools::$DRESS_TYPE_GLOVES ?></a>
+                                            <ul>
+                                                <?php
+                                                foreach (Tools::$SUB_GLOVES as $cloth) {
+                                                    ?><li><a href="#" data-typec="<?php echo $cloth ?>"><?php echo $cloth ?></a><?php
+                                                }
+                                                ?>
+                                            </ul>
+                                        </li>
+                                        <li><a href="#" data-typec="<?php echo Tools::$DRESS_TYPE_BAGS ?>"><?php echo Tools::$DRESS_TYPE_BAGS ?></a>
+                                            <ul>
+                                                <?php
+                                                foreach (Tools::$SUB_BAGS as $cloth) {
+                                                    ?><li><a href="#" data-typec="<?php echo $cloth ?>"><?php echo $cloth ?></a><?php
+                                                }
+                                                ?>
+                                            </ul>
+                                        </li>
+                                        <li><a href="#" data-typec="<?php echo Tools::$DRESS_TYPE_BELTS ?>"><?php echo Tools::$DRESS_TYPE_BELTS ?></a>
+                                        </li>
+                                        <li><a href="#" data-typec="<?php echo Tools::$DRESS_TYPE_EYEWEAR ?>"><?php echo Tools::$DRESS_TYPE_EYEWEAR ?></a>
+                                            <ul>
+                                                <?php
+                                                foreach (Tools::$SUB_EYEWEAR as $cloth) {
+                                                    ?><li><a href="#" data-typec="<?php echo $cloth ?>"><?php echo $cloth ?></a><?php
+                                                }
+                                                ?>
+                                            </ul>
+                                        </li>
+                                        <li><a href="#" data-typec="<?php echo Tools::$DRESS_TYPE_SHOES ?>"><?php echo Tools::$DRESS_TYPE_SHOES ?></a>
+                                            <ul>
+                                                <?php
+                                                foreach (Tools::$SUB_SHOES as $cloth) {
+                                                    ?><li><a href="#" data-typec="<?php echo $cloth ?>"><?php echo $cloth ?></a><?php
+                                                }
+                                                ?>
+                                            </ul>
+                                        </li>
+                                        <li><a href="#" data-typec="<?php echo Tools::$DRESS_TYPE_EXTRAS ?>"><?php echo Tools::$DRESS_TYPE_EXTRAS ?></a>
+                                            <ul>
+                                                <?php
+                                                foreach (Tools::$SUB_EXTRAS as $cloth) {
+                                                    ?><li><a href="#" data-typec="<?php echo $cloth ?>"><?php echo $cloth ?></a><?php
+                                                }
+                                                ?>
+                                            </ul>
+                                        </li>
                                     </ul>
                                 </div>
 
@@ -193,7 +306,7 @@ else {
             <div class="extra-info">
                 <div class="sepp"></div>
                 <div class="prd-color">Item Info</div>
-                
+
                 <div class="rem-item"><a href="#">Remove item</a></div>
             </div>
         </div>
