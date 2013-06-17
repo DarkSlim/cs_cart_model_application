@@ -213,13 +213,6 @@ require('library/cloth.php');
                                         }
                                         ?>
                                     </optgroup>
-                                    <optgroup label="<?php echo Cloth::$DRESS_TYPE_UNDERWEAR ?>">
-                                        <?php
-                                        foreach (Tools::$SUB_UNDERWEAR as $cloth) {
-                                            ?><option value="<?php echo $cloth ?>"><?php echo $cloth ?></option><?php
-                                        }
-                                        ?>
-                                    </optgroup>
                                     <optgroup label="<?php echo Cloth::$DRESS_TYPE_HOSIERY ?>">
                                         <?php
                                         foreach (Tools::$SUB_HOSIERY as $cloth) {
