@@ -179,6 +179,7 @@ require('library/cloth.php');
                             <div class="controls">
                                 <select id="dress-type" name="dress_type" class="input-xlarge">
                                     <optgroup label="<?php echo Cloth::$DRESS_TYPE_JACKETS ?>">
+                                        <option value="<?php echo Cloth::$DRESS_TYPE_JACKETS ?>"><?php echo Cloth::$DRESS_TYPE_JACKETS ?></option>
                                         <?php
                                         foreach (Tools::$SUB_JACKETS as $cloth) {
                                             ?><option value="<?php echo $cloth ?>"><?php echo $cloth ?></option><?php
@@ -186,6 +187,7 @@ require('library/cloth.php');
                                         ?>
                                     </optgroup>
                                     <optgroup label="<?php echo Cloth::$DRESS_TYPE_TOPS ?>">
+                                        <option value="<?php echo Cloth::$DRESS_TYPE_TOPS ?>"><?php echo Cloth::$DRESS_TYPE_TOPS ?></option>
                                         <?php
                                         foreach (Tools::$SUB_TOPS as $cloth) {
                                             ?><option value="<?php echo $cloth ?>"><?php echo $cloth ?></option><?php
@@ -193,6 +195,7 @@ require('library/cloth.php');
                                         ?>
                                     </optgroup>
                                     <optgroup label="<?php echo Cloth::$DRESS_TYPE_BOTTOMS ?>">
+                                        <option value="<?php echo Cloth::$DRESS_TYPE_BOTTOMS ?>"><?php echo Cloth::$DRESS_TYPE_BOTTOMS ?></option>
                                         <?php
                                         foreach (Tools::$SUB_BOTTOMS as $cloth) {
                                             ?><option value="<?php echo $cloth ?>"><?php echo $cloth ?></option><?php
@@ -200,6 +203,7 @@ require('library/cloth.php');
                                         ?>
                                     </optgroup>
                                     <optgroup label="<?php echo Cloth::$DRESS_TYPE_DRESSES ?>">
+                                        <option value="<?php echo Cloth::$DRESS_TYPE_DRESSES  ?>"><?php echo Cloth::$DRESS_TYPE_DRESSES ?></option>
                                         <?php
                                         foreach (Tools::$SUB_DRESSES as $cloth) {
                                             ?><option value="<?php echo $cloth ?>"><?php echo $cloth ?></option><?php
@@ -207,6 +211,7 @@ require('library/cloth.php');
                                         ?>
                                     </optgroup>
                                     <optgroup label="<?php echo Cloth::$DRESS_TYPE_UNDERWEAR ?>">
+                                        <option value="<?php echo Cloth::$DRESS_TYPE_UNDERWEAR  ?>"><?php echo Cloth::$DRESS_TYPE_UNDERWEAR ?></option>
                                         <?php
                                         foreach (Tools::$SUB_UNDERWEAR as $cloth) {
                                             ?><option value="<?php echo $cloth ?>"><?php echo $cloth ?></option><?php
@@ -214,6 +219,7 @@ require('library/cloth.php');
                                         ?>
                                     </optgroup>
                                     <optgroup label="<?php echo Cloth::$DRESS_TYPE_HOSIERY ?>">
+                                        <option value="<?php echo Cloth::$DRESS_TYPE_HOSIERY  ?>"><?php echo Cloth::$DRESS_TYPE_HOSIERY ?></option>
                                         <?php
                                         foreach (Tools::$SUB_HOSIERY as $cloth) {
                                             ?><option value="<?php echo $cloth ?>"><?php echo $cloth ?></option><?php
@@ -221,6 +227,7 @@ require('library/cloth.php');
                                         ?>
                                     </optgroup>
                                     <optgroup label="<?php echo Cloth::$DRESS_TYPE_JEWELLERY ?>">
+                                        <option value="<?php echo Cloth::$DRESS_TYPE_JEWELLERY  ?>"><?php echo Cloth::$DRESS_TYPE_JEWELLERY ?></option>
                                         <?php
                                         foreach (Tools::$SUB_JEWELLERY as $cloth) {
                                             ?><option value="<?php echo $cloth ?>"><?php echo $cloth ?></option><?php
@@ -228,6 +235,7 @@ require('library/cloth.php');
                                         ?>
                                     </optgroup>
                                     <optgroup label="<?php echo Cloth::$DRESS_TYPE_HATS ?>">
+                                        <option value="<?php echo Cloth::$DRESS_TYPE_HATS  ?>"><?php echo Cloth::$DRESS_TYPE_HATS ?></option>
                                         <?php
                                         foreach (Tools::$SUB_HATS as $cloth) {
                                             ?><option value="<?php echo $cloth ?>"><?php echo $cloth ?></option><?php
@@ -235,6 +243,7 @@ require('library/cloth.php');
                                         ?>
                                     </optgroup>
                                     <optgroup label="<?php echo Cloth::$DRESS_TYPE_GLOVES ?>">
+                                        <option value="<?php echo Cloth::$DRESS_TYPE_GLOVES  ?>"><?php echo Cloth::$DRESS_TYPE_GLOVES ?></option>
                                         <?php
                                         foreach (Tools::$SUB_GLOVES as $cloth) {
                                             ?><option value="<?php echo $cloth ?>"><?php echo $cloth ?></option><?php
@@ -242,6 +251,7 @@ require('library/cloth.php');
                                         ?>
                                     </optgroup>
                                     <optgroup label="<?php echo Cloth::$DRESS_TYPE_SCARVES ?>">
+                                        <option value="<?php echo Cloth::$DRESS_TYPE_SCARVES  ?>"><?php echo Cloth::$DRESS_TYPE_SCARVES ?></option>
                                         <?php
                                         foreach (Tools::$SUB_SCARVES as $cloth) {
                                             ?><option value="<?php echo $cloth ?>"><?php echo $cloth ?></option><?php
@@ -249,6 +259,7 @@ require('library/cloth.php');
                                         ?>
                                     </optgroup>
                                     <optgroup label="<?php echo Cloth::$DRESS_TYPE_BAGS ?>">
+                                        <option value="<?php echo Cloth::$DRESS_TYPE_BAGS  ?>"><?php echo Cloth::$DRESS_TYPE_BAGS ?></option>
                                         <?php
                                         foreach (Tools::$SUB_BAGS as $cloth) {
                                             ?><option value="<?php echo $cloth ?>"><?php echo $cloth ?></option><?php
@@ -257,6 +268,7 @@ require('library/cloth.php');
                                     </optgroup>
                                     <option value="<?php echo Cloth::$DRESS_TYPE_BELTS ?>"><?php echo Cloth::$DRESS_TYPE_BELTS ?></option>
                                     <optgroup label="<?php echo Cloth::$DRESS_TYPE_EYEWEAR ?>">
+                                        <option value="<?php echo Cloth::$DRESS_TYPE_EYEWEAR  ?>"><?php echo Cloth::$DRESS_TYPE_EYEWEAR ?></option>
                                         <?php
                                         foreach (Tools::$SUB_EYEWEAR as $cloth) {
                                             ?><option value="<?php echo $cloth ?>"><?php echo $cloth ?></option><?php
@@ -264,6 +276,7 @@ require('library/cloth.php');
                                         ?>
                                     </optgroup>
                                     <optgroup label="<?php echo Cloth::$DRESS_TYPE_SHOES ?>">
+                                        <option value="<?php echo Cloth::$DRESS_TYPE_SHOES  ?>"><?php echo Cloth::$DRESS_TYPE_SHOES ?></option>
                                         <?php
                                         foreach (Tools::$SUB_SHOES as $cloth) {
                                             ?><option value="<?php echo $cloth ?>"><?php echo $cloth ?></option><?php
@@ -271,6 +284,7 @@ require('library/cloth.php');
                                         ?>
                                     </optgroup>
                                      <optgroup label="<?php echo Cloth::$DRESS_TYPE_EXTRAS ?>">
+                                         <option value="<?php echo Cloth::$DRESS_TYPE_EXTRAS  ?>"><?php echo Cloth::$DRESS_TYPE_EXTRAS ?></option>
                                         <?php
                                         foreach (Tools::$SUB_EXTRAS as $cloth) {
                                             ?><option value="<?php echo $cloth ?>"><?php echo $cloth ?></option><?php
