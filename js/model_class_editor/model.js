@@ -161,7 +161,11 @@ function Model()
             this.remove_item( this.parts["__"+model_cloting_part_item.product_id+"__"] );
             return;
         }
-        this["part_"+model_cloting_part_item.dress_type] = model_cloting_part_item;
+        if(this.parts["__"+model_cloting_part_item.dress_type+"__"] != null)
+        {
+            this.remove_item( this.parts["__"+model_cloting_part_item.dress_type+"__"] );
+        }
+        this.parts["__"+model_cloting_part_item.dress_type+"__"] = model_cloting_part_item;
         //ti treba dispatch event, za da mu kaze na kartickata da stavi nov object
         this.parts.push(model_cloting_part_item);
         this.parts["__"+model_cloting_part_item.product_id+"__"] = model_cloting_part_item;
