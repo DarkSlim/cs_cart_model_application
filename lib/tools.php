@@ -452,7 +452,7 @@ class Tools {
 // Get total products count
     public static function getTotalproductsCount($cat_id) {
 //First get the products ids from the selected category
-        
+
         $dress_type = isset($_POST['product_type']) ? $_POST['product_type'] : '';
         $designer_type = isset($_POST['designer_type']) && !empty($_POST['designer_type']) ? $_POST['designer_type'] : "";
         if (isset($_POST['model_type'])) {
@@ -462,7 +462,7 @@ class Tools {
                     if (!empty($dress_type)) {
                         Db_Actions::DbSelect("SELECT DISTINCT COUNT(product_id) AS totalprds FROM cscart_products_categories WHERE category_id=260 AND dress_type='$dress_type'");
                     }
-                    else if(!empty($designer_type)){
+                    else if (!empty($designer_type)) {
                         Db_Actions::DbSelect("SELECT DISTINCT COUNT(product_id) AS totalprds FROM cscart_products_categories WHERE category_id=260 AND brand_type='$designer_type'");
                     }
                     else {
@@ -473,7 +473,7 @@ class Tools {
                     if (!empty($dress_type)) {
                         Db_Actions::DbSelect("SELECT DISTINCT COUNT(product_id) AS totalprds FROM cscart_products_categories WHERE category_id=261 AND dress_type='$dress_type'");
                     }
-                    else if(!empty($designer_type)){
+                    else if (!empty($designer_type)) {
                         Db_Actions::DbSelect("SELECT DISTINCT COUNT(product_id) AS totalprds FROM cscart_products_categories WHERE category_id=261 AND brand_type='$designer_type'");
                     }
                     else {
@@ -485,7 +485,7 @@ class Tools {
                     if (!empty($dress_type)) {
                         Db_Actions::DbSelect("SELECT DISTINCT COUNT(product_id) AS totalprds FROM cscart_products_categories WHERE category_id=260 AND dress_type='$dress_type'");
                     }
-                    else if(!empty($designer_type)){
+                    else if (!empty($designer_type)) {
                         Db_Actions::DbSelect("SELECT DISTINCT COUNT(product_id) AS totalprds FROM cscart_products_categories WHERE category_id=260 AND brand_type='$designer_type'");
                     }
                     else {
@@ -671,9 +671,9 @@ class Tools {
     }
     ///////////////////////////////////////////////////////////////////////////
     //Get dress type by product id
-    public static function GetDressTypeByID($productID=null){
-            
-        $dress_type =  Db_Actions::DbSelectRow("SELECT dress_type FROM cscart_products WHERE product_id=$productID");  
+    public static function GetDressTypeByID($productID = null) {
+
+        $dress_type = Db_Actions::DbSelectRow("SELECT dress_type FROM cscart_products WHERE product_id=$productID");
         if (!isset($dress_type->empty_result)) {
             return $dress_type->dress_type;
         }
@@ -683,16 +683,39 @@ class Tools {
     // Load recent products
     public static function loadRecentProducts($curr_page = 1) {
         $recent_products = $_SESSION['recently_viewed_products'];
+        $model_type = $_POST['model_type'];
+        switch ($model_type) {
+            case "girl":
+                Db_Actions::DbSelect("SELECT * FROM cscart_products_categories WHERE category_id=260");
+                break;
+            case "boy":
+                Db_Actions::DbSelect("SELECT * FROM cscart_products_categories WHERE category_id=261");
+                break;
+            default:
+                Db_Actions::DbSelect("SELECT * FROM cscart_products_categories WHERE category_id=260");
+                break;
+        }
+        $products_ids = Db_Actions::DbGetResults();
+        if (!isset($products_ids->empty_result)) {
+            $allowed_products = array();
+            foreach ($products_ids as $id) {
+                array_push($allowed_products, $id->product_id);
+            }
+        }
+
+
         //First get the products ids from the selected category
         $product_data = array();
         if (!empty($recent_products)) {
             foreach ($recent_products as $product) {
-                $product_data[] = array('product_id' => $product,
-                    'product_name' => self::getProductName($product),
-                    'product_image_url' => $root_url . self::getProductImage($product),
-                    'product_price' => self::getProductPrice($product),
-                    'dress_type' => self::GetDressTypeByID($product)
-                );
+                if (in_array($product, $allowed_products)) {
+                    $product_data[] = array('product_id' => $product,
+                        'product_name' => self::getProductName($product),
+                        'product_image_url' => $root_url . self::getProductImage($product),
+                        'product_price' => self::getProductPrice($product),
+                        'dress_type' => self::GetDressTypeByID($product)
+                    );
+                }
             }
             //display the products
             $max_products_per_page = 9;
@@ -706,15 +729,15 @@ class Tools {
                     }
                     ?>
                     <div class="cs-product <?php if ($counter == 2) echo 'cs-prd-middle'; ?>" product_id="<?php echo $product_item['product_id'] ?>" product_title="<?php echo $product_item['product_name'] ?>" product_price="<?php echo $product_item['product_price'] ?>" category_ids="<?php echo $product_item['category_id'] ?>" dress_type="<?php echo $product_item['dress_type'] ?>">
-                    <img src="<?php echo $product_item['product_image_url'] ?>" width="97" height="126" alt="dress" product_title="<?php echo $product_item['product_name'] ?>" class="cs-main-product-image" draggable="false" dress_type="<?php echo $product_item['dress_type'] ?>" />
-                    <h3 class="cs-product-title"><?php echo substr($product_item['product_name'], 0, 14) ?></h3>
-                    <h4 class="cs-price">$<?php echo number_format($product_item['product_price'], 2) ?></h4>
-                    <div class="cs-variations">
-                        <a href="#" class="cs-varr"><img src="img/product-images/variation-1.jpg" width="14" height="13" /></a>
-                        <a href="#" class="cs-varr"><img src="img/product-images/variation-2.jpg" width="14" height="13" /></a>
-                        <a href="#" class="cs-varr"><img src="img/product-images/variation-3.jpg" width="14" height="13" /></a>
+                        <img src="<?php echo $product_item['product_image_url'] ?>" width="97" height="126" alt="dress" product_title="<?php echo $product_item['product_name'] ?>" class="cs-main-product-image" draggable="false" dress_type="<?php echo $product_item['dress_type'] ?>" />
+                        <h3 class="cs-product-title"><?php echo substr($product_item['product_name'], 0, 14) ?></h3>
+                        <h4 class="cs-price">$<?php echo number_format($product_item['product_price'], 2) ?></h4>
+                        <div class="cs-variations">
+                            <a href="#" class="cs-varr"><img src="img/product-images/variation-1.jpg" width="14" height="13" /></a>
+                            <a href="#" class="cs-varr"><img src="img/product-images/variation-2.jpg" width="14" height="13" /></a>
+                            <a href="#" class="cs-varr"><img src="img/product-images/variation-3.jpg" width="14" height="13" /></a>
+                        </div>
                     </div>
-                </div>
                     <?php
                     if ($counter == 3) {
                         ?></div><?php

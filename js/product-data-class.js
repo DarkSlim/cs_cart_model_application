@@ -156,7 +156,7 @@ function recentlyUsedProducts() {
         $.ajax({
             url: "lib/tools.php",
             type: "post",
-            data: {load_recent_products: 1, page: 1},
+            data: {load_recent_products: 1, page: 1, model_type: modelSelected},
             success: function(data) {
                 $('.ajax-load').hide();
                 //Populate data
