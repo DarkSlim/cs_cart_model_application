@@ -669,6 +669,16 @@ class Tools {
         $max_bgs_per_page = 9;
         echo ceil(count($bg_images) / $max_bgs_per_page) < 1 ? 1 : ceil(count($bg_images) / $max_bgs_per_page);
     }
+    ///////////////////////////////////////////////////////////////////////////
+    //Get dress type by product id
+    public static function GetDressTypeByID($productID=null){
+            
+        $dress_type =  Db_Actions::DbSelectRow("SELECT dress_type FROM cscart_products WHERE product_id=$productID");  
+        if (!isset($dress_type->empty_result)) {
+            return $dress_type->dress_type;
+        }
+        return 0;
+    }
     /////////////////////////////////////////////////////////////////////////
     // Load recent products
     public static function loadRecentProducts($curr_page = 1) {
@@ -681,7 +691,7 @@ class Tools {
                     'product_name' => self::getProductName($product),
                     'product_image_url' => $root_url . self::getProductImage($product),
                     'product_price' => self::getProductPrice($product),
-                    'dress_type' => $product['dress_type']
+                    'dress_type' => self::GetDressTypeByID($product)
                 );
             }
             //display the products
@@ -695,16 +705,16 @@ class Tools {
                     ?><div class="cs-product-row"><?php
                     }
                     ?>
-                    <div class="cs-product" product_id="<?php echo $product_item['product_id'] ?>" product_title="<?php echo $product_item['product_name'] ?>" product_price="<?php echo $product_item['product_price'] ?>" category_ids="<?php echo $product_item['category_id'] ?>" dress_type="<?php echo $product_item['dress_type'] ?>">
-                        <img src="<?php echo $product_item['product_image_url'] ?>" width="97" height="126" product_title="<?php echo $product_item['product_name'] ?>" alt="dress" class="cs-main-product-image" draggable="false" dress_type="<?php echo $product_item['dress_type'] ?>" />
-                        <h3 class="cs-product-title"><?php echo substr($product_item['product_name'], 0, 14) ?></h3>
-                        <h4 class="cs-price">$<?php echo number_format($product_item['product_price'], 2) ?></h4>
-                        <div class="cs-variations">
-                            <a href="#" class="cs-varr"><img src="img/product-images/variation-1.jpg" width="14" height="13" /></a>
-                            <a href="#" class="cs-varr"><img src="img/product-images/variation-2.jpg" width="14" height="13" /></a>
-                            <a href="#" class="cs-varr"><img src="img/product-images/variation-3.jpg" width="14" height="13" /></a>
-                        </div>
+                    <div class="cs-product <?php if ($counter == 2) echo 'cs-prd-middle'; ?>" product_id="<?php echo $product_item['product_id'] ?>" product_title="<?php echo $product_item['product_name'] ?>" product_price="<?php echo $product_item['product_price'] ?>" category_ids="<?php echo $product_item['category_id'] ?>" dress_type="<?php echo $product_item['dress_type'] ?>">
+                    <img src="<?php echo $product_item['product_image_url'] ?>" width="97" height="126" alt="dress" product_title="<?php echo $product_item['product_name'] ?>" class="cs-main-product-image" draggable="false" dress_type="<?php echo $product_item['dress_type'] ?>" />
+                    <h3 class="cs-product-title"><?php echo substr($product_item['product_name'], 0, 14) ?></h3>
+                    <h4 class="cs-price">$<?php echo number_format($product_item['product_price'], 2) ?></h4>
+                    <div class="cs-variations">
+                        <a href="#" class="cs-varr"><img src="img/product-images/variation-1.jpg" width="14" height="13" /></a>
+                        <a href="#" class="cs-varr"><img src="img/product-images/variation-2.jpg" width="14" height="13" /></a>
+                        <a href="#" class="cs-varr"><img src="img/product-images/variation-3.jpg" width="14" height="13" /></a>
                     </div>
+                </div>
                     <?php
                     if ($counter == 3) {
                         ?></div><?php
