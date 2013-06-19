@@ -96,33 +96,10 @@ function Model()
             });
             return;
         }
-        /*if (this.kinetic_body_object != null)
-        {
-            this.kinetic_body_object.remove();
-        }
-        else
-        {
-            this.kinetic_body_object = new Kinetic.Image({
-                image: null,
-                x: 0,
-                y: 0
-            });
-        }*/
-        /*var image_image = new Image();
-         image_image.onload = function()
-         {
-         console.log("==>>"+$(this).width()+", "+this.width);
-         }
-         image_image.src = "http://www.google.com/intl/en_ALL/images/logo.gif";*/
         console.log("draw body image url:" + ImageModerator.loaded_images[this.path_to_body()].src +
                 "[w:" + ImageModerator.loaded_images[this.path_to_body()].image.width + ", h:"
                 + ImageModerator.loaded_images[this.path_to_body()].image.height + "]");
-        //console.log($(ImageModerator.loaded_images[this.path_to_body()].image).width());
-        /*this.kinetic_body_object.setImage(ImageModerator.loaded_images[this.path_to_body()].image);
-        //for(var i in this.kinetic_body_object){console.log(i);}
-        ModelStage.MS.layer_model.add(this.kinetic_body_object);
-        this.kinetic_body_object.moveToBottom();
-        ModelStage.MS.layer_model.draw(  );*/
+        
         this.body_sprite.setup(this.is_front_body, ImageModerator.loaded_images[this.path_to_body()].image, 
                                 ModelStage.MS.layer_model);
         this.body_sprite.moveToBottom();
@@ -159,6 +136,8 @@ function Model()
         if(this.parts["__"+model_cloting_part_item.product_id+"__"] != null)
         {
             this.remove_item( this.parts["__"+model_cloting_part_item.product_id+"__"] );
+            this.parts["__"+model_cloting_part_item.product_id+"__"] = null;
+            this.parts["__"+model_cloting_part_item.dress_type+"__"] = null;
             return;
         }
         if(this.parts["__"+model_cloting_part_item.dress_type+"__"] != null)
