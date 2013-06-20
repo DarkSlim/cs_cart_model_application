@@ -52,6 +52,7 @@ else {
     ?>var defaultCat = 260;<?php
 }
 ?>
+        var site_url = "<?php echo  $root_url; ?>";
         </script>
         <script type="text/javascript" src="js/product-data-class.js"></script>
         <script type="text/javascript" src="js/model_class_editor.js"></script>

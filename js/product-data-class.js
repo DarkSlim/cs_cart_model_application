@@ -498,7 +498,7 @@ function CartHelper() {
                         setTimeout(function() {
                             $("div.cart-success").fadeOut(500);
                             window.location = site_url + "/index.php?dispatch=checkout.cart";
-                        }, 2500);
+                        }, 800);
                     }
                 }
             });
@@ -814,5 +814,4 @@ $(window).load(function() {
     $('.add-to-cart-btn').on('click', function() {
         CartHelper.CH.addProductsToCart();
     });
-    
 })
