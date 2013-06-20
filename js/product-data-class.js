@@ -494,16 +494,20 @@ function CartHelper() {
                     $('.ajax-load2').hide();
                     if (data == 1) {
                         $("div.cart-success").show();
-                        //clothObject.clearData();
-                        setTimeout(function() {
-                            $("div.cart-success").fadeOut(500);
-                            window.location = site_url + "/index.php?dispatch=checkout.cart";
-                        }, 800);
                     }
                 }
             });
         }
 
+    }
+    this.continueShopping = function(){
+        $('.continue-shopping').click(function(event){
+            event.preventDefault();
+            $("div.cart-success").fadeOut(500);
+        })
+        $('.go-to-checkout').click(function(event){
+            $("div.cart-success").fadeOut(500);
+        })
     }
     this.colapseItems = function() {
         $('.cs-shopping-cart').css('height', 'auto');
@@ -814,4 +818,6 @@ $(window).load(function() {
     $('.add-to-cart-btn').on('click', function() {
         CartHelper.CH.addProductsToCart();
     });
+    //Continue shopping
+    CartHelper.CH.continueShopping();
 })

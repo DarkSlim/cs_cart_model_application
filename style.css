@@ -488,12 +488,11 @@ div.ajax-load2{
 }
 div.cart-success{
     width: 140px;
-    height: 20px;
-    padding: 20px 0 20px 45px;
+    padding: 10px 0 10px 45px;
     position: absolute;
-    left: 200px;
+    left: 158px;
     top: 260px;
-    background:#fff url(img/success-icon.png) 10px center no-repeat;
+    background:#fff url(img/success-icon.png) 10px 10px no-repeat;
     font-family: Helvetica, Verdana, Arial;
     color: #333;
     font-size: 11px;
@@ -502,6 +501,12 @@ div.cart-success{
     -webkit-box-shadow: 0px 0px 6px #545454;
     box-shadow:  0px 0px 6px #545454;
     display: none;
+}
+div.cart-success a{
+    display: block;
+    margin: 5px 0 5px 0;
+    padding-left: 15px;
+    background: url(img/arrow-right.png) left center no-repeat;
 }
 .cs-main-bg{
     cursor: pointer;

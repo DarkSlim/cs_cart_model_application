@@ -3,7 +3,11 @@
     <!-- cloth section -->
     <div class="ajax-load2"></div>
     <!-- products added to cart success -->
-    <div class="cart-success">Products added to cart.</div>
+    <div class="cart-success">
+        <span class="add-success">Products added to cart.</span>
+        <a href="/index.php?dispatch=checkout.cart" target="_blank" class="go-to-checkout">Go to checkout</a>
+        <a href="#" class="continue-shopping">Continue shopping</a>
+    </div>
     <div id="model_holder" class="">
         <!--Templates for the model-->
         <style>
