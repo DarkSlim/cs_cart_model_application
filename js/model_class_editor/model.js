@@ -129,6 +129,8 @@ function Model()
     {
         this.parts.splice(this.parts.indexOf(object_part_clot), 1);
         object_part_clot.destroy();
+        this.parts["__"+object_part_clot.product_id+"__"] = null;
+        this.parts["__"+object_part_clot.dress_type+"__"] = null;
         //this.parts
     }
     this.add_item = function(model_cloting_part_item)
