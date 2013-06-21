@@ -964,6 +964,5 @@ if (isset($_POST['get_prd_variations'])) {
     require_once("../lib/tools.php");
     $root_url = $config['current_location'];
     
-    echo "Color:<br />";
     Tools::getProductColorVariations($_POST['variations_product_id']);
 }

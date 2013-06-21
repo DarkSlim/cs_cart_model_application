@@ -336,27 +336,31 @@ function ProductPopups() {
             type: "post",
             data: {get_prd_variations: 1, variations_product_id: __parce_obleka_on_mouse_over__.product_id},
             success: function(data) {
-                $("#prd-popup .cs-variations").html(data);
-                $("#prd-popup .cs-variations a").click(function(e)
-                {
-                    var model_part = new ModelClothingPart(
-                            {
-                                product_id: $(this).attr("product_id"),
-                                price: $(this).attr("product_price"),
-                                product_thumb_image_url: $(this).attr("img_url"),
-                                product_title: $(this).attr("product_title"),
-                                dress_type: $(this).attr("dress_type")
-                            });
-                    ModelStage.MS.model.add_item(model_part);
-                    RedoUndoModerator.RUM.add_undo_action(
-                            {
-                                object: ModelStage.MS.model,
-                                f_string_for_object: "remove_item",
-                                object_for_function: model_part
-                            });
-                    clearTimeout(ModelStage.MS.index_interval_after_how_much_start_drag);
+                $("#prd-popup .cs-variations").html("");
+                if (data != "") {
+                    $("#prd-popup .cs-variations").html("Color:<br />" + data);
+                    $("#prd-popup .cs-variations a").click(function(e)
+                    {
+                        e.preventDefault();
+                        var model_part = new ModelClothingPart(
+                                {
+                                    product_id: $(this).attr("product_id"),
+                                    price: $(this).attr("product_price"),
+                                    product_thumb_image_url: $(this).attr("img_url"),
+                                    product_title: $(this).attr("product_title"),
+                                    dress_type: $(this).attr("dress_type")
+                                });
+                        ModelStage.MS.model.add_item(model_part);
+                        RedoUndoModerator.RUM.add_undo_action(
+                                {
+                                    object: ModelStage.MS.model,
+                                    f_string_for_object: "remove_item",
+                                    object_for_function: model_part
+                                });
+                        clearTimeout(ModelStage.MS.index_interval_after_how_much_start_drag);
 
-                });
+                    });
+                }
             }
         });
         $("#prd-popup").find('.prd-name').html(__parce_obleka_on_mouse_over__.product_title);
@@ -414,7 +418,7 @@ function ProductPopups() {
         GlobalEventor.GE.dispatch_event(GlobalEventor.ON_CLICK_BUTTON_FROM_POPUPFORM_FOR_REMOVING_PART,
                 this.object_part_cloth_for_removing___ebana_referenca_do_kliknata_eban_objekt_obleka);
     }
-    this.remove_selected_product = function()
+    this.remove_selected_product = function(event)
     {
         event.preventDefault();
         $('div.extra-info').hide();
@@ -491,7 +495,7 @@ function ProductPopups() {
         });
         //Remove item on popup button click
         $('.rem-item a').click(function(event) {
-            ProductPopups.PP.remove_selected_product();
+            ProductPopups.PP.remove_selected_product(event);
         });
     });
 
