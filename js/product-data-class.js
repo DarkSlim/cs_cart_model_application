@@ -334,9 +334,29 @@ function ProductPopups() {
         $.ajax({
             url: "lib/tools.php",
             type: "post",
-            data: {get_prd_variations : 1, variations_product_id: __parce_obleka_on_mouse_over__.product_id},
+            data: {get_prd_variations: 1, variations_product_id: __parce_obleka_on_mouse_over__.product_id},
             success: function(data) {
-               $("#prd-popup .cs-variations").html(data);
+                $("#prd-popup .cs-variations").html(data);
+                $("#prd-popup .cs-variations a").click(function(e)
+                {
+                    var model_part = new ModelClothingPart(
+                            {
+                                product_id: $(this).attr("product_id"),
+                                price: $(this).attr("product_price"),
+                                product_thumb_image_url: $(this).attr("img_url"),
+                                product_title: $(this).attr("product_title"),
+                                dress_type: $(this).attr("dress_type")
+                            });
+                    ModelStage.MS.model.add_item(model_part);
+                    RedoUndoModerator.RUM.add_undo_action(
+                            {
+                                object: ModelStage.MS.model,
+                                f_string_for_object: "remove_item",
+                                object_for_function: model_part
+                            });
+                    clearTimeout(ModelStage.MS.index_interval_after_how_much_start_drag);
+
+                });
             }
         });
         $("#prd-popup").find('.prd-name').html(__parce_obleka_on_mouse_over__.product_title);

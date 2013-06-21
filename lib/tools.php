@@ -764,7 +764,7 @@ class Tools {
             }
 
             foreach ($product_data as $variation) {
-                ?><a href="#" class="cs-varr <?php echo $variation['color'] ?>" product_id="<?php echo $variation['product_id'] ?>" product_title="<?php echo $variation['product_name'] ?>" product_price="<?php echo $variation['product_price'] ?>" dress_type="<?php echo $variation['dress_type'] ?>" ><img src="img/product-images/variation-<?php echo $variation['color'] ?>.png" width="14" height="13" /></a><?php
+                ?><a href="#" class="cs-varr <?php echo $variation['color'] ?>" product_id="<?php echo $variation['product_id'] ?>" product_title="<?php echo $variation['product_name'] ?>" product_price="<?php echo $variation['product_price'] ?>" dress_type="<?php echo $variation['dress_type'] ?>" img_url="<?php echo $variation['product_image_url'] ?>" ><img src="img/product-images/variation-<?php echo $variation['color'] ?>.png" width="14" height="13" /></a><?php
             }
         }
     }
@@ -963,6 +963,7 @@ if (isset($_POST['get_prd_variations'])) {
     require_once('../lib/db_actions.php');
     require_once("../lib/tools.php");
     $root_url = $config['current_location'];
-
+    
+    echo "Color:<br />";
     Tools::getProductColorVariations($_POST['variations_product_id']);
 }

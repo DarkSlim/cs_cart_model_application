@@ -310,7 +310,6 @@ else {
 
                 <div class="rem-item"><a href="#">Remove item</a></div>
                 <div class="colors-var">
-                    Color:<br />
                     <div class="cs-variations">
                         <img src="img/ajax-load2.gif" />
                     </div>
