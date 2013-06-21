@@ -52,7 +52,7 @@ else {
     ?>var defaultCat = 260;<?php
 }
 ?>
-        var site_url = "<?php echo  $root_url; ?>";
+            var site_url = "<?php echo $root_url; ?>";
         </script>
         <script type="text/javascript" src="js/product-data-class.js"></script>
         <script type="text/javascript" src="js/model_class_editor.js"></script>
@@ -168,8 +168,8 @@ else {
                                                 <?php
                                                 foreach (Tools::$SUB_JACKETS as $cloth) {
                                                     ?><li><a href="#" data-typec="<?php echo $cloth ?>"><?php echo $cloth ?></a><?php
-                                                }
-                                                ?>
+                                                    }
+                                                    ?>
                                             </ul>
                                         </li>
                                         <li><a href="#" data-typec="<?php echo Tools::$DRESS_TYPE_TOPS ?>"><?php echo Tools::$DRESS_TYPE_TOPS ?></a>
@@ -177,8 +177,8 @@ else {
                                                 <?php
                                                 foreach (Tools::$SUB_TOPS as $cloth) {
                                                     ?><li><a href="#" data-typec="<?php echo $cloth ?>"><?php echo $cloth ?></a><?php
-                                                }
-                                                ?>
+                                                    }
+                                                    ?>
                                             </ul>
                                         </li>
                                         <li><a href="#" data-typec="<?php echo Tools::$DRESS_TYPE_BOTTOMS ?>"><?php echo Tools::$DRESS_TYPE_BOTTOMS ?></a>
@@ -186,17 +186,17 @@ else {
                                                 <?php
                                                 foreach (Tools::$SUB_BOTTOMS as $cloth) {
                                                     ?><li><a href="#" data-typec="<?php echo $cloth ?>"><?php echo $cloth ?></a><?php
-                                                }
-                                                ?>
+                                                    }
+                                                    ?>
                                             </ul>
                                         </li>
                                         <li><a href="#" data-typec="<?php echo Tools::$DRESS_TYPE_DRESSES ?>"><?php echo Tools::$DRESS_TYPE_DRESSES ?></a>
-                                             <ul>
+                                            <ul>
                                                 <?php
                                                 foreach (Tools::$SUB_TOPS as $cloth) {
                                                     ?><li><a href="#" data-typec="<?php echo $cloth ?>"><?php echo $cloth ?></a><?php
-                                                }
-                                                ?>
+                                                    }
+                                                    ?>
                                             </ul>
                                         </li>
                                         <li><a href="#" data-typec="<?php echo Tools::$DRESS_TYPE_UNDERWEAR ?>"><?php echo Tools::$DRESS_TYPE_UNDERWEAR ?></a>
@@ -204,8 +204,8 @@ else {
                                                 <?php
                                                 foreach (Tools::$SUB_UNDERWEAR as $cloth) {
                                                     ?><li><a href="#" data-typec="<?php echo $cloth ?>"><?php echo $cloth ?></a><?php
-                                                }
-                                                ?>
+                                                    }
+                                                    ?>
                                             </ul>
                                         </li>
                                         <li><a href="#" data-typec="<?php echo Tools::$DRESS_TYPE_HOSIERY ?>"><?php echo Tools::$DRESS_TYPE_HOSIERY ?></a>
@@ -213,8 +213,8 @@ else {
                                                 <?php
                                                 foreach (Tools::$SUB_HOSIERY as $cloth) {
                                                     ?><li><a href="#" data-typec="<?php echo $cloth ?>"><?php echo $cloth ?></a><?php
-                                                }
-                                                ?>
+                                                    }
+                                                    ?>
                                             </ul>
                                         </li>
                                         <li><a href="#" data-typec="<?php echo Tools::$DRESS_TYPE_JEWELLERY ?>"><?php echo Tools::$DRESS_TYPE_JEWELLERY ?></a>
@@ -222,8 +222,8 @@ else {
                                                 <?php
                                                 foreach (Tools::$SUB_JEWELLERY as $cloth) {
                                                     ?><li><a href="#" data-typec="<?php echo $cloth ?>"><?php echo $cloth ?></a><?php
-                                                }
-                                                ?>
+                                                    }
+                                                    ?>
                                             </ul>
                                         </li>
                                         <li><a href="#" data-typec="<?php echo Tools::$DRESS_TYPE_HATS ?>"><?php echo Tools::$DRESS_TYPE_HATS ?></a>
@@ -231,8 +231,8 @@ else {
                                                 <?php
                                                 foreach (Tools::$SUB_HATS as $cloth) {
                                                     ?><li><a href="#" data-typec="<?php echo $cloth ?>"><?php echo $cloth ?></a><?php
-                                                }
-                                                ?>
+                                                    }
+                                                    ?>
                                             </ul>
                                         </li>
                                         <li><a href="#" data-typec="<?php echo Tools::$DRESS_TYPE_SCARVES ?>"><?php echo Tools::$DRESS_TYPE_SCARVES ?></a>
@@ -240,8 +240,8 @@ else {
                                                 <?php
                                                 foreach (Tools::$SUB_SCARVES as $cloth) {
                                                     ?><li><a href="#" data-typec="<?php echo $cloth ?>"><?php echo $cloth ?></a><?php
-                                                }
-                                                ?>
+                                                    }
+                                                    ?>
                                             </ul>
                                         </li>
                                         <li><a href="#" data-typec="<?php echo Tools::$DRESS_TYPE_GLOVES ?>"><?php echo Tools::$DRESS_TYPE_GLOVES ?></a>
@@ -249,8 +249,8 @@ else {
                                                 <?php
                                                 foreach (Tools::$SUB_GLOVES as $cloth) {
                                                     ?><li><a href="#" data-typec="<?php echo $cloth ?>"><?php echo $cloth ?></a><?php
-                                                }
-                                                ?>
+                                                    }
+                                                    ?>
                                             </ul>
                                         </li>
                                         <li><a href="#" data-typec="<?php echo Tools::$DRESS_TYPE_BAGS ?>"><?php echo Tools::$DRESS_TYPE_BAGS ?></a>
@@ -258,8 +258,8 @@ else {
                                                 <?php
                                                 foreach (Tools::$SUB_BAGS as $cloth) {
                                                     ?><li><a href="#" data-typec="<?php echo $cloth ?>"><?php echo $cloth ?></a><?php
-                                                }
-                                                ?>
+                                                    }
+                                                    ?>
                                             </ul>
                                         </li>
                                         <li><a href="#" data-typec="<?php echo Tools::$DRESS_TYPE_BELTS ?>"><?php echo Tools::$DRESS_TYPE_BELTS ?></a>
@@ -269,8 +269,8 @@ else {
                                                 <?php
                                                 foreach (Tools::$SUB_EYEWEAR as $cloth) {
                                                     ?><li><a href="#" data-typec="<?php echo $cloth ?>"><?php echo $cloth ?></a><?php
-                                                }
-                                                ?>
+                                                    }
+                                                    ?>
                                             </ul>
                                         </li>
                                         <li><a href="#" data-typec="<?php echo Tools::$DRESS_TYPE_SHOES ?>"><?php echo Tools::$DRESS_TYPE_SHOES ?></a>
@@ -278,8 +278,8 @@ else {
                                                 <?php
                                                 foreach (Tools::$SUB_SHOES as $cloth) {
                                                     ?><li><a href="#" data-typec="<?php echo $cloth ?>"><?php echo $cloth ?></a><?php
-                                                }
-                                                ?>
+                                                    }
+                                                    ?>
                                             </ul>
                                         </li>
                                         <li><a href="#" data-typec="<?php echo Tools::$DRESS_TYPE_EXTRAS ?>"><?php echo Tools::$DRESS_TYPE_EXTRAS ?></a>
@@ -287,8 +287,8 @@ else {
                                                 <?php
                                                 foreach (Tools::$SUB_EXTRAS as $cloth) {
                                                     ?><li><a href="#" data-typec="<?php echo $cloth ?>"><?php echo $cloth ?></a><?php
-                                                }
-                                                ?>
+                                                    }
+                                                    ?>
                                             </ul>
                                         </li>
                                     </ul>
@@ -309,6 +309,12 @@ else {
                 <div class="prd-color">Item Info</div>
 
                 <div class="rem-item"><a href="#">Remove item</a></div>
+                <div class="colors-var">
+                    Color:<br />
+                    <div class="cs-variations">
+                        <img src="img/ajax-load2.gif" />
+                    </div>
+                </div>
             </div>
         </div>
         <div class="transparent-overlay"></div>

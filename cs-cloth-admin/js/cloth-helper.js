@@ -90,7 +90,7 @@ var clothHelper = {
         var product_id = $(".prd-thumb").find('img').attr('productid');
         $('.model').find('*[data-productid="' + product_id + '"]').remove();
         //var imageSRC = "http://closse/cloth_system/img/cloth/" + product_id + "_" + clothType + colorVariation + ".png?v" + (Math.random() * 9999);
-        var imageSRC = "http://closse.jeniusinc.com/cloth_system/img/cloth/" + product_id + "_" + clothType + colorVariation + ".png?v" + (Math.random() * 9999);
+        var imageSRC = "http://closse.jeniusinc.com/cloth_system/img/cloth/" + product_id + "_" + clothType + ".png?v" + (Math.random() * 9999);
 
 
         var thumbnail = $("<img>").addClass('draggable');
@@ -142,12 +142,12 @@ var clothHelper = {
         $.ajax({
             url: "library/cloth.php",
             type: "post",
-            data: {upd_cloth_type: 1, product_id: $("#product_id").val(), cloth_tpe : $("#dress-type").val()},
+            data: {upd_cloth_type: 1, product_id: $("#product_id").val(), cloth_tpe: $("#dress-type").val()},
             success: function(data) {
-                if(data == 1){
+                if (data == 1) {
                     $(".update-result").html('Product updated');
                 }
-                
+
             }
         });
     },
@@ -158,12 +158,43 @@ var clothHelper = {
         $.ajax({
             url: "library/cloth.php",
             type: "post",
-            data: {upd_brand_type: 1, product_id: $("#product_id").val(), brand_tpe : $("#brand-type").val()},
+            data: {upd_brand_type: 1, product_id: $("#product_id").val(), brand_tpe: $("#brand-type").val()},
             success: function(data) {
-                if(data == 1){
+                if (data == 1) {
                     $(".update-result2").html('Product updated');
                 }
-                
+
+            }
+        });
+    },
+    //////////////////////////////////////////////////////////
+    //Set color variation
+    setColorVariation: function() {
+        $(".msg2").html('working...');
+        $.ajax({
+            url: "library/cloth.php",
+            type: "post",
+            data: {color_var: $("#color-variation").val(), var_product_id: $("#variation_product_id").val(), color_product_id: $("#color_product_id").val()},
+            success: function(data) {
+                if (data == 1) {
+                    $(".msg2").html('Color variation set');
+                }
+
+            }
+        });
+    },
+    //////////////////////////////////////////////////////////
+    //Remove color variation
+    removeColorVariation: function() {
+        $(".msg3").html('working...');
+        $.ajax({
+            url: "library/cloth.php",
+            type: "post",
+            data: {color_variation_to_remove: $("#color-variation-remove").val(), remove_var_product_id: $("#variation_remove_product_id").val(), remove_var: 1},
+            success: function(data) {
+                if (data == 1) {
+                    $(".msg3").html('Color variation removed');
+                }
             }
         });
     }
@@ -202,15 +233,30 @@ $(window).load(function() {
         clothHelper.changeModelType();
     });
     //Update product type
-    $("#update-btn").click(function(event){
-        if($("#product_id").val() != "" && $("#dress-type").val() != ""){
+    $("#update-btn").click(function(event) {
+        if ($("#product_id").val() != "" && $("#dress-type").val() != "") {
             clothHelper.updateClothType();
         }
     });
     //Update brand
-    $("#update-brand-btn").click(function(event){
-        if($("#product_id").val() != "" && $("#brand-type").val() != ""){
+    $("#update-brand-btn").click(function(event) {
+        if ($("#product_id").val() != "" && $("#brand-type").val() != "") {
             clothHelper.updateBrandType();
         }
     });
+    //Set color variation
+    $("#submit-btn2").click(function(event){
+        event.preventDefault();
+        if($("#color-variation").val() != "" && $("#variation_product_id").val() != "" && $("#color_product_id").val() != ""){
+            clothHelper.setColorVariation();
+        }
+    })
+    
+    //Remove color variation
+    $("#submit-btn3").click(function(event){
+        event.preventDefault();
+        if($("#variation_remove_product_id").val() != "" && $("#color-variation-remove").val() != ""){
+            clothHelper.removeColorVariation();
+        }
+    })
 })

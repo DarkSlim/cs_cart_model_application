@@ -275,9 +275,7 @@ class Tools {
                     <h3 class="cs-product-title"><?php echo substr($product_item['product_name'], 0, 14) ?></h3>
                     <h4 class="cs-price">$<?php echo number_format($product_item['product_price'], 2) ?></h4>
                     <div class="cs-variations">
-                        <a href="#" class="cs-varr"><img src="img/product-images/variation-1.jpg" width="14" height="13" /></a>
-                        <a href="#" class="cs-varr"><img src="img/product-images/variation-2.jpg" width="14" height="13" /></a>
-                        <a href="#" class="cs-varr"><img src="img/product-images/variation-3.jpg" width="14" height="13" /></a>
+                        <?php //self::getProductColorVariations($product_item['product_id']); ?>
                     </div>
                 </div>
                 <?php
@@ -402,9 +400,7 @@ class Tools {
                         <h3 class="cs-product-title"><?php echo substr($product_item['product_name'], 0, 14) ?></h3>
                         <h4 class="cs-price">$<?php echo number_format($product_item['product_price'], 2) ?></h4>
                         <div class="cs-variations">
-                            <a href="#" class="cs-varr"><img src="img/product-images/variation-1.jpg" width="14" height="13" /></a>
-                            <a href="#" class="cs-varr"><img src="img/product-images/variation-2.jpg" width="14" height="13" /></a>
-                            <a href="#" class="cs-varr"><img src="img/product-images/variation-3.jpg" width="14" height="13" /></a>
+                            <?php //self::getProductColorVariations($product_item['product_id']); ?>
                         </div>
                     </div>
                     <?php
@@ -535,9 +531,7 @@ class Tools {
                     <h3 class="cs-product-title"><?php echo substr($product_item['product_name'], 0, 14) ?></h3>
                     <h4 class="cs-price">$<?php echo number_format($product_item['product_price'], 2) ?></h4>
                     <div class="cs-variations">
-                        <a href="#" class="cs-varr"><img src="img/product-images/variation-1.jpg" width="14" height="13" /></a>
-                        <a href="#" class="cs-varr"><img src="img/product-images/variation-2.jpg" width="14" height="13" /></a>
-                        <a href="#" class="cs-varr"><img src="img/product-images/variation-3.jpg" width="14" height="13" /></a>
+                        <?php //self::getProductColorVariations($product_item['product_id']); ?>
                     </div>
                 </div>
                 <?php
@@ -733,9 +727,7 @@ class Tools {
                         <h3 class="cs-product-title"><?php echo substr($product_item['product_name'], 0, 14) ?></h3>
                         <h4 class="cs-price">$<?php echo number_format($product_item['product_price'], 2) ?></h4>
                         <div class="cs-variations">
-                            <a href="#" class="cs-varr"><img src="img/product-images/variation-1.jpg" width="14" height="13" /></a>
-                            <a href="#" class="cs-varr"><img src="img/product-images/variation-2.jpg" width="14" height="13" /></a>
-                            <a href="#" class="cs-varr"><img src="img/product-images/variation-3.jpg" width="14" height="13" /></a>
+                            <?php //self::getProductColorVariations($product_item['product_id']); ?>
                         </div>
                     </div>
                     <?php
@@ -747,6 +739,33 @@ class Tools {
         }
         else {
             echo "<h4 class='empty-result'>Nothing found.</h4>";
+        }
+    }
+    //////////////////////////////////////////////////////////
+    //Get product color variations
+    public static function getProductColorVariations($productID) {
+        Db_Actions::DbSelect("SELECT * FROM cscart_product_color_variations WHERE product_id=$productID ORDER BY id DESC");
+        $data = Db_Actions::DbGetResults();
+        if (!isset($data->empty_result)) {
+            $counter = 1;
+            $product_data = array();
+            foreach ($data as $product) {
+                if ($counter <= 3) {
+
+                    $product_data[] = array('product_id' => $product->color_product_id,
+                        'product_name' => self::getProductName($product->color_product_id),
+                        'product_image_url' => $root_url . self::getProductImage($product->color_product_id),
+                        'product_price' => self::getProductPrice($product->color_product_id),
+                        'dress_type' => self::GetDressTypeByID($product->color_product_id),
+                        'color' => $product->color_variation
+                    );
+                }
+                $counter++;
+            }
+
+            foreach ($product_data as $variation) {
+                ?><a href="#" class="cs-varr <?php echo $variation['color'] ?>" product_id="<?php echo $variation['product_id'] ?>" product_title="<?php echo $variation['product_name'] ?>" product_price="<?php echo $variation['product_price'] ?>" dress_type="<?php echo $variation['dress_type'] ?>" ><img src="img/product-images/variation-<?php echo $variation['color'] ?>.png" width="14" height="13" /></a><?php
+            }
         }
     }
 }
@@ -933,4 +952,17 @@ if (isset($_POST['search_pages_count'])) {
 
     Tools::SEARCH_PRODUCTS_COUNT();
     echo ceil(Tools::$totalSearchPages / 9);
+}
+//////////////////////////
+//Get product variations
+if (isset($_POST['get_prd_variations'])) {
+    define('AREA', 'C');
+    require '../../prepare.php';
+    require '../../init.php';
+    require(DIR_ROOT . '/config.php');
+    require_once('../lib/db_actions.php');
+    require_once("../lib/tools.php");
+    $root_url = $config['current_location'];
+
+    Tools::getProductColorVariations($_POST['variations_product_id']);
 }

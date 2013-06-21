@@ -110,15 +110,15 @@ div.cs-controls a{
 div.cs-controls a:hover{
     text-decoration: none;
 }
-div.prd-info{
+div.prd-info, div.prd-info2, div.prd-info3, div.prd-info4{
     display: block;
     padding: 10px 0 10px 0;
 }
-div.prd-info h3.prd-name{
+div.prd-info h3.prd-name, div.prd-info2 h3.prd-name, div.prd-info3 h3.prd-name, div.prd-info4 h3.prd-name{
     font-size: 13px;
     line-height: 1.2em;
 }
-div.prd-info .prd-price{
+div.prd-info .prd-price, div.prd-info2 .prd-price, div.prd-info3 .prd-price, div.prd-info4 .prd-price{
     font-size: 13px;
     line-height: 1.2em;
 }
@@ -139,8 +139,9 @@ div.prd-info .prd-price{
     margin-top: 10px;
     margin-left: 10px;
 }
-.update-result2{
+.update-result2, .msg2, .msg3{
     float: left;
     margin-top: 10px;
     margin-left: 10px;
+    color:#13a200;
 }

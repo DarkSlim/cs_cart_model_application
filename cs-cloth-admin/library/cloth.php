@@ -32,14 +32,11 @@ class Cloth {
     public static $DRESS_TYPE_SHOES = "shoes";
     //додатоци, миленици, маски, украси, и други додатоци.
     public static $DRESS_TYPE_EXTRAS = "extras";
-    
     //////////////////////////////////////////////////////////////////////////////////
     //DESIGNER
-    public static $DESIGNERS = array("Acne", "Adidas", "Alexander Wang", "Burberry Prorsum", "By Marlene Birger", "Cheap Monday", "D&G", "Diane von Furstenb","Fifth Avenue Shoe",
-        "Hugo Boss","Issey Miyake", "Karren Millen", "Thopshop", "Longchamp", "Lipsy London", "Marc Jacobs", "Matthew Williamson", "Max Mara", "Minimarket", "Mulberry", "Ralph Lauren",
+    public static $DESIGNERS = array("Acne", "Adidas", "Alexander Wang", "Burberry Prorsum", "By Marlene Birger", "Cheap Monday", "D&G", "Diane von Furstenb", "Fifth Avenue Shoe",
+        "Hugo Boss", "Issey Miyake", "Karren Millen", "Thopshop", "Longchamp", "Lipsy London", "Marc Jacobs", "Matthew Williamson", "Max Mara", "Minimarket", "Mulberry", "Ralph Lauren",
         "Rita Saardi", "Rodebjer", "Chloe", "Zadig&Voltarie", "Zara");
-    
-    
     public function __construct() {
         
     }
@@ -191,100 +188,150 @@ class Cloth {
                         <a href="#" class="cs-varr"><img src="img/product-images/variation-3.jpg" width="14" height="13" /></a>
                     </div>
                 </div>
-                <?php
-                if ($counter == 3) {
-                    ?></div><?php
-                $counter = 0;
+            <?php
+            if ($counter == 3) {
+                ?></div><?php
+                    $counter = 0;
+                }
             }
         }
-    }
-    ////////////////////////////////////////////////////////////////////////
-    //Get total products count in category
-    public static function getTotalCategoryPageCount($cat_id) {
+        ////////////////////////////////////////////////////////////////////////
+        //Get total products count in category
+        public static function getTotalCategoryPageCount($cat_id) {
 
-        $category_data = self::getCategoryData($cat_id);
-        echo ceil((int) $category_data['product_count'] / 9);
-    }
-    /////////////////////////////////////////////////
-    //parse int
-    public static function parseInt($string) {
+            $category_data = self::getCategoryData($cat_id);
+            echo ceil((int) $category_data['product_count'] / 9);
+        }
+        /////////////////////////////////////////////////
+        //parse int
+        public static function parseInt($string) {
 
-        if (preg_match('/(\d+)/', $string, $array)) {
-            return $array[1];
-        }
-        else {
-            return 0;
-        }
-    }
-    ////////////////////////////////////////////////////////////////////////
-    //Get products IDS
-    public static function getProductsIds() {
-        Db_Actions::DbSelect("SELECT product_id FROM cscart_products_categories WHERE category_id=260 OR category_id=261");
-        $result = Db_Actions::DbGetResults();
-        if (!isset($result->empty_result)) {
-            foreach ($result as $id) {
-                echo "<option value='" . $id->product_id . "'>" . $id->product_id . "</option>";
+            if (preg_match('/(\d+)/', $string, $array)) {
+                return $array[1];
+            }
+            else {
+                return 0;
             }
         }
-    }
-    //Display product data by id
-    public static function getProductInfo($productID) {
-        $html = "<h3 class='prd-name'>" . self::getProductName($productID) . "</h3>";
-        $html .= "<h3 class='prd-price'><strong>$" . number_format(self::getProductPrice($productID), 2) . "</strong></h3>";
-        $html .= "<div class='prd-thumb'><img src='" . $root_url . self::getProductImage($productID) . "' style='max-width: 120px; height: auto;' productid='" . $productID . "' /></div>";
-        echo $html;
-    }
-    //Update product type
-    public static function updateProductType($productID, $productType){
+        ////////////////////////////////////////////////////////////////////////
+        //Get products IDS
+        public static function getProductsIds() {
+            Db_Actions::DbSelect("SELECT product_id FROM cscart_products_categories WHERE category_id=260 OR category_id=261");
+            $result = Db_Actions::DbGetResults();
+            if (!isset($result->empty_result)) {
+                foreach ($result as $id) {
+                    echo "<option value='" . $id->product_id . "'>" . $id->product_id . "</option>";
+                }
+            }
+        }
+        //Display product data by id
+        public static function getProductInfo($productID) {
+            $html = "<h3 class='prd-name'>" . self::getProductName($productID) . "</h3>";
+            $html .= "<h3 class='prd-price'><strong>$" . number_format(self::getProductPrice($productID), 2) . "</strong></h3>";
+            $html .= "<div class='prd-thumb'><img src='" . $root_url . self::getProductImage($productID) . "' style='max-width: 120px; height: auto;' productid='" . $productID . "' /></div>";
+            echo $html;
+        }
+        //Update product type
+        public static function updateProductType($productID, $productType) {
+
+            Db_Actions::DbUpdate("UPDATE cscart_products_categories SET dress_type='" . $productType . "' WHERE product_id=$productID");
+            Db_Actions::DbUpdate("UPDATE cscart_products SET dress_type='" . $productType . "' WHERE product_id=$productID");
+            echo 1;
+        }
+        //Update brand type
+        public static function updateBrandType($productID, $productType) {
+
+            Db_Actions::DbUpdate("UPDATE cscart_products_categories SET brand_type='" . $productType . "' WHERE product_id=$productID");
+            Db_Actions::DbUpdate("UPDATE cscart_products SET brand_type='" . $productType . "' WHERE product_id=$productID");
+            echo 1;
+        }
+        //Set color variation
+        public static function SetProductColorVariation() {
+            //Color
+            $color = $_POST['color_var'];
+            //The product id for which the color variation will be set
+            $productID = $_POST['var_product_id'];
+            //Color product id
+            $color_product_id = $_POST['color_product_id'];
+            Db_Actions::DbInsert("INSERT INTO cscart_product_color_variations(product_id, color_product_id, color_variation) VALUES($productID, $color_product_id, '".$color."')");
+            echo 1;
+        }
         
-        Db_Actions::DbUpdate("UPDATE cscart_products_categories SET dress_type='".$productType."' WHERE product_id=$productID");
-        Db_Actions::DbUpdate("UPDATE cscart_products SET dress_type='".$productType."' WHERE product_id=$productID");
-        echo 1;
+        //Remove color variation
+        public static function RemoveProductColorVariation() {
+            //Color
+            $color = $_POST['color_variation_to_remove'];
+            //The product id for which the color variation will be set
+            $removeProductID = $_POST['remove_var_product_id'];
+            
+            if($color == "all"){
+                Db_Actions::DbDelete("DELETE FROM cscart_product_color_variations WHERE product_id=$removeProductID");
+            }
+            else{
+                Db_Actions::DbDelete("DELETE FROM cscart_product_color_variations WHERE product_id=$removeProductID AND color_variation='".$color."'");
+            }
+            echo 1;
+        }
     }
-    //Update brand type
-    public static function updateBrandType($productID, $productType){
-        
-        Db_Actions::DbUpdate("UPDATE cscart_products_categories SET brand_type='".$productType."' WHERE product_id=$productID");
-        Db_Actions::DbUpdate("UPDATE cscart_products SET brand_type='".$productType."' WHERE product_id=$productID");
-        echo 1;
-    }
-}
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //Display product info
-if (isset($_POST['get_prd_data'])) {
-    define('AREA', 'C');
-    require '../../../prepare.php';
-    require '../../../init.php';
-    require(DIR_ROOT . '/config.php');
-    require_once('../../lib/db_actions.php');
-    $root_url = $config['current_location'];
+    if (isset($_POST['get_prd_data'])) {
+        define('AREA', 'C');
+        require '../../../prepare.php';
+        require '../../../init.php';
+        require(DIR_ROOT . '/config.php');
+        require_once('../../lib/db_actions.php');
+        $root_url = $config['current_location'];
 
-    Cloth::getProductInfo($_POST['product_id']);
-}
+        Cloth::getProductInfo($_POST['product_id']);
+    }
 //////////////////////////////////////////
 //Update product type
-if(isset($_POST['upd_cloth_type'])){
-    define('AREA', 'C');
-    require '../../../prepare.php';
-    require '../../../init.php';
-    require(DIR_ROOT . '/config.php');
-    require_once('../../lib/db_actions.php');
-    $root_url = $config['current_location'];
-    
-    Cloth::updateProductType($_POST['product_id'], $_POST['cloth_tpe']);
-}
+    if (isset($_POST['upd_cloth_type'])) {
+        define('AREA', 'C');
+        require '../../../prepare.php';
+        require '../../../init.php';
+        require(DIR_ROOT . '/config.php');
+        require_once('../../lib/db_actions.php');
+        $root_url = $config['current_location'];
+
+        Cloth::updateProductType($_POST['product_id'], $_POST['cloth_tpe']);
+    }
 //////////////////////////////////////////
 //Update brand type
-if(isset($_POST['upd_brand_type'])){
-    define('AREA', 'C');
-    require '../../../prepare.php';
-    require '../../../init.php';
-    require(DIR_ROOT . '/config.php');
-    require_once('../../lib/db_actions.php');
-    $root_url = $config['current_location'];
+    if (isset($_POST['upd_brand_type'])) {
+        define('AREA', 'C');
+        require '../../../prepare.php';
+        require '../../../init.php';
+        require(DIR_ROOT . '/config.php');
+        require_once('../../lib/db_actions.php');
+        $root_url = $config['current_location'];
+
+        Cloth::updateBrandType($_POST['product_id'], $_POST['brand_tpe']);
+    }
+///////////////////////////////////////////
+//Set color variation
+    if (isset($_POST['var_product_id'])) {
+        define('AREA', 'C');
+        require '../../../prepare.php';
+        require '../../../init.php';
+        require(DIR_ROOT . '/config.php');
+        require_once('../../lib/db_actions.php');
+        $root_url = $config['current_location'];
+        Cloth::SetProductColorVariation();
+    }
+////////////////////////////////////////
+// Remove color variation
+if (isset($_POST['remove_var'])) {
+        define('AREA', 'C');
+        require '../../../prepare.php';
+        require '../../../init.php';
+        require(DIR_ROOT . '/config.php');
+        require_once('../../lib/db_actions.php');
+        $root_url = $config['current_location'];
+        Cloth::RemoveProductColorVariation();
+    }    
     
-    Cloth::updateBrandType($_POST['product_id'], $_POST['brand_tpe']);
-}

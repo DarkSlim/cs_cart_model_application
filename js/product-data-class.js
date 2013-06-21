@@ -322,15 +322,23 @@ function ProductPopups() {
     this.object_part_cloth_for_removing___ebana_referenca_do_kliknata_eban_objekt_obleka;
     //Show popup with product name and price
     /*this.showPopup = function(___ebana_referenca_do_kliknata_eban_objekt_obleka___) 
+     {
+     this.object_part_cloth_for_removing___ebana_referenca_do_kliknata_eban_objekt_obleka = ___ebana_referenca_do_kliknata_eban_objekt_obleka___;
+     $("#prd-popup").fadeIn(100);
+     $(".follower").css({'left': ModelStage.MS.position_mouse_on_window.x + 16, 'top': ModelStage.MS.position_mouse_on_window.y - 15})
+     }*/
+    this.showPopup = function(__parce_obleka_on_mouse_over__)
     {
-        this.object_part_cloth_for_removing___ebana_referenca_do_kliknata_eban_objekt_obleka = ___ebana_referenca_do_kliknata_eban_objekt_obleka___;
-        $("#prd-popup").fadeIn(100);
-        $(".follower").css({'left': ModelStage.MS.position_mouse_on_window.x + 16, 'top': ModelStage.MS.position_mouse_on_window.y - 15})
-    }*/
-    this.showPopup = function(__parce_obleka_on_mouse_over__) 
-    {
-        this.object_part_cloth_for_removing___ebana_referenca_do_kliknata_eban_objekt_obleka = 
+        this.object_part_cloth_for_removing___ebana_referenca_do_kliknata_eban_objekt_obleka =
                 __parce_obleka_on_mouse_over__;
+        $.ajax({
+            url: "lib/tools.php",
+            type: "post",
+            data: {get_prd_variations : 1, variations_product_id: __parce_obleka_on_mouse_over__.product_id},
+            success: function(data) {
+               $("#prd-popup .cs-variations").html(data);
+            }
+        });
         $("#prd-popup").find('.prd-name').html(__parce_obleka_on_mouse_over__.product_title);
         $("#prd-popup").find('.prd-price').html('$' + __parce_obleka_on_mouse_over__.price);
         $("#prd-popup .rem-item a:first").attr('product_id', __parce_obleka_on_mouse_over__.product_id);
@@ -338,7 +346,7 @@ function ProductPopups() {
         $("#prd-popup").css({'left': ModelStage.MS.position_mouse_on_window.x, 'top': ModelStage.MS.position_mouse_on_window.y});
         $("#prd-popup").addClass('follower');
     }
-    this.followPopup = function() 
+    this.followPopup = function()
     {
         $(".follower").css({'left': ModelStage.MS.position_mouse_on_window.x + 16, 'top': ModelStage.MS.position_mouse_on_window.y - 15})
     }
@@ -350,14 +358,14 @@ function ProductPopups() {
         $("div.transparent-overlay").hide();
         $('div.product-popup').hide();
     }
-    this.showProductInfo = function(object_part_cloth_for_removing) 
+    this.showProductInfo = function(object_part_cloth_for_removing)
     {
         this.object_part_cloth_for_removing___ebana_referenca_do_kliknata_eban_objekt_obleka = object_part_cloth_for_removing;
         $("#prd-popup").removeClass('follower');
         ProductPopups.PP.stopiraj_timerout_stosaka_da_ja_zatvori_ebanata_forma();
         //$('a.quick-look').show();
         ///ovaj kod ne znam so ti pravi toa be dolniot del slideDown mu pravi 
-        $('div.extra-info').slideDown('fast', function() 
+        $('div.extra-info').slideDown('fast', function()
         {
         });
         /////////////////
@@ -396,10 +404,10 @@ function ProductPopups() {
         //var productID = $(this).attr('product_id');
         //var object_part_cloth_for_removing = ModelClothingPart.ALL_PARTS["__" + productID + "__"];
         ModelStage.MS.model.remove_item(this.object_part_cloth_for_removing___ebana_referenca_do_kliknata_eban_objekt_obleka);
-        GlobalEventor.GE.dispatch_event(GlobalEventor.ON_CLICK_BUTTON_FROM_POPUPFORM_FOR_REMOVING_PART, 
-            this.object_part_cloth_for_removing___ebana_referenca_do_kliknata_eban_objekt_obleka);
+        GlobalEventor.GE.dispatch_event(GlobalEventor.ON_CLICK_BUTTON_FROM_POPUPFORM_FOR_REMOVING_PART,
+                this.object_part_cloth_for_removing___ebana_referenca_do_kliknata_eban_objekt_obleka);
     }
-    
+
     $(document).ready(function(e)
     {
         $(window).mouseover(function(e)
@@ -431,7 +439,7 @@ function ProductPopups() {
                     $('div.extra-info').slideUp('fast');
                     //$('a.quick-look').hide();
                     $("#prd-popup").removeClass('follower');
-                    GlobalEventor.GE.dispatch_event(GlobalEventor.ON_CLICK_BUTTON_FROM_POPUPFORM_FOR_REMOVING_PART, 
+                    GlobalEventor.GE.dispatch_event(GlobalEventor.ON_CLICK_BUTTON_FROM_POPUPFORM_FOR_REMOVING_PART,
                             object_part_cloth_for_removing);
                 });
 
@@ -466,8 +474,8 @@ function ProductPopups() {
             ProductPopups.PP.remove_selected_product();
         });
     });
-    
-    
+
+
 }
 
 
@@ -500,12 +508,12 @@ function CartHelper() {
         }
 
     }
-    this.continueShopping = function(){
-        $('.continue-shopping').click(function(event){
+    this.continueShopping = function() {
+        $('.continue-shopping').click(function(event) {
             event.preventDefault();
             $("div.cart-success").fadeOut(500);
         })
-        $('.go-to-checkout').click(function(event){
+        $('.go-to-checkout').click(function(event) {
             $("div.cart-success").fadeOut(500);
         })
     }
@@ -774,8 +782,8 @@ $(window).load(function() {
     {
         CartHelper.CH.colapseItems();
     });
-            
-            
+
+
 
 
 

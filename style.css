@@ -760,3 +760,7 @@ div.black-row a{
 a.quick-look{
     display: none !important;
 }
+#prd-popup .cs-variations{
+    margin-left: 0 !important;
+    padding-left: 0 !important;
+}
