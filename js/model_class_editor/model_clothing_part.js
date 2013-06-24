@@ -76,6 +76,36 @@ function ModelClothingPart(details_part)
             this.reference_clot_item.part_sprite.show_front();
         });
     }
+    
+    this.do_actions_on__mouse_up__front_part = function()
+    {
+            document.body.style.cursor = 'default';
+            if(this.do_on_mouse_up_click)
+            {
+                this.click();
+                return;
+            }
+            this.part_sprite.sprite_front_of_model.hide();
+            ModelStage.MS.layer_model_selected_part.draw();
+            $("#model_holder_selected_part").addClass("displayNone");
+            var difference_for_removing_part = 20;
+            ModelStage.MS.layer_model.draw();
+            if (Math.abs(this.part_sprite.sprite_front_of_model.getX()) > difference_for_removing_part
+                    || Math.abs(this.part_sprite.sprite_front_of_model.getY()) > difference_for_removing_part)
+            {
+                console.log('this.kinetic_clot_object_front_of.on("mouseup"), it is ready for remove clode');
+                ModelStage.MS.model.remove_item(this);
+                RedoUndoModerator.RUM.add_undo_action(
+                        {
+                            object: ModelStage.MS.model,
+                            f_string_for_object: "add_item",
+                            object_for_function: this
+                        });
+            }
+            ModelStage.MS.model.blur_of();
+            GlobalEventor.GE.dispatch_event(GlobalEventor.ON_MOUSE_OUT_FRONT_PART_CLOUTH, this);
+    }
+    
     this.setup_front_sprite_when_over_the_part = function()
     {
         this.part_sprite.sprite_front_of_model.createImageHitRegion(function() {
@@ -110,31 +140,7 @@ function ModelClothingPart(details_part)
         });
         this.part_sprite.sprite_front_of_model.on("mouseup", function()
         {
-            document.body.style.cursor = 'default';
-            if(this.reference_clot_item.do_on_mouse_up_click)
-            {
-                this.reference_clot_item.click();
-                return;
-            }
-            this.hide();
-            ModelStage.MS.layer_model_selected_part.draw();
-            $("#model_holder_selected_part").addClass("displayNone");
-            var difference_for_removing_part = 20;
-            ModelStage.MS.layer_model.draw();
-            if (Math.abs(this.getX()) > difference_for_removing_part
-                    || Math.abs(this.getY()) > difference_for_removing_part)
-            {
-                console.log('this.kinetic_clot_object_front_of.on("mouseup"), it is ready for remove clode');
-                ModelStage.MS.model.remove_item(this.reference_clot_item);
-                RedoUndoModerator.RUM.add_undo_action(
-                        {
-                            object: ModelStage.MS.model,
-                            f_string_for_object: "add_item",
-                            object_for_function: this.reference_clot_item
-                        });
-            }
-            ModelStage.MS.model.blur_of();
-            GlobalEventor.GE.dispatch_event(GlobalEventor.ON_MOUSE_OUT_FRONT_PART_CLOUTH, this.reference_clot_item);
+            this.reference_clot_item.do_actions_on__mouse_up__front_part();
         });
         this.part_sprite.sprite_front_of_model.on("mousedown", function()
         {
@@ -143,6 +149,7 @@ function ModelClothingPart(details_part)
         this.part_sprite.sprite_front_of_model.on("click", function()
         {
             //console.log("Front object CLICK event !!!");
+            //this.reference_clot_item.click();
         });
     }
     this.do_on_mouse_up_click = false;
@@ -152,7 +159,7 @@ function ModelClothingPart(details_part)
         this.do_on_mouse_up_click = true;
         clearTimeout(this.do_on_mouse_up_click_interval_timeout);
         this.do_on_mouse_up_click_interval_timeout = 
-                setTimeout("ModelClothingPart.ALL_PARTS['__"+this.product_id+"__'].stop_click_event();", 100);
+                setTimeout("ModelClothingPart.ALL_PARTS['__"+this.product_id+"__'].stop_click_event();", 300);
     }
     this.stop_click_event = function()
     {
