@@ -604,7 +604,11 @@ h4.empty-result{
 }
 .rem-item:hover
 {
-    background-color: #CCC;
+    background-color: #d59392;
+}
+.items_for_overlaping_clothes:hover
+{
+    background-color: #e8e8e8;
 }
 #prd-popup p{
     text-align: left;
@@ -620,7 +624,7 @@ h4.empty-result{
 #prd-popup div.extra-info div{
     text-align: left !important;
     margin:0 !important;
-    padding: 8px 70px 8px 10px;
+    padding: 5px;
     display: block;
 }
 #prd-popup a{
