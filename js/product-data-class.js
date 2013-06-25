@@ -415,10 +415,7 @@ function ProductPopups() {
     {
         //ovde pravis hide posle timer.
         //eve vaka treba ovde.
-        $("#prd-popup").fadeOut('fast', "", function()
-        {
-            $("#prd-popup").addClass("displayNone");
-        });
+        $("#prd-popup").fadeOut('fast');
         $('div.extra-info').slideUp('fast');
         GlobalEventor.GE.dispatch_event(GlobalEventor.ON_CLICK_BUTTON_FROM_POPUPFORM_FOR_REMOVING_PART,
                 this.object_part_cloth_for_removing___ebana_referenca_do_kliknata_eban_objekt_obleka);

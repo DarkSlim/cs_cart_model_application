@@ -309,12 +309,6 @@ else {
                 <div class="prd-color">Item Info</div>
 
                 <div class="rem-item"><a href="#">Remove item</a></div>
-                <div id="overlpaing_items_holder">
-                    <div class="items_for_overlaping_clothes"><a href="#">Wear under Skirt</a></div>
-                    <div class="items_for_overlaping_clothes"><a href="#">Wear under Skirt</a></div>
-                    <div class="items_for_overlaping_clothes"><a href="#">Wear under Skirt</a></div>
-                    <div class="items_for_overlaping_clothes"><a href="#">Wear under Skirt</a></div>
-                </div>
                 <div class="colors-var">
                     <div class="cs-variations">
                         <img src="img/ajax-load2.gif" />
