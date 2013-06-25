@@ -209,7 +209,7 @@ require('library/cloth.php');
                                         </div>
                                     </div>
                                     <div class="control-group">
-                                        <label class="control-label" for="dress-type">Choose Brand</label>
+                                        <label class="control-label" for="brand-type">Choose Brand</label>
                                         <div class="controls">
                                             <select id="brand-type" name="brand_type" class="input-xlarge">
                                                 <?php
@@ -351,6 +351,7 @@ require('library/cloth.php');
                                     <div class="control-group">
                                         <div class="controls">
                                             <input type="hidden" name="new_name" id="new-name" value="">
+                                            <input type="hidden" name="dress_type_parent" id="dress_type_parent" value="">
                                             <input type="submit" id="submit-btn" class="btn" value="Upload" />
                                         </div>
                                         <div class="msg"></div>

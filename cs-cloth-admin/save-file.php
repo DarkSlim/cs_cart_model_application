@@ -23,6 +23,10 @@ if (isset($_FILES['productimg'])) {
         //Brand type
         Db_Actions::DbUpdate("UPDATE cscart_products SET brand_type='" . $_POST['brand_type'] . "' WHERE product_id=" . $_POST['product_id']);
         Db_Actions::DbUpdate("UPDATE cscart_products_categories SET brand_type='" . $_POST['brand_type'] . "' WHERE product_id=" . $_POST['product_id']);
+        //Cloth parent cat
+        Db_Actions::DbUpdate("UPDATE cscart_products SET dress_type_parent='" . $_POST['dress_type_parent'] . "' WHERE product_id=" . $_POST['product_id']);
+        Db_Actions::DbUpdate("UPDATE cscart_products_categories SET dress_type_parent='" . $_POST['dress_type_parent'] . "' WHERE product_id=" . $_POST['product_id']);
+        
         sleep(1);
         ?><script type="text/javascript">window.top.window.uploadFinished("<?php echo $uploadedImageFilename . "." . $ext; ?>");</script><?php
     }

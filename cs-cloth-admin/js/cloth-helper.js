@@ -139,16 +139,25 @@ var clothHelper = {
     //Save cloth type
     updateClothType: function() {
         $(".update-result").html('working...');
+        var parentDressType = $("#dress-type option:selected").parent().attr('label');
         $.ajax({
             url: "library/cloth.php",
             type: "post",
-            data: {upd_cloth_type: 1, product_id: $("#product_id").val(), cloth_tpe: $("#dress-type").val()},
+            data: {upd_cloth_type: 1, product_id: $("#product_id").val(), cloth_tpe: $("#dress-type").val(), dress_type_parent : parentDressType },
             success: function(data) {
                 if (data == 1) {
                     $(".update-result").html('Product updated');
                 }
 
             }
+        });
+    },
+    //////////////////////////////////////////////////////////
+    //Update cloth type parent
+    updateClothTypeParentOnDressTypeChange: function() {
+        $("#dress-type").change(function(event){
+            var parentDressType = $("#dress-type option:selected").parent().attr('label');
+            $("#dress_type_parent").val(parentDressType);
         });
     },
     //////////////////////////////////////////////////////////
@@ -259,4 +268,6 @@ $(window).load(function() {
             clothHelper.removeColorVariation();
         }
     })
+    //Update cloth parent on dress type change
+    clothHelper.updateClothTypeParentOnDressTypeChange();
 })

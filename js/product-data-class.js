@@ -35,6 +35,8 @@ function ProductsManager() {
         $(".cs-clothes").addClass('cs-active');
         ProductsManager.PM.currentCat = defaultCat;
         var currProduct_type = (typeof event != "undefined") ? $(event.target).data('typec') : "";
+        var parentCat = 0;
+        parentCat = (typeof event != "undefined") ? $(event.target).data('parentcat') : "0";
         ProductsManager.PM.currentProductType = currProduct_type;
         //load designer if it is set
         var currDesigner = "";
@@ -45,7 +47,7 @@ function ProductsManager() {
         $.ajax({
             url: "lib/tools.php",
             type: "post",
-            data: {load_products: 1, page: ProductsManager.PM.currPageNumber, cat_id: ProductsManager.PM.currentCat, product_type: ProductsManager.PM.currentProductType, model_type: modelSelected, designer_type: currDesigner},
+            data: {load_products: 1, page: ProductsManager.PM.currPageNumber, cat_id: ProductsManager.PM.currentCat, product_type: ProductsManager.PM.currentProductType, model_type: modelSelected, designer_type: currDesigner, parent_cat : parentCat},
             success: function(data) {
                 $('.ajax-load').hide();
                 //Populate data

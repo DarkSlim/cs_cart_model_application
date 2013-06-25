@@ -329,8 +329,24 @@ class Tools {
     public static function GET_ALL_PRODUCTS_BY_TYPE($prd_type, $curr_page = 1) {
         $model_type = $_POST['model_type'];
         $designer_type = isset($_POST['designer_type']) && !empty($_POST['designer_type']) ? $_POST['designer_type'] : "";
+        $parent_cat = (isset($_POST['parent_cat']) && $_POST['parent_cat'] == 1) ? true : false;
 
-        if ($prd_type == 'no-type' && $designer_type == "") {
+        //Parent cat
+        if ($parent_cat == true) {
+            switch ($model_type) {
+                case "girl":
+                    Db_Actions::DbSelect("SELECT * FROM cscart_products_categories WHERE category_id=260 AND  dress_type_parent='".$prd_type."'");
+                    break;
+                case "boy":
+                    Db_Actions::DbSelect("SELECT * FROM cscart_products_categories WHERE category_id=261 AND  dress_type_parent='".$prd_type."'");
+                    break;
+                default:
+                    Db_Actions::DbSelect("SELECT * FROM cscart_products_categories WHERE category_id=260 AND  dress_type_parent='".$prd_type."'");
+                    break;
+            }
+            $products_ids = Db_Actions::DbGetResults();
+        }
+        else if ($prd_type == 'no-type' && $designer_type == "") {
             switch ($model_type) {
                 case "girl":
                     Db_Actions::DbSelect("SELECT * FROM cscart_products_categories WHERE category_id=260");
@@ -963,6 +979,6 @@ if (isset($_POST['get_prd_variations'])) {
     require_once('../lib/db_actions.php');
     require_once("../lib/tools.php");
     $root_url = $config['current_location'];
-    
+
     Tools::getProductColorVariations($_POST['variations_product_id']);
 }
