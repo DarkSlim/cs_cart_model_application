@@ -1,6 +1,13 @@
 function ModelClothingPart(details_part)
 {
     this.is_destroited = false;
+    /*
+     * 
+     * @type type
+     * On creating new model, into model.js is adding this 
+     * reference:this.model_reference
+     */
+    this.model_reference = null;
     this.setData = function(__details_part___)
     {
         if(__details_part___ == null)
@@ -13,10 +20,61 @@ function ModelClothingPart(details_part)
         this.price = parseFloat(__details_part___.price);
         this.product_title = __details_part___.product_title;
         this.dress_type = __details_part___.dress_type;
+        this.category_dress_type_id = __details_part___.category_dress_type_id;
+        this.subcategory_dress_type_id = __details_part___.subcategory_dress_type_id;
         //this.product_thumb_image_url, it is coming from url right parts thumbs,html src attribute
         this.product_thumb_image_url = __details_part___.product_thumb_image_url;
     }
     this.setData( details_part );
+    
+    /*
+     * 
+     * @returns {Array}
+     * It returning array of all subcategories from 
+     * attached model clothes objects into 
+     * model::parts array
+     * by this category id
+     */
+    this.array_subcategories_attached_to_model = function()
+    {
+        var subcategorijata_e_pod_actuelniot_del_obleka = true;
+        var array_subcategories = [];
+        for(var i=0;i<this.model_reference.parts.length;i++)
+        {
+            var part_reference = this.model_reference.parts[i];
+            if(part_reference.category_dress_type_id == this.category_dress_type_id
+          &&
+          array_subcategories["__"+part_reference.subcategory_dress_type_id+"__"] == null
+            )
+            {
+                array_subcategories["__"+part_reference.subcategory_dress_type_id+"__"] = 
+                        ModelStage.MS.array_layers_for_parts["__"+part_reference.subcategory_dress_type_id+"__"];
+                var layer_index = array_subcategories["__"+part_reference.subcategory_dress_type_id+"__"].layer.getZIndex();
+                var object_selected_object_layer = 
+                        ModelStage.MS.array_layers_for_parts["__"+this.subcategory_dress_type_id+"__"];
+                if(layer_index < object_selected_object_layer.layer.getZIndex())
+                {
+                    subcategorijata_e_pod_actuelniot_del_obleka = false;
+                }
+                if(array_subcategories["__"+part_reference.subcategory_dress_type_id+"__"].id == this.subcategory_dress_type_id)
+                {
+                }
+                else
+                {
+                    array_subcategories.push( array_subcategories["__"+part_reference.subcategory_dress_type_id+"__"] );
+                }
+                array_subcategories["__"+part_reference.subcategory_dress_type_id+"__"].e_pod = subcategorijata_e_pod_actuelniot_del_obleka;
+                //console.log("modelClothing, array_subcategories_attached_to_model::, layer_index:"+layer_index);
+                array_subcategories["__"+part_reference.subcategory_dress_type_id+"__"].layer_index = layer_index;
+            }
+        }
+        array_subcategories.sort(function(a, b){
+                                    if(a.layer_index < b.layer_index) return -1;
+                                    if(a.layer_index > b.layer_index) return 1;
+                                    return 0;
+                                });
+        return array_subcategories;
+    }
     this.toStringClothObject = function()
     {
         var info = "ModelClothingPart(";
@@ -51,7 +109,7 @@ function ModelClothingPart(details_part)
         }
         console.log("ModelClothingPart::create_sprite_for_this_clot:"+this.toStringClothObject()+", creating sprites started...")
         this.part_sprite.setup( ModelStage.MS.model.is_front_body, ImageModerator.loaded_images[this.path_clout()].image, 
-                                ModelStage.MS["layer_cloth_part__"+this.dress_type] );
+                                ModelStage.MS["__"+this.subcategory_dress_type_id+"__"] );
         this.part_sprite.setup_front_sprite( ModelStage.MS.layer_model_selected_part, 
                             ImageModerator.loaded_images[this.path_clout()].image );
                             
@@ -231,7 +289,7 @@ ModelClothingPart.ON_DRAG_THUMB = "ON_DRAG_THUMB";
 ModelClothingPart.ON_DROP_THUMB = "ON_DRAG_THUMB";
 ModelClothingPart.ALL_PARTS = [];
 
-//Јакни
+/*/Јакни
 ModelClothingPart.DRESS_TYPE_JACKETS="jackets";
 //Блузи
 ModelClothingPart.DRESS_TYPE_TOPS="tops";
@@ -261,7 +319,7 @@ ModelClothingPart.DRESS_TYPE_EYEWEAR="eyewear";
 //обувки
 ModelClothingPart.DRESS_TYPE_SHOES="shoes";
 //додатоци, миленици, маски, украси, и други додатоци.
-ModelClothingPart.DRESS_TYPE_EXTRAS="extras";
+ModelClothingPart.DRESS_TYPE_EXTRAS="extras";*/
 
 /*
  * Function that will close the front of part after click remove 

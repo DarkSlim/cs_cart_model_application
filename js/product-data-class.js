@@ -381,16 +381,66 @@ function ProductPopups() {
     {
         $(".follower").css({'left': ModelStage.MS.position_mouse_on_window.x + 16, 'top': ModelStage.MS.position_mouse_on_window.y - 15})
     }
-    this.showOverlay = function() {
+    this.showOverlay = function() 
+    {
         $("div.transparent-overlay").css('height', $(window).height()).show();
         $('div.product-popup').show();
     }
-    this.hideOverlay = function() {
+    this.hideOverlay = function() 
+    {
         $("div.transparent-overlay").hide();
         $('div.product-popup').hide();
     }
+    this.hideImediatly = function()
+    {
+        $('div.extra-info').hide();
+        $("#prd-popup").hide();
+        $('a.quick-look').hide();
+        GlobalEventor.GE.dispatch_event(GlobalEventor.ON_CLICK_BUTTON_FROM_POPUPFORM_FOR_REMOVING_PART,
+                this.object_part_cloth_for_removing___ebana_referenca_do_kliknata_eban_objekt_obleka);
+    }
     this.showProductInfo = function(object_part_cloth_for_removing)
     {
+        /*
+         * Wear under
+         * Wear over
+         */
+        $("#overlap_buttons_holder").html("");
+        var array_subcategories_for_selected_product = 
+            object_part_cloth_for_removing.array_subcategories_attached_to_model();
+        if(array_subcategories_for_selected_product.length >= 1)
+        {
+            $("#overlap_buttons_holder").removeClass("displayNone");
+            for(var i=0;i<array_subcategories_for_selected_product.length;i++)
+            {
+                var subcategory_object = array_subcategories_for_selected_product[i];
+                var label_before_subcategory_name = "";
+                if(subcategory_object.e_pod)
+                {
+                    label_before_subcategory_name = "Wear over ";
+                }
+                else
+                {
+                    label_before_subcategory_name = "Wear under ";
+                }
+                $("#overlap_buttons_holder").append(
+                '<div class="items_for_overlaping_clothes"><a href="#" class="items_for_overlaping_clothes_anchor" layer_index_1="'
+                            +subcategory_object.id+'" layer_index_2="'+object_part_cloth_for_removing.subcategory_dress_type_id+'">'
+                +label_before_subcategory_name+subcategory_object.label+
+                '</a></div>'
+                );
+            } 
+            $(".items_for_overlaping_clothes_anchor").click(function(me)
+            {
+                ProductPopups.PP.hideImediatly();
+                ModelStage.MS.change_index_of_two_layers( $(this).attr("layer_index_1"), $(this).attr("layer_index_2") );
+                return false;
+            });
+        }
+        else
+        {
+            $("#overlap_buttons_holder").addClass("displayNone");
+        }
         this.object_part_cloth_for_removing___ebana_referenca_do_kliknata_eban_objekt_obleka = object_part_cloth_for_removing;
         $("#prd-popup").removeClass('follower');
         ProductPopups.PP.stopiraj_timerout_stosaka_da_ja_zatvori_ebanata_forma();
@@ -413,7 +463,6 @@ function ProductPopups() {
     }
     this.stopiraj_timerout_stosaka_da_ja_zatvori_ebanata_forma = function()
     {
-        console.log(this.mi_treba_eban_index__timeout_id);
         clearTimeout(this.mi_treba_eban_index__timeout_id);
     }
     this.final_hide_popup = function()
@@ -443,20 +492,16 @@ function ProductPopups() {
     {
         $(window).mouseover(function(e)
         {
-            //console.log("mouseover window.");
         });
         $(window).mouseout(function(e)
         {
-            //console.log("mouseout window.");
         });
         $("#prd-popup").mouseover(function(me)
         {
-            console.log("mouseover popup.");
             ProductPopups.PP.stopiraj_timerout_stosaka_da_ja_zatvori_ebanata_forma();
         });
         $("#prd-popup").mouseout(function(me) {
             //napoisi ja referencata do objektot od popapot ajde
-            console.log("mouseout popup.");
             ProductPopups.PP.init_hide_popup();//eve tolku treba ovde
             /**/
         });

@@ -1,3 +1,32 @@
+<?php
+
+    require_once 'dressing_model_server/tools_dressing_model.php';
+    $all_subcategories = DB_DETAILS::ADD_ACTION("
+    SELECT * FROM cscart_dress_type_subcategory
+    ORDER BY dress_type_category_id DESC, order_number DESC
+    ", DB_DETAILS::$TYPE_SELECT);
+
+    //json_encode($all_subcategories[0]);
+    
+?>
+
+<script>
+    console.log("Console is disabled, model_holder.php.If you like to show the debuger unfroze it please.");
+    console.log = function(){}
+    <?php for($i=0;$i<count($all_subcategories);$i++){ ?>
+    var object_subcategories_details = <?php print json_encode($all_subcategories[$i]); ?>;
+    //alert(object_subcategories_details);
+    ModelStage.MS.array_layers_for_parts.push( object_subcategories_details );
+    ModelStage.MS.array_layers_for_parts[ "__"+object_subcategories_details.id+"__" ] = 
+            ModelStage.MS.array_layers_for_parts[ModelStage.MS.array_layers_for_parts.length-1];
+    /*for(var i in ModelStage.MS.array_layers_for_parts[0])
+    {
+        console.log( i+":"+ModelStage.MS.array_layers_for_parts[0][i] );
+    }*/
+    <?php } ?>
+
+</script>
+
 <div class="cs-model">
     <div id="main-bg"></div>
     <!-- cloth section -->

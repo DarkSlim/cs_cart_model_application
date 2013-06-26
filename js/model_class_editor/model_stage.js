@@ -155,7 +155,9 @@ function ModelStage()
         for(var i=0;i<this.array_layers_for_parts.length;i++)
         {
             var layer_cloth_part = 
-            this["layer_cloth_part__"+this.array_layers_for_parts[i]] = new Kinetic.Layer();
+            this.array_layers_for_parts[i].layer = 
+            this["__"+this.array_layers_for_parts[i].id+"__"] = new Kinetic.Layer();
+            //console.log(this["__"+this.array_layers_for_parts[i]+"__"].setZIndex)
             this.stage.add( layer_cloth_part );
         }
         
@@ -187,6 +189,13 @@ function ModelStage()
 
         this.background.change();
     }
+    this.change_index_of_two_layers = function(id_first_layer, id_second_layer)
+    {
+        var layer_1_index = this.array_layers_for_parts["__"+id_first_layer+"__"].layer.getZIndex();
+        var layer_2_index = this.array_layers_for_parts["__"+id_second_layer+"__"].layer.getZIndex();
+        this.array_layers_for_parts["__"+id_first_layer+"__"].layer.setZIndex( layer_2_index );
+        this.array_layers_for_parts["__"+id_second_layer+"__"].layer.setZIndex( layer_1_index );
+    }
     this.stage = null;
     this.stage_for_roll_over_parts = null;
     this.layer_background = null;
@@ -197,46 +206,8 @@ function ModelStage()
      * different type of the objects have different layer positions.
      * Because of that i am using this array.
      */
-    this.array_layers_for_parts = ["underwear", "hosiery", "bottoms", "dresses", "belts",
-                                "tops", "jewellery", "jackets", "hats", "scarves",
-                            "gloves", "bags", "eyewear", "shoes", "extras"];
+    this.array_layers_for_parts = [];
 }
 ModelStage.prototype = new Eventor();
 ModelStage.MS = new ModelStage();
 ModelStage.ON_ENTER_FRAME = "ON_ENTER_FRAME";
-
-/*
- * 
- * 
-//Јакни
-ModelClothingPart.DRESS_TYPE_JACKETS="jackets";
-//Блузи
-ModelClothingPart.DRESS_TYPE_TOPS="tops";
-//Пантолони, кратки пантолони, Фармерки, сукњи, 
-ModelClothingPart.DRESS_TYPE_BOTTOMS="bottoms";
-//фустани
-ModelClothingPart.DRESS_TYPE_DRESSES="dresses";
-//ModelClothingPart.DRESS_TYPE_SUITS="suits";
-//долна облека
-ModelClothingPart.DRESS_TYPE_UNDERWEAR="underwear";
-//хулахопки, трикотажа
-ModelClothingPart.DRESS_TYPE_HOSIERY="hosiery";
-//накит
-ModelClothingPart.DRESS_TYPE_JEWELLERY="jewellery";
-//капи
-ModelClothingPart.DRESS_TYPE_HATS="hats";
-//марами
-ModelClothingPart.DRESS_TYPE_SCARVES="scarves";
-//ракавици
-ModelClothingPart.DRESS_TYPE_GLOVES="gloves";
-//торби
-ModelClothingPart.DRESS_TYPE_BAGS="bags";
-//појаси
-ModelClothingPart.DRESS_TYPE_BELTS="belts";
-//цвикери
-ModelClothingPart.DRESS_TYPE_EYEWEAR="eyewear";
-//обувки
-ModelClothingPart.DRESS_TYPE_SHOES="shoes";
-//додатоци, миленици, маски, украси, и други додатоци.
-ModelClothingPart.DRESS_TYPE_EXTRAS="extras";
- */

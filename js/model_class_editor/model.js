@@ -4,27 +4,6 @@ function Model()
      * Ke drzi site itemi za Modelot, i tie ke bidat od klasa ModelClothingPart.
      */
     this.parts = [];
-    /*
-     * 
-     * @type type
-     * Model can hold just one part of different types of dresses.
-     * So for each dress hsould be object
-     */
-    this.part_jackets = null;
-    this.part_tops = null;
-    this.part_bottoms = null;
-    this.part_dresses = null;
-    this.part_underwear = null;
-    this.part_hosiery = null;
-    this.part_jewellery = null;
-    this.part_hats = null;
-    this.part_scarves = null;
-    this.part_gloves = null;
-    this.part_bags = null;
-    this.part_belts = null;
-    this.part_eyewear = null;
-    this.part_shoes = null;
-    this.part_extras = null;
 
     /*
      * 
@@ -39,19 +18,6 @@ function Model()
      * a ako !model_is_front za back
      */
     this.model_is_front = true;
-    this.draw = function() {
-    }
-    this.draw_back = function() {
-    }
-    this.draw_front = function() {
-    }
-
-    this.set_empty = function() {
-    }
-    this.set_front = function() {
-    }
-    this.set_back = function() {
-    }
 
     this.path_to_body_front = function()
     {
@@ -130,7 +96,7 @@ function Model()
         this.parts.splice(this.parts.indexOf(object_part_clot), 1);
         object_part_clot.destroy();
         this.parts["__"+object_part_clot.product_id+"__"] = null;
-        this.parts["__"+object_part_clot.dress_type+"__"] = null;
+        this.parts["__"+object_part_clot.subcategory_dress_type_id+"__"] = null;
         //this.parts
     }
     this.add_item = function(model_cloting_part_item)
@@ -139,17 +105,18 @@ function Model()
         {
             this.remove_item( this.parts["__"+model_cloting_part_item.product_id+"__"] );
             this.parts["__"+model_cloting_part_item.product_id+"__"] = null;
-            this.parts["__"+model_cloting_part_item.dress_type+"__"] = null;
+            this.parts["__"+model_cloting_part_item.subcategory_dress_type_id+"__"] = null;
             return;
         }
-        if(this.parts["__"+model_cloting_part_item.dress_type+"__"] != null)
+        if(this.parts["__"+model_cloting_part_item.subcategory_dress_type_id+"__"] != null)
         {
-            this.remove_item( this.parts["__"+model_cloting_part_item.dress_type+"__"] );
+            this.remove_item( this.parts["__"+model_cloting_part_item.subcategory_dress_type_id+"__"] );
         }
-        this.parts["__"+model_cloting_part_item.dress_type+"__"] = model_cloting_part_item;
+        this.parts["__"+model_cloting_part_item.subcategory_dress_type_id+"__"] = model_cloting_part_item;
         //ti treba dispatch event, za da mu kaze na kartickata da stavi nov object
-        this.parts.push(model_cloting_part_item);
+        this.parts.push( model_cloting_part_item );
         this.parts["__"+model_cloting_part_item.product_id+"__"] = model_cloting_part_item;
+        model_cloting_part_item.model_reference = this;
         this.dispatch_event(Model.ON_ADD_ITEM_TO_MODEL,
                 {
                     model_cloting_part_item: model_cloting_part_item
@@ -160,8 +127,6 @@ function Model()
          this.f_string_for_object = details.f_string_for_object;
          this.object_for_function = details.object_for_function;
          */
-    }
-    this.add_item___without_dispatch_event = function() {
     }
 
     GlobalEventor.GE.add_event(GlobalEventor.ON_REMOVE_ITEM_FROM_CART_ITEM_MODEL,
