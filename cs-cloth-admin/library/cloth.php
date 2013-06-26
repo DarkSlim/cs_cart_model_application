@@ -1,37 +1,6 @@
 <?php
 
 class Cloth {
-    //Јакни
-    public static $DRESS_TYPE_JACKETS = "jackets";
-    //Блузи
-    public static $DRESS_TYPE_TOPS = "tops";
-    //Пантолони, кратки пантолони, Фармерки, сукњи, 
-    public static $DRESS_TYPE_BOTTOMS = "bottoms";
-    //фустани
-    public static $DRESS_TYPE_DRESSES = "dresses";
-    //public static $DRESS_TYPE_SUITS="suits";
-    //долна облека
-    public static $DRESS_TYPE_UNDERWEAR = "underwear";
-    //хулахопки, трикотажа
-    public static $DRESS_TYPE_HOSIERY = "hosiery";
-    //накит
-    public static $DRESS_TYPE_JEWELLERY = "jewellery";
-    //капи
-    public static $DRESS_TYPE_HATS = "hats";
-    //марами
-    public static $DRESS_TYPE_SCARVES = "scarves";
-    //ракавици
-    public static $DRESS_TYPE_GLOVES = "gloves";
-    //торби
-    public static $DRESS_TYPE_BAGS = "bags";
-    //појаси
-    public static $DRESS_TYPE_BELTS = "belts";
-    //цвикери
-    public static $DRESS_TYPE_EYEWEAR = "eyewear";
-    //обувки
-    public static $DRESS_TYPE_SHOES = "shoes";
-    //додатоци, миленици, маски, украси, и други додатоци.
-    public static $DRESS_TYPE_EXTRAS = "extras";
     //////////////////////////////////////////////////////////////////////////////////
     //DESIGNER
     public static $DESIGNERS = array("Acne", "Adidas", "Alexander Wang", "Burberry Prorsum", "By Marlene Birger", "Cheap Monday", "D&G", "Diane von Furstenb", "Fifth Avenue Shoe",
@@ -233,12 +202,9 @@ class Cloth {
     }
     //Update product type
     public static function updateProductType($productID, $productType) {
-
-        Db_Actions::DbUpdate("UPDATE cscart_products_categories SET dress_type='" . $productType . "' WHERE product_id=$productID");
-        Db_Actions::DbUpdate("UPDATE cscart_products SET dress_type='" . $productType . "' WHERE product_id=$productID");
-        //Cloth parent cat
-        Db_Actions::DbUpdate("UPDATE cscart_products SET dress_type_parent='" . $_POST['dress_type_parent'] . "' WHERE product_id=" . $productID);
-        Db_Actions::DbUpdate("UPDATE cscart_products_categories SET dress_type_parent='" . $_POST['dress_type_parent'] . "' WHERE product_id=" . $productID);
+        $sub_category = $_POST['dress_sub_category'];
+        Db_Actions::DbUpdate("UPDATE cscart_products_categories SET category_dress_type_id='" . $productType . "', subcategory_dress_type_id='".$sub_category."' WHERE product_id=$productID");
+        Db_Actions::DbUpdate("UPDATE cscart_products SET category_dress_type_id='" . $productType . "', subcategory_dress_type_id='".$sub_category."' WHERE product_id=$productID");
         echo 1;
     }
     //Update brand type
@@ -274,6 +240,26 @@ class Cloth {
         }
         echo 1;
     }
+    //Get dress categories
+    public static function getDressCategories() {
+        Db_Actions::DbSelect("SELECT * FROM cscart_dress_type_category");
+        $result = Db_Actions::DbGetResults();
+        if (!isset($result->empty_result)) {
+            foreach ($result as $cat) {
+                ?><option value="<?php echo $cat->id ?>"><?php echo $cat->label ?></option><?php
+                }
+            }
+        }
+        //Get dress category sub categories
+        public static function getDressSubacategories($parent_cat_id) {
+            Db_Actions::DbSelect("SELECT * FROM cscart_dress_type_subcategory WHERE dress_type_category_id=$parent_cat_id");
+            $result = Db_Actions::DbGetResults();
+            if (!isset($result->empty_result)) {
+                foreach ($result as $subcat) {
+                    ?><option value="<?php echo $subcat->id ?>"><?php echo $subcat->label ?></option><?php
+            }
+        }
+    }
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -300,7 +286,7 @@ if (isset($_POST['upd_cloth_type'])) {
     require_once('../../lib/db_actions.php');
     $root_url = $config['current_location'];
 
-    Cloth::updateProductType($_POST['product_id'], $_POST['cloth_tpe']);
+    Cloth::updateProductType($_POST['product_id'], $_POST['dress_category']);
 }
 //////////////////////////////////////////
 //Update brand type
@@ -335,5 +321,16 @@ if (isset($_POST['remove_var'])) {
     require_once('../../lib/db_actions.php');
     $root_url = $config['current_location'];
     Cloth::RemoveProductColorVariation();
-}    
+} 
+//Get sub categories
+if(isset($_POST['get_sub_cats'])){
+    define('AREA', 'C');
+    require '../../../prepare.php';
+    require '../../../init.php';
+    require(DIR_ROOT . '/config.php');
+    require_once('../../lib/db_actions.php');
+    $root_url = $config['current_location'];
+    
+    Cloth::getDressSubacategories($_POST['parent_category_id']);
+}
     

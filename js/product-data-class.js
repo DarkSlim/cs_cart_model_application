@@ -63,7 +63,8 @@ function ProductsManager() {
                                 price: $(this).attr("product_price"),
                                 product_thumb_image_url: $(this).find(".cs-main-product-image").attr("src"),
                                 product_title: $(this).find(".cs-main-product-image").attr("product_title"),
-                                dress_type: $(this).find(".cs-main-product-image").attr("dress_type")
+                                category_dress_type_id: $(this).find(".cs-main-product-image").attr("category_dress_type_id"),
+                                subcategory_dress_type_id: $(this).find(".cs-main-product-image").attr("subcategory_dress_type_id")
                             });
                     /*ModelStage.MS.drag_clot_from_products_thumbs(
                      {
@@ -79,7 +80,8 @@ function ProductsManager() {
                                 price: $(this).attr("product_price"),
                                 product_thumb_image_url: $(this).find(".cs-main-product-image").attr("src"),
                                 product_title: $(this).find(".cs-main-product-image").attr("product_title"),
-                                dress_type: $(this).find(".cs-main-product-image").attr("dress_type")
+                                category_dress_type_id: $(this).find(".cs-main-product-image").attr("category_dress_type_id"),
+                                subcategory_dress_type_id: $(this).find(".cs-main-product-image").attr("subcategory_dress_type_id")
                             });
                     ModelStage.MS.model.add_item(model_part);
                     RedoUndoModerator.RUM.add_undo_action(
@@ -174,7 +176,8 @@ function recentlyUsedProducts() {
                                 price: $(this).attr("product_price"),
                                 product_thumb_image_url: $(this).find(".cs-main-product-image").attr("src"),
                                 product_title: $(this).find(".cs-main-product-image").attr("product_title"),
-                                dress_type: $(this).find(".cs-main-product-image").attr("dress_type")
+                                category_dress_type_id: $(this).find(".cs-main-product-image").attr("category_dress_type_id"),
+                                subcategory_dress_type_id: $(this).find(".cs-main-product-image").attr("subcategory_dress_type_id")
                             });
                     /*ModelStage.MS.drag_clot_from_products_thumbs(
                      {
@@ -190,7 +193,8 @@ function recentlyUsedProducts() {
                                 price: $(this).attr("product_price"),
                                 product_thumb_image_url: $(this).find(".cs-main-product-image").attr("src"),
                                 product_title: $(this).find(".cs-main-product-image").attr("product_title"),
-                                dress_type: $(this).find(".cs-main-product-image").attr("dress_type")
+                                category_dress_type_id: $(this).find(".cs-main-product-image").attr("category_dress_type_id"),
+                                subcategory_dress_type_id: $(this).find(".cs-main-product-image").attr("subcategory_dress_type_id")
                             });
                     ModelStage.MS.model.add_item(model_part);
                     RedoUndoModerator.RUM.add_undo_action(
@@ -350,7 +354,8 @@ function ProductPopups() {
                                     price: $(this).attr("product_price"),
                                     product_thumb_image_url: $(this).attr("img_url"),
                                     product_title: $(this).attr("product_title"),
-                                    dress_type: $(this).attr("dress_type")
+                                    category_dress_type_id: $(this).attr("category_dress_type_id"),
+                                    subcategory_dress_type_id: $(this).attr("subcategory_dress_type_id")
                                 });
                         ModelStage.MS.model.add_item(model_part);
                         RedoUndoModerator.RUM.add_undo_action(
@@ -617,7 +622,8 @@ function CartHelper() {
                                 price: $(this).attr("product_price"),
                                 product_thumb_image_url: $(this).find(".cs-main-product-image").attr("src"),
                                 product_title: $(this).find(".cs-main-product-image").attr("product_title"),
-                                dress_type: $(this).find(".cs-main-product-image").attr("dress_type")
+                                category_dress_type_id: $(this).find(".cs-main-product-image").attr("category_dress_type_id"),
+                                subcategory_dress_type_id: $(this).find(".cs-main-product-image").attr("subcategory_dress_type_id")
                             });
                     /*ModelStage.MS.drag_clot_from_products_thumbs(
                      {
@@ -633,7 +639,8 @@ function CartHelper() {
                                 price: $(this).attr("product_price"),
                                 product_thumb_image_url: $(this).find(".cs-main-product-image").attr("src"),
                                 product_title: $(this).find(".cs-main-product-image").attr("product_title"),
-                                dress_type: $(this).find(".cs-main-product-image").attr("dress_type")
+                                category_dress_type_id: $(this).find(".cs-main-product-image").attr("category_dress_type_id"),
+                                subcategory_dress_type_id: $(this).find(".cs-main-product-image").attr("subcategory_dress_type_id")
                             });
                     ModelStage.MS.model.add_item(model_part);
                     RedoUndoModerator.RUM.add_undo_action(

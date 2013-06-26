@@ -1,2 +1,0 @@
-Db_Actions::DbInsert("ALTER TABLE cscart_products ADD COLUMN dress_type_parent VARCHAR(255) AFTER dress_type");
-Db_Actions::DbInsert("ALTER TABLE cscart_products_categories ADD COLUMN dress_type_parent VARCHAR(255) AFTER dress_type");

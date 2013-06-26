@@ -143,7 +143,7 @@ var clothHelper = {
         $.ajax({
             url: "library/cloth.php",
             type: "post",
-            data: {upd_cloth_type: 1, product_id: $("#product_id").val(), cloth_tpe: $("#dress-type").val(), dress_type_parent : parentDressType },
+            data: {upd_cloth_type: 1, product_id: $("#product_id").val(), dress_category: $("#dress-type").val(), dress_sub_category: $("#dress_sub_category_type").val()},
             success: function(data) {
                 if (data == 1) {
                     $(".update-result").html('Product updated');
@@ -155,9 +155,9 @@ var clothHelper = {
     //////////////////////////////////////////////////////////
     //Update cloth type parent
     updateClothTypeParentOnDressTypeChange: function() {
-        $("#dress-type").change(function(event){
+        $("#dress-type").change(function(event) {
             var parentDressType = $("#dress-type option:selected").parent().attr('label');
-            $("#dress_type_parent").val(parentDressType);
+            $("#dress_sub_category").val(parentDressType);
         });
     },
     //////////////////////////////////////////////////////////
@@ -206,6 +206,21 @@ var clothHelper = {
                 }
             }
         });
+    },
+    //Get subcategories
+    getSubcategories: function() {
+        $('#dress-type').change(function() {
+            if ($(this).val() != "") {
+                $.ajax({
+                    url: "library/cloth.php",
+                    type: "post",
+                    data: {parent_category_id: $(this).val(), get_sub_cats: 1},
+                    success: function(data) {
+                        $("#dress_sub_category_type").html(data);
+                    }
+                });
+            }
+        })
     }
 }
 
@@ -254,20 +269,20 @@ $(window).load(function() {
         }
     });
     //Set color variation
-    $("#submit-btn2").click(function(event){
+    $("#submit-btn2").click(function(event) {
         event.preventDefault();
-        if($("#color-variation").val() != "" && $("#variation_product_id").val() != "" && $("#color_product_id").val() != ""){
+        if ($("#color-variation").val() != "" && $("#variation_product_id").val() != "" && $("#color_product_id").val() != "") {
             clothHelper.setColorVariation();
         }
     })
-    
+
     //Remove color variation
-    $("#submit-btn3").click(function(event){
+    $("#submit-btn3").click(function(event) {
         event.preventDefault();
-        if($("#variation_remove_product_id").val() != "" && $("#color-variation-remove").val() != ""){
+        if ($("#variation_remove_product_id").val() != "" && $("#color-variation-remove").val() != "") {
             clothHelper.removeColorVariation();
         }
     })
-    //Update cloth parent on dress type change
-    clothHelper.updateClothTypeParentOnDressTypeChange();
+    //Subcategories
+    clothHelper.getSubcategories();
 })

@@ -18,8 +18,8 @@ if (isset($_FILES['productimg'])) {
     $ext = pathinfo($uploadedImagepath, 4);
     if ($uploaded_fle_name != "") {
         //Update products table and the cloth type
-        Db_Actions::DbUpdate("UPDATE cscart_products SET dress_type='" . $_POST['dress_type'] . "' WHERE product_id=" . $_POST['product_id']);
-        Db_Actions::DbUpdate("UPDATE cscart_products_categories SET dress_type='" . $_POST['dress_type'] . "' WHERE product_id=" . $_POST['product_id']);
+        Db_Actions::DbUpdate("UPDATE cscart_products SET category_dress_type_id='" . $_POST['category_dress_type_id'] . "' WHERE product_id=" . $_POST['product_id']);
+        Db_Actions::DbUpdate("UPDATE cscart_products_categories SET category_dress_type_id='" . $_POST['category_dress_type_id'] . "' WHERE product_id=" . $_POST['product_id']);
         //Brand type
         Db_Actions::DbUpdate("UPDATE cscart_products SET brand_type='" . $_POST['brand_type'] . "' WHERE product_id=" . $_POST['product_id']);
         Db_Actions::DbUpdate("UPDATE cscart_products_categories SET brand_type='" . $_POST['brand_type'] . "' WHERE product_id=" . $_POST['product_id']);
