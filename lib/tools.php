@@ -707,7 +707,7 @@ class Tools {
                         'product_name' => self::getProductName($product),
                         'product_image_url' => $root_url . self::getProductImage($product),
                         'product_price' => self::getProductPrice($product),
-                        'category_dress_type_id' => $product['category_dress_type_id'],
+                        'category_dress_type_id' => $product->category_dress_type_id,
                         'subcategory_dress_type_id' => $product->subcategory_dress_type_id);
                 }
             }
@@ -756,8 +756,8 @@ class Tools {
                     'product_name' => self::getProductName($product->color_product_id),
                     'product_image_url' => $root_url . self::getProductImage($product->color_product_id),
                     'product_price' => self::getProductPrice($product->color_product_id),
-                    'category_dress_type_id' => $product['category_dress_type_id'],
-                    'subcategory_dress_type_id' => $product->subcategory_dress_type_id,
+                    'category_dress_type_id' => self::getCategoryDressTypeID($product->color_product_id),
+                    'subcategory_dress_type_id' => self::getSubCategoryDressTypeID($product->color_product_id),
                     'color' => $product->color_variation
                     );
                 }
@@ -765,10 +765,25 @@ class Tools {
             }
 
             foreach ($product_data as $variation) {
-                ?><a href="#" class="cs-varr <?php echo $variation['color'] ?>" product_id="<?php echo $variation['product_id'] ?>" product_title="<?php echo $variation['product_name'] ?>" product_price="<?php echo $variation['product_price'] ?>" category_dress_type_id="<?php echo $variation['category_dress_type_id'] ?>"  subcategory_dress_type_id="<?php echo $product_item['subcategory_dress_type_id'] ?>" img_url="<?php echo $variation['product_image_url'] ?>" ><img src="img/product-images/variation-<?php echo $variation['color'] ?>.png" width="14" height="13" /></a><?php
+                ?><a href="#" class="cs-varr <?php echo $variation['color'] ?>" product_id="<?php echo $variation['product_id'] ?>" product_title="<?php echo $variation['product_name'] ?>" product_price="<?php echo $variation['product_price'] ?>" category_dress_type_id="<?php echo $variation['category_dress_type_id'] ?>"  subcategory_dress_type_id="<?php echo $variation['subcategory_dress_type_id'] ?>" img_url="<?php echo $variation['product_image_url'] ?>" ><img src="img/product-images/variation-<?php echo $variation['color'] ?>.png" width="14" height="13" /></a><?php
             }
         }
     }
+    
+    public static function getCategoryDressTypeID($productID){
+         $data = Db_Actions::DbSelectRow("SELECT category_dress_type_id FROM cscart_products WHERE product_id=$productID");
+         if(!isset($data->empty_result)){
+             return $data->category_dress_type_id;
+         }
+         else return "";
+    } 
+    public static function getSubCategoryDressTypeID($productID){
+         $data = Db_Actions::DbSelectRow("SELECT subcategory_dress_type_id FROM cscart_products WHERE product_id=$productID");
+         if(!isset($data->empty_result)){
+             return $data->subcategory_dress_type_id;
+         }
+         else return "";
+    } 
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
