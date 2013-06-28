@@ -317,13 +317,13 @@ class Tools {
         if ($parent_cat == true) {
             switch ($model_type) {
                 case "girl":
-                    Db_Actions::DbSelect("SELECT * FROM cscart_products_categories WHERE category_id=260 AND  dress_type_parent='" . $prd_type . "'");
+                    Db_Actions::DbSelect("SELECT * FROM cscart_products_categories WHERE category_id=260 AND  category_dress_type_id='" . $prd_type . "'");
                     break;
                 case "boy":
-                    Db_Actions::DbSelect("SELECT * FROM cscart_products_categories WHERE category_id=261 AND  dress_type_parent='" . $prd_type . "'");
+                    Db_Actions::DbSelect("SELECT * FROM cscart_products_categories WHERE category_id=261 AND  category_dress_type_id='" . $prd_type . "'");
                     break;
                 default:
-                    Db_Actions::DbSelect("SELECT * FROM cscart_products_categories WHERE category_id=260 AND  dress_type_parent='" . $prd_type . "'");
+                    Db_Actions::DbSelect("SELECT * FROM cscart_products_categories WHERE category_id=260 AND  category_dress_type_id='" . $prd_type . "'");
                     break;
             }
             $products_ids = Db_Actions::DbGetResults();
