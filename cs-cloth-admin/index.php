@@ -356,18 +356,6 @@ require('library/cloth.php');
 
                                 <fieldset><legend>Cloth overlapping</legend>
                                     <div class="control-group">
-                                        <label class="control-label" for="variation_product_id">Select product</label>
-                                        <div class="controls">
-                                            <select id="ol_product_id" name="ol_product_id" class="input-xlarge">
-                                                <option value="">Select product</option>
-                                                <?php Cloth::getProductsIds(); ?>
-                                            </select><br />
-                                            <div class="prd-info2">
-
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="control-group">
                                         <label class="control-label" for="category_type_id">Choose Dress Category</label>
                                         <div class="controls">
                                             <select id="category_type_id" name="category_type_id" class="input-xlarge">
