@@ -47,7 +47,7 @@ function ProductsManager() {
         $.ajax({
             url: "lib/tools.php",
             type: "post",
-            data: {load_products: 1, page: ProductsManager.PM.currPageNumber, cat_id: ProductsManager.PM.currentCat, product_type: ProductsManager.PM.currentProductType, model_type: modelSelected, designer_type: currDesigner, parent_cat : parentCat},
+            data: {load_products: 1, page: ProductsManager.PM.currPageNumber, cat_id: ProductsManager.PM.currentCat, product_type: ProductsManager.PM.currentProductType, model_type: modelSelected, designer_type: currDesigner, parent_cat: parentCat},
             success: function(data) {
                 $('.ajax-load').hide();
                 //Populate data
@@ -324,18 +324,23 @@ function BodyModel() {
 ///////////////////////////////////////////////////////////////
 //popup windows
 function ProductPopups() {
-
-    this.object_part_cloth_for_removing___ebana_referenca_do_kliknata_eban_objekt_obleka;
-    //Show popup with product name and price
-    /*this.showPopup = function(___ebana_referenca_do_kliknata_eban_objekt_obleka___) 
-     {
-     this.object_part_cloth_for_removing___ebana_referenca_do_kliknata_eban_objekt_obleka = ___ebana_referenca_do_kliknata_eban_objekt_obleka___;
-     $("#prd-popup").fadeIn(100);
-     $(".follower").css({'left': ModelStage.MS.position_mouse_on_window.x + 16, 'top': ModelStage.MS.position_mouse_on_window.y - 15})
-     }*/
+    /*
+     * 
+     * @type type
+     * After hiding the popup please reference this.parce_obleka_reference_for_popup
+     * again to null.
+     */
+    this.parce_obleka_reference_for_popup = null;
+    
     this.showPopup = function(__parce_obleka_on_mouse_over__)
     {
-        this.object_part_cloth_for_removing___ebana_referenca_do_kliknata_eban_objekt_obleka =
+        console.log("ProductPopups::showPopup(object_part_cloth_for_removing)");
+        $("#prd-popup").removeClass("displayNone");
+        if (this.parce_obleka_reference_for_popup == __parce_obleka_on_mouse_over__)
+        {
+            return;
+        }
+        this.parce_obleka_reference_for_popup =
                 __parce_obleka_on_mouse_over__;
         $.ajax({
             url: "lib/tools.php",
@@ -373,7 +378,9 @@ function ProductPopups() {
         $("#prd-popup").find('.prd-name').html(__parce_obleka_on_mouse_over__.product_title);
         $("#prd-popup").find('.prd-price').html('$' + __parce_obleka_on_mouse_over__.price);
         $("#prd-popup .rem-item a:first").attr('product_id', __parce_obleka_on_mouse_over__.product_id);
-        $("#prd-popup").css('opacity', 0).show().stop().animate({'opacity': 1}, 400);
+        //$("#prd-popup").stop();
+        $("#prd-popup").css('opacity', 1);
+        //$("#prd-popup").css('opacity', 0).show().stop().animate({'opacity': 1}, 1);
         $("#prd-popup").css({'left': ModelStage.MS.position_mouse_on_window.x, 'top': ModelStage.MS.position_mouse_on_window.y});
         $("#prd-popup").addClass('follower');
     }
@@ -381,41 +388,43 @@ function ProductPopups() {
     {
         $(".follower").css({'left': ModelStage.MS.position_mouse_on_window.x + 16, 'top': ModelStage.MS.position_mouse_on_window.y - 15})
     }
-    this.showOverlay = function() 
+    this.showOverlay = function()
     {
         $("div.transparent-overlay").css('height', $(window).height()).show();
         $('div.product-popup').show();
     }
-    this.hideOverlay = function() 
+    /*this.hideOverlay = function()
     {
         $("div.transparent-overlay").hide();
         $('div.product-popup').hide();
-    }
+    }*/
     this.hideImediatly = function()
     {
         $('div.extra-info').hide();
         $("#prd-popup").hide();
         $('a.quick-look').hide();
         GlobalEventor.GE.dispatch_event(GlobalEventor.ON_CLICK_BUTTON_FROM_POPUPFORM_FOR_REMOVING_PART,
-                this.object_part_cloth_for_removing___ebana_referenca_do_kliknata_eban_objekt_obleka);
+                this.parce_obleka_reference_for_popup);
     }
     this.showProductInfo = function(object_part_cloth_for_removing)
     {
+        console.log("ProductPopups::showProductInfo(object_part_cloth_for_removing)");
+        $("#prd-popup").removeClass("displayNone");
         /*
          * Wear under
          * Wear over
          */
         $("#overlap_buttons_holder").html("");
-        var array_subcategories_for_selected_product = 
-            object_part_cloth_for_removing.array_subcategories_attached_to_model();
-        if(array_subcategories_for_selected_product.length >= 1)
+        var array_subcategories_for_selected_product =
+                object_part_cloth_for_removing.array_subcategories_attached_to_model();
+        if (array_subcategories_for_selected_product.length >= 1)
         {
             $("#overlap_buttons_holder").removeClass("displayNone");
-            for(var i=0;i<array_subcategories_for_selected_product.length;i++)
+            for (var i = 0; i < array_subcategories_for_selected_product.length; i++)
             {
                 var subcategory_object = array_subcategories_for_selected_product[i];
                 var label_before_subcategory_name = "";
-                if(subcategory_object.e_pod)
+                if (subcategory_object.e_pod)
                 {
                     label_before_subcategory_name = "Wear over ";
                 }
@@ -424,16 +433,16 @@ function ProductPopups() {
                     label_before_subcategory_name = "Wear under ";
                 }
                 $("#overlap_buttons_holder").append(
-                '<div class="items_for_overlaping_clothes"><a href="#" class="items_for_overlaping_clothes_anchor" layer_index_1="'
-                            +subcategory_object.id+'" layer_index_2="'+object_part_cloth_for_removing.subcategory_dress_type_id+'">'
-                +label_before_subcategory_name+subcategory_object.label+
-                '</a></div>'
-                );
-            } 
+                        '<div class="items_for_overlaping_clothes"><a href="#" class="items_for_overlaping_clothes_anchor" layer_index_1="'
+                        + subcategory_object.id + '" layer_index_2="' + object_part_cloth_for_removing.subcategory_dress_type_id + '">'
+                        + label_before_subcategory_name + subcategory_object.label +
+                        '</a></div>'
+                        );
+            }
             $(".items_for_overlaping_clothes_anchor").click(function(me)
             {
                 ProductPopups.PP.hideImediatly();
-                ModelStage.MS.change_index_of_two_layers( $(this).attr("layer_index_1"), $(this).attr("layer_index_2") );
+                ModelStage.MS.change_index_of_two_layers($(this).attr("layer_index_1"), $(this).attr("layer_index_2"));
                 return false;
             });
         }
@@ -441,7 +450,7 @@ function ProductPopups() {
         {
             $("#overlap_buttons_holder").addClass("displayNone");
         }
-        this.object_part_cloth_for_removing___ebana_referenca_do_kliknata_eban_objekt_obleka = object_part_cloth_for_removing;
+        this.parce_obleka_reference_for_popup = object_part_cloth_for_removing;
         $("#prd-popup").removeClass('follower');
         ProductPopups.PP.stopiraj_timerout_stosaka_da_ja_zatvori_ebanata_forma();
         //$('a.quick-look').show();
@@ -459,7 +468,18 @@ function ProductPopups() {
     {
         this.mi_treba_eban_index__timeout_id = setTimeout(/*function() {
          
-         }*/"ProductPopups.PP.final_hide_popup();", 1000);
+         }*/"ProductPopups.PP.final_hide_popup();", 100);
+    }
+    this.hide_popup_on_out_of_front_part_cloth = function()
+    {
+        /*$("#prd-popup").stop().animate({'opacity': 0}, 100, function()
+        {
+        });*/
+        $("#prd-popup").addClass( "displayNone" );
+        $('div.extra-info').slideUp('fast');
+        //$('a.quick-look').hide();
+        $("#prd-popup").removeClass('follower'); 
+        this.parce_obleka_reference_for_popup = null;
     }
     this.stopiraj_timerout_stosaka_da_ja_zatvori_ebanata_forma = function()
     {
@@ -469,23 +489,25 @@ function ProductPopups() {
     {
         //ovde pravis hide posle timer.
         //eve vaka treba ovde.
-        $("#prd-popup").fadeOut('fast');
-        $('div.extra-info').slideUp('fast');
+        $("#prd-popup").addClass( "displayNone" );
+        $('div.extra-info').slideUp(1);
         GlobalEventor.GE.dispatch_event(GlobalEventor.ON_CLICK_BUTTON_FROM_POPUPFORM_FOR_REMOVING_PART,
-                this.object_part_cloth_for_removing___ebana_referenca_do_kliknata_eban_objekt_obleka);
+                this.parce_obleka_reference_for_popup);
+        this.parce_obleka_reference_for_popup = null;
     }
     this.remove_selected_product = function(event)
     {
         event.preventDefault();
         $('div.extra-info').hide();
-        $("#prd-popup").hide();
+        //$("#prd-popup").hide();
+        $("#prd-popup").addClass( "displayNone" );
         $('a.quick-look').hide();
         //$("#prd-popup").addClass('follower');
         //var productID = $(this).attr('product_id');
         //var object_part_cloth_for_removing = ModelClothingPart.ALL_PARTS["__" + productID + "__"];
-        ModelStage.MS.model.remove_item(this.object_part_cloth_for_removing___ebana_referenca_do_kliknata_eban_objekt_obleka);
+        ModelStage.MS.model.remove_item(this.parce_obleka_reference_for_popup);
         GlobalEventor.GE.dispatch_event(GlobalEventor.ON_CLICK_BUTTON_FROM_POPUPFORM_FOR_REMOVING_PART,
-                this.object_part_cloth_for_removing___ebana_referenca_do_kliknata_eban_objekt_obleka);
+                this.parce_obleka_reference_for_popup);
     }
 
     $(document).ready(function(e)
@@ -500,7 +522,13 @@ function ProductPopups() {
         {
             ProductPopups.PP.stopiraj_timerout_stosaka_da_ja_zatvori_ebanata_forma();
         });
-        $("#prd-popup").mouseout(function(me) {
+        $("#prd-popup").mouseover(function(me)
+        {
+            ModelClothingPart.I_AM_OVER_POPUP_FORM = true;
+        });
+        $("#prd-popup").mouseout(function(me)
+        {
+            ModelClothingPart.I_AM_OVER_POPUP_FORM = false;
             //napoisi ja referencata do objektot od popapot ajde
             ProductPopups.PP.init_hide_popup();//eve tolku treba ovde
             /**/
@@ -510,13 +538,11 @@ function ProductPopups() {
                     ProductPopups.PP.showPopup(__on_mouse_over_selected_part__);
                 });
         GlobalEventor.GE.add_event(GlobalEventor.ON_MOUSE_OUT_FRONT_PART_CLOUTH,
-                function(object_part_cloth_for_removing) {
-                    $("#prd-popup").stop().animate({'opacity': 0}, 400);
-                    $('div.extra-info').slideUp('fast');
-                    //$('a.quick-look').hide();
-                    $("#prd-popup").removeClass('follower');
-                    GlobalEventor.GE.dispatch_event(GlobalEventor.ON_CLICK_BUTTON_FROM_POPUPFORM_FOR_REMOVING_PART,
-                            object_part_cloth_for_removing);
+                function(object_part_cloth_for_removing) 
+                {
+                    ProductPopups.PP.hide_popup_on_out_of_front_part_cloth();
+                    /*GlobalEventor.GE.dispatch_event(GlobalEventor.ON_CLICK_BUTTON_FROM_POPUPFORM_FOR_REMOVING_PART,
+                            object_part_cloth_for_removing);*/
                 });
 
         GlobalEventor.GE.add_event(GlobalEventor.ON_CLICKED_FRONT_PART_CLOUTH,
@@ -536,9 +562,9 @@ function ProductPopups() {
             })
             $(bg).attr('src', 'img/transprent-bg.png');
         });
-        $("div.close-popup").click(function(event) {
+        /*$("div.close-popup").click(function(event) {
             ProductPopups.PP.hideOverlay();
-        });
+        });*/
         $("#prd-popup").mouseout(function() {
             /*$('div.extra-info').slideUp('fast');
              $("#prd-popup").hide();

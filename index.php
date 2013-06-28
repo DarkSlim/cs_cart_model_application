@@ -173,7 +173,7 @@ else {
                 </div>
             </div>
         </div>
-        <div id="prd-popup" class="follower">
+        <div id="prd-popup" class="follower displayNone">
             <a href="#" class="quick-look">Quick Look</a>
             <p class="prd-name"></p>
             <!-- <p class="prd-price">$12.49</p> -->

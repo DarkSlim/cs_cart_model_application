@@ -16,6 +16,10 @@ $(document).ready(function(e)
         ModelStage.MS.position_mouse_on_window = new Point(e.pageX, e.pageY);
         //console.log(ModelStage.MS.position_mouse_on_window.x)
     });
+    ModelStage.MS.add_event(ModelStage.ON_ENTER_FRAME, function(e)
+    {
+        //ModelStage.MS.position_mouse_on_window = new Point(0, 0);
+    });
     $("#dragable_image_temp_temp").mouseup(function(e)
     {
         ModelStage.MS.drop_thumb_draged_from_right_products();

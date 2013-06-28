@@ -22,6 +22,7 @@ function ModelClothingPart(details_part)
         this.dress_type = __details_part___.dress_type;
         this.category_dress_type_id = __details_part___.category_dress_type_id;
         this.subcategory_dress_type_id = __details_part___.subcategory_dress_type_id;
+        this.subcategory_overlpaing_subcategories_IDs = __details_part___.subcategory_dress_type_id;
         //this.product_thumb_image_url, it is coming from url right parts thumbs,html src attribute
         this.product_thumb_image_url = __details_part___.product_thumb_image_url;
     }
@@ -289,37 +290,7 @@ ModelClothingPart.ON_DRAG_THUMB = "ON_DRAG_THUMB";
 ModelClothingPart.ON_DROP_THUMB = "ON_DRAG_THUMB";
 ModelClothingPart.ALL_PARTS = [];
 
-/*/Јакни
-ModelClothingPart.DRESS_TYPE_JACKETS="jackets";
-//Блузи
-ModelClothingPart.DRESS_TYPE_TOPS="tops";
-//Пантолони, кратки пантолони, Фармерки, сукњи, 
-ModelClothingPart.DRESS_TYPE_BOTTOMS="bottoms";
-//фустани
-ModelClothingPart.DRESS_TYPE_DRESSES="dresses";
-//ModelClothingPart.DRESS_TYPE_SUITS="suits";
-//долна облека
-ModelClothingPart.DRESS_TYPE_UNDERWEAR="underwear";
-//хулахопки, трикотажа
-ModelClothingPart.DRESS_TYPE_HOSIERY="hosiery";
-//накит
-ModelClothingPart.DRESS_TYPE_JEWELLERY="jewellery";
-//капи
-ModelClothingPart.DRESS_TYPE_HATS="hats";
-//марами
-ModelClothingPart.DRESS_TYPE_SCARVES="scarves";
-//ракавици
-ModelClothingPart.DRESS_TYPE_GLOVES="gloves";
-//торби
-ModelClothingPart.DRESS_TYPE_BAGS="bags";
-//појаси
-ModelClothingPart.DRESS_TYPE_BELTS="belts";
-//цвикери
-ModelClothingPart.DRESS_TYPE_EYEWEAR="eyewear";
-//обувки
-ModelClothingPart.DRESS_TYPE_SHOES="shoes";
-//додатоци, миленици, маски, украси, и други додатоци.
-ModelClothingPart.DRESS_TYPE_EXTRAS="extras";*/
+ModelClothingPart.I_AM_OVER_POPUP_FORM = false;
 
 /*
  * Function that will close the front of part after click remove 

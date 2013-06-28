@@ -578,7 +578,7 @@ a.go-to-cart{
     opacity: 0.7;
 }
 .displayNone{
-    display: none;
+    display: none !important;
 }
 h4.empty-result{
     padding: 0 10px 0 10px;
@@ -600,7 +600,6 @@ h4.empty-result{
     line-height: 1.2em;
     font-family: Helvetica;
     font-size: 13px;
-    display: none;
 }
 .rem-item:hover
 {

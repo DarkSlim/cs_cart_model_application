@@ -6,7 +6,7 @@ function ModelStage()
                 $("#model_holder").width(), $("#model_holder").height());
     }
     this.position_mouse_on_window = new Point(0, 0);
-    this.FRAMES_PER_SECOND = 24;
+    this.FRAMES_PER_SECOND = 120;
 
     /*
      * 
@@ -170,22 +170,6 @@ function ModelStage()
         //this.layer_model_objects = new Kinetic.Layer();
         this.stage_for_roll_over_parts.add(this.layer_model_selected_part);
         //this.stage.add( this.layer_model_objects );
-
-
-        /*var tween = new Kinetic.Tween({
-         node: this.stage, 
-         duration: 0.6,
-         filterRadius: 0,
-         easing: Kinetic.Easings.EaseInOut
-         });
-         
-         this.layer_model.on('mouseover', function() {
-         tween.play();
-         });
-         
-         this.layer_model.on('mouseout', function() {
-         tween.reverse();
-         });*/
 
         this.background.change();
     }

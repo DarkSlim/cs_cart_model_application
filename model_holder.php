@@ -11,8 +11,8 @@
 ?>
 
 <script>
-    console.log("Console is disabled, model_holder.php.If you like to show the debuger unfroze it please.");
-    console.log = function(){}
+    //console.log("Console is disabled, model_holder.php.If you like to show the debuger unfroze it please.");
+    //console.log = function(){}
     <?php for($i=0;$i<count($all_subcategories);$i++){ ?>
     var object_subcategories_details = <?php print json_encode($all_subcategories[$i]); ?>;
     //alert(object_subcategories_details);
