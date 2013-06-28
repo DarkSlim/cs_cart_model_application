@@ -221,6 +221,61 @@ var clothHelper = {
                 });
             }
         })
+    },
+    //Get subcategories element 2
+    getSubcategories2: function() {
+        $('#category_type_id').change(function() {
+            $("#sub_category_type_id").html('<option value="">Loading please wait...</option>');
+            if ($(this).val() != "") {
+                $.ajax({
+                    url: "library/cloth.php",
+                    type: "post",
+                    data: {parent_category_id: $(this).val(), get_sub_cats: 1},
+                    success: function(data) {
+                        $("#sub_category_type_id").html(data);
+                    }
+                });
+            }
+        })
+    },
+    //Set overlaping
+    setOverlapCats: function() {
+        $("#set-overlap").click(function(event) {
+            if ($("#sub_category_type_id").val() != "") {
+                $(".overlap-info").html('Working please wait..')
+                $.ajax({
+                    url: "library/cloth.php",
+                    type: "post",
+                    data: {subcat_id: $("#sub_category_type_id").val(), overlap_ids: $("#overlap_category_type_id").val(), overlap : 1},
+                    success: function(data) {
+                        if(data == 1){
+                            $(".overlap-info").html('Overlaping set.')
+                        }
+                    }
+                });
+            }
+        });
+    },
+    //Get overlap cats
+    getOverlapCats : function(){
+        $("#sub_category_type_id").change(function(event){
+            if($(this).val() != ""){
+                $("#overlap_category_type_id").val('');
+                $(".catinfo").html('Loading data please wait...');
+                $.ajax({
+                    url: "library/cloth.php",
+                    type: "post",
+                    data: {subcat_id: $("#sub_category_type_id").val(), get_cat_overlap : 1},
+                    success: function(data) {
+                        $(".catinfo").html('');
+                        if(data != -1){
+                            var ids = data.split(",");
+                            $("#overlap_category_type_id").val(ids);
+                        }
+                    }
+                });
+            }
+        });
     }
 }
 
@@ -285,4 +340,8 @@ $(window).load(function() {
     })
     //Subcategories
     clothHelper.getSubcategories();
+    clothHelper.getSubcategories2();
+    //Overlap
+    clothHelper.setOverlapCats();
+    clothHelper.getOverlapCats();
 })

@@ -173,6 +173,7 @@ require('library/cloth.php');
                     <ul class="nav nav-tabs">
                         <li><a href="#tab1-content" data-toggle="tab">Cloth Upload</a></li>
                         <li><a href="#tab2-content" data-toggle="tab">Color Variations</a></li>
+                        <li><a href="#tab3-content" data-toggle="tab">Cloth Overlaping</a></li>
                     </ul>
                     <div class="tab-content">
                         <div class="tab-pane active" id="tab1-content">
@@ -346,6 +347,55 @@ require('library/cloth.php');
                                         <div class="msg3"></div>
                                     </div>
                                 </fieldset>
+                            </form>
+                        </div>
+
+                        <div class="tab-pane" id="tab3-content">
+                            <!-- Color variation options -->
+                            <form class="form-horizontal" action="#" method="post">
+
+                                <fieldset><legend>Cloth overlapping</legend>
+                                    <div class="control-group">
+                                        <label class="control-label" for="variation_product_id">Select product</label>
+                                        <div class="controls">
+                                            <select id="ol_product_id" name="ol_product_id" class="input-xlarge">
+                                                <option value="">Select product</option>
+                                                <?php Cloth::getProductsIds(); ?>
+                                            </select><br />
+                                            <div class="prd-info2">
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="control-group">
+                                        <label class="control-label" for="category_type_id">Choose Dress Category</label>
+                                        <div class="controls">
+                                            <select id="category_type_id" name="category_type_id" class="input-xlarge">
+                                                <option value="">Choose Category</option>
+                                                <?php Cloth::getDressCategories() ?>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="control-group">
+                                        <label class="control-label" for="sub_category_type_id">Choose Dress Sub Category</label>
+                                        <div class="controls">
+                                            <select id="sub_category_type_id" name="sub_category_type_id" class="input-xlarge">
+                                                <option value="">Choose category first</option>
+                                            </select>
+                                            <div class="catinfo"></div>
+                                        </div>
+                                    </div>
+                                    <div class="control-group">
+                                        <label class="control-label" for="overlap_category_type_id">Choose overlapping categories</label>
+                                        <div class="controls">
+                                            <select id="overlap_category_type_id" name="overlap_category_type_id" class="input-xlarge" multiple="" size="20">
+                                                <?php Cloth::getAllCats() ?>
+                                            </select>
+                                        </div>
+                                        <input type="button" id="set-overlap" class="btn" value="Set overlaping" /><span class="update-result"></span>
+                                    </div>
+                                </fieldset>
+                                <div class="overlap-info"></div>
                             </form>
                         </div>
                     </div>

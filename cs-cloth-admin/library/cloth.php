@@ -203,8 +203,8 @@ class Cloth {
     //Update product type
     public static function updateProductType($productID, $productType) {
         $sub_category = $_POST['dress_sub_category'];
-        Db_Actions::DbUpdate("UPDATE cscart_products_categories SET category_dress_type_id='" . $productType . "', subcategory_dress_type_id='".$sub_category."' WHERE product_id=$productID");
-        Db_Actions::DbUpdate("UPDATE cscart_products SET category_dress_type_id='" . $productType . "', subcategory_dress_type_id='".$sub_category."' WHERE product_id=$productID");
+        Db_Actions::DbUpdate("UPDATE cscart_products_categories SET category_dress_type_id='" . $productType . "', subcategory_dress_type_id='" . $sub_category . "' WHERE product_id=$productID");
+        Db_Actions::DbUpdate("UPDATE cscart_products SET category_dress_type_id='" . $productType . "', subcategory_dress_type_id='" . $sub_category . "' WHERE product_id=$productID");
         echo 1;
     }
     //Update brand type
@@ -259,6 +259,55 @@ class Cloth {
                     ?><option value="<?php echo $subcat->id ?>"><?php echo $subcat->label ?></option><?php
             }
         }
+    }
+    public static function getAllCats() {
+        Db_Actions::DbSelect("SELECT * FROM cscart_dress_type_category");
+        $result = Db_Actions::DbGetResults();
+        if (!isset($result->empty_result)) {
+            foreach ($result as $cat) {
+                ?>
+                <optgroup label="<?php echo $cat->label ?>">
+                    <?php
+                    Db_Actions::DbSelect("SELECT * FROM cscart_dress_type_subcategory WHERE dress_type_category_id=" . $cat->id);
+                    $result2 = Db_Actions::DbGetResults();
+                    if (!isset($result2->empty_result)) {
+                        foreach ($result2 as $subcat) {
+                            ?><option value="<?php echo $subcat->id ?>"><?php echo $subcat->label ?></option><?php
+                        }
+                    }
+                    ?>
+                </optgroup>
+                <?php
+            }
+        }
+    }
+    //Set overlapping
+    public static function setCatOverlap() {
+        $sub_cat = $_POST['subcat_id'];
+        $overlap_cat_ids = $_POST['overlap_ids'];
+        
+        Db_Actions::DbUpdate("UPDATE cscart_dress_type_subcategory SET overlaping_with_subcategories___IDs='-1' WHERE overlaping_with_subcategories___IDs=$sub_cat");
+        //Add cat ids to subcategory
+        Db_Actions::DbUpdate("UPDATE cscart_dress_type_subcategory SET overlaping_with_subcategories___IDs='" . implode(",", $overlap_cat_ids) . "' WHERE id=$sub_cat");
+        //Add subcategory ID to verlapping cats
+        for ($i = 0; $i < count($overlap_cat_ids); $i++) {
+            Db_Actions::DbUpdate("UPDATE cscart_dress_type_subcategory SET overlaping_with_subcategories___IDs='" . $sub_cat . "' WHERE id=$overlap_cat_ids[$i]");
+        }
+        echo 1;
+    }
+    //Get overlap cats
+    public static function getOverlapCats() {
+        $subcat_id = $_POST['subcat_id'];
+        Db_Actions::DbSelect("SELECT overlaping_with_subcategories___IDs FROM cscart_dress_type_subcategory WHERE id=$subcat_id");
+        $result = Db_Actions::DbGetResults();
+        //print_r($result);
+        $ids = "";
+        if (!isset($result->empty_result)) {
+            foreach ($result as $subcat) {
+                $ids = $subcat->overlaping_with_subcategories___ids;
+            }
+        }
+        echo $ids;
     }
 }
 
@@ -321,9 +370,31 @@ if (isset($_POST['remove_var'])) {
     require_once('../../lib/db_actions.php');
     $root_url = $config['current_location'];
     Cloth::RemoveProductColorVariation();
-} 
+}
 //Get sub categories
-if(isset($_POST['get_sub_cats'])){
+if (isset($_POST['get_sub_cats'])) {
+    define('AREA', 'C');
+    require '../../../prepare.php';
+    require '../../../init.php';
+    require(DIR_ROOT . '/config.php');
+    require_once('../../lib/db_actions.php');
+    $root_url = $config['current_location'];
+
+    Cloth::getDressSubacategories($_POST['parent_category_id']);
+}
+//Overlap
+if (isset($_POST['overlap'])) {
+    define('AREA', 'C');
+    require '../../../prepare.php';
+    require '../../../init.php';
+    require(DIR_ROOT . '/config.php');
+    require_once('../../lib/db_actions.php');
+    $root_url = $config['current_location'];
+
+    Cloth::setCatOverlap();
+}
+//Get category overlap cat ids
+if (isset($_POST['get_cat_overlap'])) {
     define('AREA', 'C');
     require '../../../prepare.php';
     require '../../../init.php';
@@ -331,6 +402,6 @@ if(isset($_POST['get_sub_cats'])){
     require_once('../../lib/db_actions.php');
     $root_url = $config['current_location'];
     
-    Cloth::getDressSubacategories($_POST['parent_category_id']);
+    Cloth::getOverlapCats();
 }
     
