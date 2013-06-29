@@ -374,7 +374,7 @@ require('library/cloth.php');
                                         </div>
                                     </div>
                                     <div class="control-group">
-                                        <label class="control-label" for="overlap_category_type_id">Choose subcategory to overlap with subcategory XXXXXX(You can do multiselect)</label>
+                                        <label class="control-label" for="overlap_category_type_id">Choose subcategory to overlap with subcategory <span class="sel-sub-ct">XXXXXX</span> (You can do multiselect)</label>
                                         <div class="controls">
                                             <select id="overlap_category_type_id" name="overlap_category_type_id" class="input-xlarge" multiple="" size="20">
                                                 <?php Cloth::getAllCats() ?>

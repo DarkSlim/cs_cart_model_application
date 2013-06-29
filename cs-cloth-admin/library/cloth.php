@@ -286,7 +286,7 @@ class Cloth {
         $sub_cat = $_POST['subcat_id'];
         $overlap_cat_ids = $_POST['overlap_ids'];
         
-        Db_Actions::DbUpdate("UPDATE cscart_dress_type_subcategory SET overlaping_with_subcategories___IDs='-1' WHERE overlaping_with_subcategories___IDs=$sub_cat");
+        Db_Actions::DbUpdate("UPDATE cscart_dress_type_subcategory SET overlaping_with_subcategories___IDs='-' WHERE overlaping_with_subcategories___IDs=$sub_cat");
         //Add cat ids to subcategory
         Db_Actions::DbUpdate("UPDATE cscart_dress_type_subcategory SET overlaping_with_subcategories___IDs='" . implode(",", $overlap_cat_ids) . "' WHERE id=$sub_cat");
         //Add subcategory ID to verlapping cats

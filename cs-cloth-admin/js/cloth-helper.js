@@ -260,6 +260,7 @@ var clothHelper = {
     getOverlapCats : function(){
         $("#sub_category_type_id").change(function(event){
             if($(this).val() != ""){
+                $(".sel-sub-ct").html($("#sub_category_type_id option:selected").text());
                 $("#overlap_category_type_id").val('');
                 $(".catinfo").html('Loading data please wait...');
                 $.ajax({
