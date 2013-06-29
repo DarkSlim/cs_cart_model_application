@@ -300,7 +300,7 @@ class Cloth {
         $subcat_id = $_POST['subcat_id'];
         Db_Actions::DbSelect("SELECT overlaping_with_subcategories___IDs FROM cscart_dress_type_subcategory WHERE id=$subcat_id");
         $result = Db_Actions::DbGetResults();
-        //print_r($result);
+        //print_r($result)//;
         $ids = "";
         if (!isset($result->empty_result)) {
             foreach ($result as $subcat) {
