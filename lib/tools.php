@@ -17,7 +17,7 @@ class Tools {
         if (!isset($result->empty_result)) {
             foreach ($result as $cat) {
                 ?>
-                <li><a href="#" data-typec="<?php echo $cat->label ?>" order_id="<?php echo $cat->order_id ?>" data-parentcat="1"><?php echo $cat->label ?></a>
+                <li><a href="#" data-typec="<?php echo $cat->id ?>" order_id="<?php echo $cat->order_id ?>" data-parentcat="1"><?php echo $cat->label ?></a>
                     <?php self::getDressSubacategories($cat->id); ?>
                 </li>
                 <?php
@@ -32,7 +32,7 @@ class Tools {
             ?><ul><?php
                 foreach ($result as $subcat) {
                     ?>
-                    <li><a href="#" data-typec="<?php echo $subcat->label ?>"><?php echo $subcat->label ?></a></li>
+                    <li><a href="#" data-typec="<?php echo $subcat->id ?>"><?php echo $subcat->label ?></a></li>
                     <?php
                 }
                 ?></ul><?php
@@ -342,16 +342,16 @@ class Tools {
             }
             $products_ids = Db_Actions::DbGetResults();
         }
-        else if ($prd_type != 'no-type') {
+        else if (is_numeric($prd_type)) {
             switch ($model_type) {
                 case "girl":
-                    Db_Actions::DbSelect("SELECT * FROM cscart_products_categories WHERE  category_dress_type_id='" . $prd_type . "' AND category_id=260");
+                    Db_Actions::DbSelect("SELECT * FROM cscart_products_categories WHERE  subcategory_dress_type_id='" . $prd_type . "' AND category_id=260");
                     break;
                 case "boy":
-                    Db_Actions::DbSelect("SELECT * FROM cscart_products_categories WHERE  category_dress_type_id='" . $prd_type . "' AND category_id=261");
+                    Db_Actions::DbSelect("SELECT * FROM cscart_products_categories WHERE  subcategory_dress_type_id='" . $prd_type . "' AND category_id=261");
                     break;
                 default:
-                    Db_Actions::DbSelect("SELECT * FROM cscart_products_categories WHERE  category_dress_type_id='" . $prd_type . "' AND category_id=260");
+                    Db_Actions::DbSelect("SELECT * FROM cscart_products_categories WHERE  subcategory_dress_type_id='" . $prd_type . "' AND category_id=260");
                     break;
             }
             $products_ids = Db_Actions::DbGetResults();

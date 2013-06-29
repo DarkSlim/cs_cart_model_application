@@ -285,13 +285,31 @@ class Cloth {
     public static function setCatOverlap() {
         $sub_cat = $_POST['subcat_id'];
         $overlap_cat_ids = $_POST['overlap_ids'];
-        
-        Db_Actions::DbUpdate("UPDATE cscart_dress_type_subcategory SET overlaping_with_subcategories___IDs='-' WHERE overlaping_with_subcategories___IDs=$sub_cat");
+
+        //First check if overlapping categories are set
+        $data = Db_Actions::DbSelectRow("SELECT overlaping_with_subcategories___ids FROM cscart_dress_type_subcategory WHERE id=$sub_cat");
+        $existing_cats_ids = array();
+        if (!isset($data->empty_result)) {
+            $existing_cats_ids = explode(",", preg_replace("/-/","",$data->overlaping_with_subcategories___ids) );
+        }
+        $merged_subcats = array_unique(array_merge($overlap_cat_ids, $existing_cats_ids));
+
+
+        //Db_Actions::DbUpdate("UPDATE cscart_dress_type_subcategory SET overlaping_with_subcategories___IDs='-' WHERE overlaping_with_subcategories___IDs=$sub_cat");
         //Add cat ids to subcategory
-        Db_Actions::DbUpdate("UPDATE cscart_dress_type_subcategory SET overlaping_with_subcategories___IDs='" . implode(",", $overlap_cat_ids) . "' WHERE id=$sub_cat");
+        Db_Actions::DbUpdate("UPDATE cscart_dress_type_subcategory SET overlaping_with_subcategories___IDs='" . implode(",", $merged_subcats) . "' WHERE id=$sub_cat");
         //Add subcategory ID to verlapping cats
         for ($i = 0; $i < count($overlap_cat_ids); $i++) {
-            Db_Actions::DbUpdate("UPDATE cscart_dress_type_subcategory SET overlaping_with_subcategories___IDs='" . $sub_cat . "' WHERE id=$overlap_cat_ids[$i]");
+
+            //First check if overlapping categories are set
+            $data2 = Db_Actions::DbSelectRow("SELECT overlaping_with_subcategories___ids FROM cscart_dress_type_subcategory WHERE id=$overlap_cat_ids[$i]");
+            $subcat_array = array($_POST['subcat_id']);
+            $existing_cats_ids2 = array();
+            if (!isset($data2->empty_result)) {
+                $existing_cats_ids2 = explode(",", preg_replace("/-/","",$data2->overlaping_with_subcategories___ids));
+            }
+            $merged_subcats2 = array_unique(array_merge($subcat_array, $existing_cats_ids2));
+            Db_Actions::DbUpdate("UPDATE cscart_dress_type_subcategory SET overlaping_with_subcategories___IDs='" . implode(",", $merged_subcats2) . "' WHERE id=$overlap_cat_ids[$i]");
         }
         echo 1;
     }
@@ -401,7 +419,7 @@ if (isset($_POST['get_cat_overlap'])) {
     require(DIR_ROOT . '/config.php');
     require_once('../../lib/db_actions.php');
     $root_url = $config['current_location'];
-    
+
     Cloth::getOverlapCats();
 }
     
