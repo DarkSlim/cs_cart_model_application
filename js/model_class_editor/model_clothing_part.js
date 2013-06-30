@@ -40,10 +40,14 @@ function ModelClothingPart(details_part)
     {
         var subcategorijata_e_pod_actuelniot_del_obleka = true;
         var array_subcategories = [];
+        var this_subcategoriesIDs = "" + 
+                ModelStage.MS.array_layers_for_parts["__"+this.subcategory_dress_type_id+"__"].overlaping_with_subcategories___IDs;
         for(var i=0;i<this.model_reference.parts.length;i++)
         {
             var part_reference = this.model_reference.parts[i];
-            if(part_reference.category_dress_type_id == this.category_dress_type_id
+            if(
+          //part_reference.category_dress_type_id == this.category_dress_type_id
+          this_subcategoriesIDs.indexOf(part_reference.subcategory_dress_type_id+"") != -1
           &&
           array_subcategories["__"+part_reference.subcategory_dress_type_id+"__"] == null
             )
@@ -179,6 +183,8 @@ function ModelClothingPart(details_part)
             document.body.style.cursor = 'pointer';
             if(this.reference_clot_item.do_on_mouse_up_click)
             {
+                console.log("ModelCLothingPart::setup_front_sprite_when_over_the_part, this.reference_clot_item.do_on_mouse_up_click==true");
+                this.reference_clot_item.do_on_mouse_up_click = false;
                 return;
             }
             GlobalEventor.GE.dispatch_event(GlobalEventor.ON_MOUSE_OVER_FRONT_PART_CLOUTH, this.reference_clot_item);
@@ -283,6 +289,8 @@ function ModelClothingPart(details_part)
     }
     
     ModelClothingPart.ALL_PARTS["__" + this.product_id + "__"] = this;
+    
+    console.log( "created object: "+this.toStringClothObject() );
 }
 ModelClothingPart.LAST_CREATE_SPRITE_OBJECT = null;
 ModelClothingPart.prototype = new Eventor();

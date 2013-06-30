@@ -94,6 +94,7 @@ function ModelPart()
         }
     }
     
+    this.image_for_front = null;
     this.setup_front_sprite = function( layer_holder, image )
     {
         if(this.sprite_front_of_model == null)
@@ -108,11 +109,12 @@ function ModelPart()
             });
             layer_holder.add( this.sprite_front_of_model );
         } 
-        this.sprite_front_of_model.setImage( image );
+        this.sprite_front_of_model.setImage( this.image_for_front = image );
     }
     
     this.show_front = function()
     {
+        this.sprite_front_of_model.show();
         $("#model_holder_selected_part").removeClass("displayNone");
         this.sprite_front_of_model.show();
         this.sprite_front_of_model.setX(0);
@@ -122,6 +124,7 @@ function ModelPart()
     }
     this.hide_front = function()
     {
+        this.sprite_front_of_model.hide();
         $("#model_holder_selected_part").addClass("displayNone"); 
     }
     

@@ -336,6 +336,7 @@ function ProductPopups() {
     {
         console.log("ProductPopups::showPopup(object_part_cloth_for_removing)");
         $("#prd-popup").removeClass("displayNone");
+        //$("#prd-popup").css("opacity", 1);
         if (this.parce_obleka_reference_for_popup == __parce_obleka_on_mouse_over__)
         {
             return;
@@ -401,10 +402,12 @@ function ProductPopups() {
     this.hideImediatly = function()
     {
         $('div.extra-info').hide();
-        $("#prd-popup").hide();
+        $("#prd-popup").addClass("displayNone");
         $('a.quick-look').hide();
         GlobalEventor.GE.dispatch_event(GlobalEventor.ON_CLICK_BUTTON_FROM_POPUPFORM_FOR_REMOVING_PART,
                 this.parce_obleka_reference_for_popup);
+        //this.parce_obleka_reference_for_popup.
+        this.parce_obleka_reference_for_popup = null;
     }
     this.showProductInfo = function(object_part_cloth_for_removing)
     {
@@ -441,8 +444,8 @@ function ProductPopups() {
             }
             $(".items_for_overlaping_clothes_anchor").click(function(me)
             {
-                ProductPopups.PP.hideImediatly();
                 ModelStage.MS.change_index_of_two_layers($(this).attr("layer_index_1"), $(this).attr("layer_index_2"));
+                ProductPopups.PP.hideImediatly();
                 return false;
             });
         }
@@ -466,6 +469,12 @@ function ProductPopups() {
     ///vaka treba da ti se funkciite.
     this.init_hide_popup = function()
     {
+        //on remove parce_obleka_reference_for_popup is set to null
+        //so it shouldnt an action
+        if(this.parce_obleka_reference_for_popup == null)
+        {
+            return;
+        }
         this.mi_treba_eban_index__timeout_id = setTimeout(/*function() {
          
          }*/"ProductPopups.PP.final_hide_popup();", 100);
@@ -508,6 +517,7 @@ function ProductPopups() {
         ModelStage.MS.model.remove_item(this.parce_obleka_reference_for_popup);
         GlobalEventor.GE.dispatch_event(GlobalEventor.ON_CLICK_BUTTON_FROM_POPUPFORM_FOR_REMOVING_PART,
                 this.parce_obleka_reference_for_popup);
+        this.parce_obleka_reference_for_popup = null;
     }
 
     $(document).ready(function(e)
@@ -541,8 +551,6 @@ function ProductPopups() {
                 function(object_part_cloth_for_removing) 
                 {
                     ProductPopups.PP.hide_popup_on_out_of_front_part_cloth();
-                    /*GlobalEventor.GE.dispatch_event(GlobalEventor.ON_CLICK_BUTTON_FROM_POPUPFORM_FOR_REMOVING_PART,
-                            object_part_cloth_for_removing);*/
                 });
 
         GlobalEventor.GE.add_event(GlobalEventor.ON_CLICKED_FRONT_PART_CLOUTH,
@@ -574,6 +582,7 @@ function ProductPopups() {
         //Remove item on popup button click
         $('.rem-item a').click(function(event) {
             ProductPopups.PP.remove_selected_product(event);
+            return false;
         });
     });
 
